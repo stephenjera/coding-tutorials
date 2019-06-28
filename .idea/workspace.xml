@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffd5cf80-76c8-4628-b9fa-37db17836419" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Working-With-Strings/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Working-With-Strings/.idea/Working-With-Strings.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Working-With-Strings/.idea/Working-With-Strings.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Working-With-Strings/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Working-With-Strings/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Working-With-Strings/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Working-With-Strings/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Working-With-Strings/Strings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Working-With-Strings/Strings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Working-With-Strings/Strings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-129">
-              <caret line="1" column="57" lean-forward="true" selection-start-line="1" selection-start-column="57" selection-end-line="1" selection-end-column="57" />
+            <state relative-caret-position="451">
+              <caret line="30" selection-start-line="30" selection-end-line="30" />
             </state>
           </provider>
         </entry>
@@ -81,6 +77,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
@@ -181,8 +178,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Working-With-Strings/Strings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-129">
-          <caret line="1" column="57" lean-forward="true" selection-start-line="1" selection-start-column="57" selection-end-line="1" selection-end-column="57" />
+        <state relative-caret-position="451">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>

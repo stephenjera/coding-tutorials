@@ -1,5 +1,5 @@
 # This file will contain multiple examples of how not to work with strings
-# USE LISTS UNTIL GIVEN NO CHOICE! STRINGS ARE IMMUTABLE 
+# USE LISTS UNTIL GIVEN NO CHOICE! STRINGS ARE IMMUTABLE
 
 # example string (this upper function is being special)
 word = "this should be uppercase!"
