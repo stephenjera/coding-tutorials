@@ -1,4 +1,4 @@
-/*Will contain multiple examples of working with strings*/
+/*This file will contain multiple examples of working with strings*/
 
 #include <iostream>
 #include <string>
