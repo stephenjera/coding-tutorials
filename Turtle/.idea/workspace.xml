@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b24c3c6d-835a-4a63-b535-4e28a500ea1e" name="Default Changelist" comment="" />
+    <list default="true" id="9a911da9-5f03-4b43-870e-af05f65e806f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Working-With-Lists/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Working-With-Lists/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,10 +13,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Lists.py">
+        <entry file="file://$PROJECT_DIR$/Turtle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+            <state relative-caret-position="160">
+              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
             </state>
           </provider>
         </entry>
@@ -34,16 +36,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Lists.py" />
+        <option value="$PROJECT_DIR$/Turtle.py" />
       </list>
     </option>
   </component>
   <component name="ProjectConfigurationFiles">
     <option name="files">
       <list>
-        <option value="$PROJECT_DIR$/.idea/Working-With-Lists.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/Turtle.iml" />
         <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
         <option value="$PROJECT_DIR$/.idea/modules.xml" />
       </list>
     </option>
@@ -60,22 +62,19 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="Working-With-Lists" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Working-With-Lists" type="462c0819:PsiDirectoryNode" />
+              <item name="Turtle" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Turtle" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
-  </component>
-  <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -90,8 +89,8 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Lists" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Working-With-Lists" />
+    <configuration name="Turtle" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Turtle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -102,7 +101,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lists.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Turtle.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -113,7 +112,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Lists" />
+        <item itemvalue="Python.Turtle" />
       </list>
     </recent_temporary>
   </component>
@@ -122,17 +121,16 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b24c3c6d-835a-4a63-b535-4e28a500ea1e" name="Default Changelist" comment="" />
-      <created>1561700214086</created>
+      <changelist id="9a911da9-5f03-4b43-870e-af05f65e806f" name="Default Changelist" comment="" />
+      <created>1561728077640</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1561700214086</updated>
+      <updated>1561728077640</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
@@ -154,10 +152,10 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Lists.py">
+    <entry file="file://$PROJECT_DIR$/Turtle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="160">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
