@@ -1,0 +1,11 @@
+*.lst
+*.d
+*.o
+*.axf
+*.htm
+*.lnp
+*.dep
+*.scvd
+*.stephen
+*.uvoptx
+*.uvprojx
