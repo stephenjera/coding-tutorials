@@ -14,7 +14,7 @@ __Vectors
   AREA Ex1a, CODE, READONLY ; name the block
   ENTRY   ; mark first instruction (entry directive)
 Reset_Handler
-  MOV r6,#10  ; first argument
+  MOV r6,#13  ; first argument
   MOV r7,#20  ; second argument
   ADD r8,r6,r7  ; perform 32-bit operation
 do_64_bit_add
