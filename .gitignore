@@ -8,4 +8,7 @@
 *.scvd
 *.stephen
 *.uvoptx
+*.uvopt
 *.uvprojx
+*.uvproj
+*.obj

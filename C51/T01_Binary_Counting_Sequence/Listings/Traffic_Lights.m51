@@ -1,0 +1,49 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    07/27/2019  16:16:18  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\A\ARM KEIL\C51\BIN\BL51.EXE .\Objects\screen3.obj TO .\Objects\Traffic_Lights PRINT (.\Listings\Traffic_Lights.m51) R
+>> AMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\screen3.obj (SCREEN3)
+
+
+LINK MAP OF MODULE:  .\Objects\Traffic_Lights (SCREEN3)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0049H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Traffic_Lights (SCREEN3)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SCREEN3
+  C:0044H         SYMBOL        NEXT
+  D:0080H         SYMBOL        P0
+  C:0040H         SYMBOL        START
+  C:0000H         LINE#         3
+  C:0040H         LINE#         6
+  C:0042H         LINE#         7
+  C:0044H         LINE#         8
+  C:0045H         LINE#         9
+  C:0047H         LINE#         10
+  -------         ENDMOD        SCREEN3
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 000BH BYTE ( 0%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=73
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
