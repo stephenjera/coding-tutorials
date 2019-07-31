@@ -1,0 +1,35 @@
+﻿body
+{
+    background:#eee
+}
+
+wrapper{
+    width:100%;
+    max-width:960px;
+}
+
+.Flex-Container {
+    display: flex;
+    background-color: white;
+    flex-wrap: wrap;
+    flex-flow: column;
+    justify-content: center;
+}
+
+.Box {
+    height: 100px;
+    flex: 0 0 100px;
+    
+}
+
+.One {
+    background-color: red;
+}
+
+.Two {
+    background-color: blue;
+}
+
+.Three {
+    background-color: purple;
+}

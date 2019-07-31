@@ -1,2 +1,22 @@
+<<<<<<< HEAD
+#Folders to ignore for now
+/GitHub
+/HTML5(old)/Treasure-Hunt-Rework
+/HTML5(old)/my-portfolio
+/HTML5(old)/CV-template
+/HTML5(old)/Tresure-Hunt02
+/HTML5(old)/Treasure-Hunt03
+/HTML5(old)/My-Website
+/HTML5(old)/My-CV
+/HTML5(old)/Images
+/HTML5(old)/code-testing
+/HTML5(old)/Solution1
+
+*.log
+*.sln
+*.zip
+*.vs
+=======
 *.log
 /GitHub
+>>>>>>> f9c10dfb021aa1fd8fa950e4db2776cb8b9c255f
