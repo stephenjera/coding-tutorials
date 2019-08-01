@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 #Folders to ignore for now
-/GitHub
+GitHub
 /HTML5(old)/Treasure-Hunt-Rework
 /HTML5(old)/my-portfolio
 /HTML5(old)/CV-template
@@ -16,7 +15,6 @@
 *.sln
 *.zip
 *.vs
-=======
-*.log
-/GitHub
->>>>>>> f9c10dfb021aa1fd8fa950e4db2776cb8b9c255f
+*.json
+node_modules
+.eslintrc.js

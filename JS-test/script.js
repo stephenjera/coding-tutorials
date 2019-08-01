@@ -2,4 +2,4 @@ function runCode() {
     alert("hello again");
 }
 
-var x = 24;
+const one = 1;
