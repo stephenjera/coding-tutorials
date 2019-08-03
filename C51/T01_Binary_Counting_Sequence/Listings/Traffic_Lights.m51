@@ -1,16 +1,16 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    07/27/2019  16:16:18  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    08/03/2019  06:39:44  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
-D:\A\ARM KEIL\C51\BIN\BL51.EXE .\Objects\screen3.obj TO .\Objects\Traffic_Lights PRINT (.\Listings\Traffic_Lights.m51) R
->> AMSIZE (256)
+D:\A\ARM KEIL\C51\BIN\BL51.EXE .\Objects\Delay_Program.obj TO .\Objects\Traffic_Lights PRINT (.\Listings\Traffic_Lights.
+>> m51) RAMSIZE (256)
 
 
 INPUT MODULES INCLUDED:
-  .\Objects\screen3.obj (SCREEN3)
+  .\Objects\Delay_Program.obj (DELAY_PROGRAM)
 
 
-LINK MAP OF MODULE:  .\Objects\Traffic_Lights (SCREEN3)
+LINK MAP OF MODULE:  .\Objects\Traffic_Lights (DELAY_PROGRAM)
 
 
             TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
@@ -20,30 +20,39 @@ LINK MAP OF MODULE:  .\Objects\Traffic_Lights (SCREEN3)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0049H     ABSOLUTE     
+            CODE    0000H     0053H     ABSOLUTE     
 
 
 
-SYMBOL TABLE OF MODULE:  .\Objects\Traffic_Lights (SCREEN3)
+SYMBOL TABLE OF MODULE:  .\Objects\Traffic_Lights (DELAY_PROGRAM)
 
   VALUE           TYPE          NAME
   ----------------------------------
 
-  -------         MODULE        SCREEN3
+  -------         MODULE        DELAY_PROGRAM
+  C:0047H         SYMBOL        D2
+  C:0049H         SYMBOL        D3
+  C:0045H         SYMBOL        DELAY
   C:0044H         SYMBOL        NEXT
   D:0080H         SYMBOL        P0
   C:0040H         SYMBOL        START
-  C:0000H         LINE#         3
-  C:0040H         LINE#         6
-  C:0042H         LINE#         7
-  C:0044H         LINE#         8
-  C:0045H         LINE#         9
-  C:0047H         LINE#         10
-  -------         ENDMOD        SCREEN3
+  C:0000H         LINE#         4
+  C:0040H         LINE#         8
+  C:0042H         LINE#         9
+  C:0044H         LINE#         10
+  C:0045H         LINE#         11
+  C:0047H         LINE#         12
+  C:0049H         LINE#         13
+  C:004AH         LINE#         14
+  C:004BH         LINE#         15
+  C:004DH         LINE#         16
+  C:004FH         LINE#         17
+  C:0051H         LINE#         18
+  -------         ENDMOD        DELAY_PROGRAM
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 000BH BYTE ( 0%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0015H BYTE ( 1%) *
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=73
+Program Size: data=8.0 xdata=0 code=83
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
