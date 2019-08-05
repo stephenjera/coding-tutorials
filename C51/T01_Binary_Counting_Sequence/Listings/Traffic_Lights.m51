@@ -1,16 +1,16 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    08/03/2019  06:39:44  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    08/05/2019  09:31:30  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
-D:\A\ARM KEIL\C51\BIN\BL51.EXE .\Objects\Delay_Program.obj TO .\Objects\Traffic_Lights PRINT (.\Listings\Traffic_Lights.
->> m51) RAMSIZE (256)
+D:\A\ARM KEIL\C51\BIN\BL51.EXE .\Objects\Delay_Subroutine.obj TO .\Objects\Traffic_Lights PRINT (.\Listings\Traffic_Ligh
+>> ts.m51) RAMSIZE (256)
 
 
 INPUT MODULES INCLUDED:
-  .\Objects\Delay_Program.obj (DELAY_PROGRAM)
+  .\Objects\Delay_Subroutine.obj (DELAY_SUBROUTINE)
 
 
-LINK MAP OF MODULE:  .\Objects\Traffic_Lights (DELAY_PROGRAM)
+LINK MAP OF MODULE:  .\Objects\Traffic_Lights (DELAY_SUBROUTINE)
 
 
             TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
@@ -20,19 +20,19 @@ LINK MAP OF MODULE:  .\Objects\Traffic_Lights (DELAY_PROGRAM)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0053H     ABSOLUTE     
+            CODE    0000H     010FH     ABSOLUTE     
 
 
 
-SYMBOL TABLE OF MODULE:  .\Objects\Traffic_Lights (DELAY_PROGRAM)
+SYMBOL TABLE OF MODULE:  .\Objects\Traffic_Lights (DELAY_SUBROUTINE)
 
   VALUE           TYPE          NAME
   ----------------------------------
 
-  -------         MODULE        DELAY_PROGRAM
-  C:0047H         SYMBOL        D2
-  C:0049H         SYMBOL        D3
-  C:0045H         SYMBOL        DELAY
+  -------         MODULE        DELAY_SUBROUTINE
+  C:0102H         SYMBOL        D2
+  C:0104H         SYMBOL        D3
+  C:0100H         SYMBOL        DELAY
   C:0044H         SYMBOL        NEXT
   D:0080H         SYMBOL        P0
   C:0040H         SYMBOL        START
@@ -40,19 +40,27 @@ SYMBOL TABLE OF MODULE:  .\Objects\Traffic_Lights (DELAY_PROGRAM)
   C:0040H         LINE#         8
   C:0042H         LINE#         9
   C:0044H         LINE#         10
-  C:0045H         LINE#         11
-  C:0047H         LINE#         12
+  C:0046H         LINE#         11
+  C:0048H         LINE#         12
   C:0049H         LINE#         13
-  C:004AH         LINE#         14
-  C:004BH         LINE#         15
-  C:004DH         LINE#         16
-  C:004FH         LINE#         17
-  C:0051H         LINE#         18
-  -------         ENDMOD        DELAY_PROGRAM
+  C:004BH         LINE#         14
+  C:0100H         LINE#         20
+  C:0102H         LINE#         21
+  C:0104H         LINE#         22
+  C:0105H         LINE#         23
+  C:0106H         LINE#         24
+  C:0108H         LINE#         25
+  C:010AH         LINE#         26
+  C:010CH         LINE#         27
+  C:010EH         LINE#         29
+  -------         ENDMOD        DELAY_SUBROUTINE
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0015H BYTE ( 1%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 001EH BYTE ( 1%) *
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=83
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/05/2019  09:31:30  PAGE 2
+
+
+Program Size: data=8.0 xdata=0 code=271
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
