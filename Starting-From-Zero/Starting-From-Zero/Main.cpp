@@ -35,5 +35,6 @@ int main() {
 	Num = 3;
 	cout << "Integer Num is stored at " << pNum; // prints address
 	cout << " and has a value of " << *pNum << "\n\n";	 // prints number
+	system("pause");
 	return 0;
 }
