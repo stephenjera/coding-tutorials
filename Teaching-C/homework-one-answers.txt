@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstdio> // This was to stop my console from closing, you dont need it 
+//using namespace std;
+
+// This is a function prototype 
+//void calculator(int x, int y);
+void calculator(float x, float y);
+int main() {
+	// This is how you call a function 
+	float x_val, y_val;
+	std::cout << "Enter X value: " << std::endl;
+	std::cin >> x_val;
+	std::cout << "Enter Y value: " << std::endl;
+	std::cin >> y_val;
+	calculator(x_val, y_val);
+
+	// This was to stop my console from closing, you dont need it 
+	system("pause");
+
+}
+
+// This is a function definition 
+/*void calculator(int x, int y) {
+	// I am using std:: becasue I commented out "using namespace std"
+	std::cout << "Sum of addition is: " << x + y << std::endl;
+	std::cout << "Difference of subtraction is: " << x - y << std::endl;
+	std::cout << "Product of multiplication is: " << x * y << std::endl;
+	std::cout << "Quotient of division is: " << x / y << std::endl;
+}*/
+void calculator(float x, float y) {
+	// I am using std:: becasue I commented out "using namespace std"
+	std::cout << "Sum of addition is: " << x + y << std::endl;
+	std::cout << "Difference of subtraction is: " << x - y << std::endl;
+	std::cout << "Product of multiplication is: " << x * y << std::endl;
+	std::cout << "Quotient of division is: " << x / y << std::endl;
+}

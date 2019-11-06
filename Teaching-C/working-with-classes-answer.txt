@@ -76,21 +76,21 @@ int main(void) {
 	std::cout << "The door is: " << buzzerOutput << std::endl;
 
 	// Making outputs more meaningful 
-	if (doorOutput = true) {
+	if (doorOutput == true) {
 		std::cout << "Door is open!" << std::endl;
 	}
 	else {
 		std::cout << "Door is closed!" << std::endl;
 	}
 	
-	if (ledOutput = true) {
+	if (ledOutput == true) {
 		std::cout << "LED is on!" << std::endl;
 	}
 	else {
 		std::cout << "LED is closed!" << std::endl;
 	}
 
-	if (buzzerOutput = true) {
+	if (buzzerOutput == true) {
 		std::cout << "Buzzer is on!" << std::endl;
 	}
 	else {
