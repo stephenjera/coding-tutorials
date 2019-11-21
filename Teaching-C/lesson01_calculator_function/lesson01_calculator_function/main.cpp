@@ -13,8 +13,8 @@ int main() {
 	std::cout << "Enter Y value then press enter: " << std::endl;
 	std::cin >> y_val;
 
-	calculator(x_val, y_val); // Calling a function 
-
+	//calculator(x_val, y_val); // Calling a function 
+	calculator(1, 2);
 }
 
 // This is a function definition 
