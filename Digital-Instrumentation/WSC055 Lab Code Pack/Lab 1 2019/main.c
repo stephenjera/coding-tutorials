@@ -23,15 +23,18 @@ int main(void)
 	GPIOE->MODER |= 0x55550000; // Set mode of each pin in port E (doesn't work without this)
 	GPIOE->OTYPER &= ~(0x0000FF00); // Set output type for each pin required in Port E (works when set to zero?)
 	GPIOE->PUPDR &= ~(0x55550000); // Set Pull up/Pull down resistor configuration for Port E (still wroks when set to zero?)
-	
+	int counter = 0x0000;
 	// Main programme loop - make LED 4 (attached to pin PE.0) turn on and off	
 	while (1)
   {
+		//uint16_t counter = 0x0000;
 		
-		GPIOE->BSRRL = 0x0100;
-		delay(200000); // On time  
-		GPIOE->BSRRH = 0x0100; 
-		delay(200000); // Off time
+		
+		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+		delay(1*1000000); // On time  
+		GPIOE->BSRRH =  counter << 8; 
+		counter++;
+		//delay(1*1000000); // Off time
 		
 	}
 
