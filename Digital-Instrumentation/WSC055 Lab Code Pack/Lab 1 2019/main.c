@@ -21,8 +21,8 @@ int main(void)
 {
 	/* Setting up timer*/
 	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; // Directs clock pules to timer
-	TIM3->PSC = 100; // prescalor value in Timer ‘x’ as 100
-	TIM3->ARR = 1000; // Auto-Reset Register of Timer ‘x’ set to 1000 counts
+	TIM3->PSC = 7999; // prescalor value in Timer ‘x’ as 100
+	TIM3->ARR = 999; // Auto-Reset Register of Timer ‘x’ set to 1000 counts
 	TIM3->CR1 |= TIM_CR1_CEN; // //Set Timer Control Register to start timer
 	TIM3->DIER |= TIM_DIER_UIE; // Set DIER register to watch out for an ‘Update’ Interrupt Enable (UIE) – or 0x00000001
 	
@@ -36,7 +36,7 @@ int main(void)
 	GPIOE->OTYPER &= ~(0x0000FF00); // Set output type for each pin required in Port E (works when set to zero?)
 	GPIOE->PUPDR &= ~(0x55550000); // Set Pull up/Pull down resistor configuration for Port E (still wroks when set to zero?)
 	setDAC();
-	//setADC();
+	setADC();
 	
 	// Main programme loop 
 	while (1){}
@@ -50,10 +50,11 @@ void TIM3_IRQHandler()
 	if ((TIM3->SR & TIM_SR_UIF) !=0) // Check interrupt source is from the ‘Update’ interrupt flag
 	{
 		//...INTERRUPT ACTION HERE
-		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
-		delay(1*1000000); // On time  // Can't get accurate time with this method
+		
+		//delay(1*1000000); // On time  // Can't get accurate time with this method
 		GPIOE->BSRRH =  counter << 8; 
 		counter++;
+		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
 	}
 	TIM3->SR &= ~TIM_SR_UIF; // Reset ‘Update’ interrupt flag in the SR register
 	
@@ -81,5 +82,19 @@ void setDAC(void){
 }
 
 void setADC(void){
-
+	/*startup procedure*/
+	ADC1->CR &= ~ADC_CR_ADVREGEN; // Reset voltage regulator
+	ADC1->CR |= ADC_CR_ADVREGEN_0; // 01: ADC Voltage regulator enabled
+	delay(50); // Wait for calibration to be done
+	
+	/*Calibrate ADC*/
+	ADC1->CR &= ~ADC_CR_ADCALDIF; // calibration in Single-ended inputs Mode.
+	ADC1->CR |= ADC_CR_ADCAL; // Start ADC calibration
+	while (ADC1->CR & ADC_CR_ADCAL); // wait until calibration done
+ // calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1
+	
+	//Enable Clock 
+	RCC->CFGR2 |= RCC_CFGR2_ADCPRE12_DIV2;
+	RCC->AHBENR |= RCC_AHBENR_ADC12EN; // Clock for ADC 1 and 2
+	ADC1_2_COMMON->CCR |= 0x00010000;
 }
