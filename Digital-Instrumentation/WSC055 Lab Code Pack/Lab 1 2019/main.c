@@ -10,13 +10,15 @@
 
 #include "stm32f3xx.h"                  // Device header
 
-
-void delay(int a); // prototype for delay function
 int counter = 0x0000; // Global variable
+
+// Function prototypes
+void delay(int a); // Prototype for delay function
+void setDAC(void); // Prototype for DAC
+void setADC(void); // Prototype for ADC
 
 int main(void)
 {
-	
 	/* Setting up timer*/
 	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; // Directs clock pules to timer
 	TIM3->PSC = 100; // prescalor value in Timer ‘x’ as 100
@@ -33,38 +35,25 @@ int main(void)
 	GPIOE->MODER |= 0x55550000; // Set mode of each pin in port E (doesn't work without this)
 	GPIOE->OTYPER &= ~(0x0000FF00); // Set output type for each pin required in Port E (works when set to zero?)
 	GPIOE->PUPDR &= ~(0x55550000); // Set Pull up/Pull down resistor configuration for Port E (still wroks when set to zero?)
+	setDAC();
+	//setADC();
 	
-	//int counter = 0x0000;
-	// Main programme loop - make LED 4 (attached to pin PE.0) turn on and off	
-	while (1)
-  {
-		//uint16_t counter = 0x0000;
-			
-		/*GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
-		delay(1*1000000); // On time  // Can't get accurate time with this method
-		GPIOE->BSRRH =  counter << 8; 
-		counter++;
-		//delay(1*1000000); // Off time*/
-		
-	}
+	// Main programme loop 
+	while (1){}
 
 };
 
 // Interrupt handler
 void TIM3_IRQHandler()
 {
-	//int counter = 0x0000;
 	void delay(int a); // prototype for delay function
 	if ((TIM3->SR & TIM_SR_UIF) !=0) // Check interrupt source is from the ‘Update’ interrupt flag
 	{
 		//...INTERRUPT ACTION HERE
-		//uint16_t counter = 0x0000;
-		
 		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
 		delay(1*1000000); // On time  // Can't get accurate time with this method
 		GPIOE->BSRRH =  counter << 8; 
 		counter++;
-		//delay(1*1000000); // Off time
 	}
 	TIM3->SR &= ~TIM_SR_UIF; // Reset ‘Update’ interrupt flag in the SR register
 	
@@ -82,4 +71,15 @@ void delay (int a)
     }
 
     return;
+}
+
+void setDAC(void){
+	RCC->APB1ENR |= RCC_APB1ENR_DAC1EN; // Connect DAC to system clock
+	DAC1->CR |= DAC_CR_BOFF1; // Disable the ‘buffer’ function in the DAC control register
+	DAC1->CR |= DAC_CR_EN1; // Enable DAC peripheral
+	//DAC1_DHR8R1
+}
+
+void setADC(void){
+
 }
