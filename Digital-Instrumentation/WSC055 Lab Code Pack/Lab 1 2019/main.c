@@ -52,9 +52,9 @@ void TIM3_IRQHandler()
 		//...INTERRUPT ACTION HERE
 		
 		//delay(1*1000000); // On time  // Can't get accurate time with this method
-		GPIOE->BSRRH =  counter << 8; 
-		counter++;
-		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+		//GPIOE->BSRRH =  counter << 8; 
+		//counter++;
+		//GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
 	}
 	TIM3->SR &= ~TIM_SR_UIF; // Reset ‘Update’ interrupt flag in the SR register
 	
@@ -82,19 +82,48 @@ void setDAC(void){
 }
 
 void setADC(void){
-	/*startup procedure*/
+	
+	/*== Enable ADC Clock ==*/
+	// Divide CPU clock for ADC
+	RCC->CFGR2 |= RCC_CFGR2_ADCPRE12_DIV2; // May need DIV6 instead
+	RCC->AHBENR |= RCC_AHBENR_ADC12EN; // Clock for ADC 1 and 2
+	ADC1_2_COMMON->CCR |= 0x00010000; // WHAT IS THIS DOING?
+	
+	/*== Setup Voltage Regulator ==*/
+	// MUST BE SET THEN RESET?
 	ADC1->CR &= ~ADC_CR_ADVREGEN; // Reset voltage regulator
 	ADC1->CR |= ADC_CR_ADVREGEN_0; // 01: ADC Voltage regulator enabled
-	delay(50); // Wait for calibration to be done
+	delay(10); // Wait for calibration to be done
 	
 	/*Calibrate ADC*/
 	ADC1->CR &= ~ADC_CR_ADCALDIF; // calibration in Single-ended inputs Mode.
 	ADC1->CR |= ADC_CR_ADCAL; // Start ADC calibration
 	while (ADC1->CR & ADC_CR_ADCAL); // wait until calibration done
- // calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1
+	// while (ADC1->CR & ~ADC_CR_ADCAL) != 0); // Alt calibration test
+  // calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1
 	
-	//Enable Clock 
-	RCC->CFGR2 |= RCC_CFGR2_ADCPRE12_DIV2;
-	RCC->AHBENR |= RCC_AHBENR_ADC12EN; // Clock for ADC 1 and 2
-	ADC1_2_COMMON->CCR |= 0x00010000;
+	/*== Configure GPIO ==*/
+	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
+	GPIOA->MODER |= 0x00000002; // Set mode of pin PA0 to '10' for 'Analogue'
+	
+	/*== Configure ADC ==*/
+	ADC1->CFGR &= ~ADC_CFGR_CONT; // ADC_ContinuousConvMode_Enable
+	ADC1->CFGR |= ADC_CFGR_RES_1; // 8-bit data resolution
+	ADC1->CFGR &= ~ADC_CFGR_RES_0; // CHECK WHAT THIS IS DOING
+	ADC1->CFGR &= ~ADC_CFGR_ALIGN; // Right data alignment
+
+	/*== Configure Multiplexing ==*/ 
+	//ADC1->SQR1 |= ADC_SQR1_SQ1_2 | ADC_SQR1_SQ1_1 | ADC_SQR1_SQ1_0; // SQ1 = 0x07, start converting ch7
+	ADC1->SQR1 |= ADC_SQR1_SQ1_0; // SQ1 = 0x01, start converting ch1 FIND OUT MORE
+  ADC1->SQR1 &= ~ADC_SQR1_L; // ADC regular channel sequence length = 0 => 1 conversion/sequence
+	ADC1->SMPR1 |= ADC_SMPR1_SMP7_1 | ADC_SMPR1_SMP7_0; // = 0x03 => sampling time 7.5 ADC clock cycles
+	ADC1->CR |= ADC_CR_ADEN; // Enable ADC1
+	while(!ADC1->ISR & ADC_ISR_ADRD); // wait for ADRDY
+	ADC1->CR |= ADC_CR_ADSTART; // Start ADC1 Software Conversion
+	
 }
+
+/*==== ADC set up ====*/
+// http://homepage.cem.itesm.mx/carbajal/Microcontrollers/SLIDES/STM32F3%20ADC.pdf
+// https://community.st.com/s/question/0D50X00009XkgZz/stm32f3-adc-in-differential-mode
+// https://www.youtube.com/watch?v=qqGsy06mris&t=466s
