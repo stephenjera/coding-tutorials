@@ -16,6 +16,7 @@ int counter = 0x0000; // Global variable
 void delay(int a); // Prototype for delay function
 void setDAC(void); // Prototype for DAC
 void setADC(void); // Prototype for ADC
+float read_ADC(void);
 
 int main(void)
 {
@@ -37,7 +38,7 @@ int main(void)
 	GPIOE->PUPDR &= ~(0x55550000); // Set Pull up/Pull down resistor configuration for Port E (still wroks when set to zero?)
 	setDAC();
 	setADC();
-	
+	read_ADC();
 	// Main programme loop 
 	while (1){}
 
@@ -98,7 +99,7 @@ void setADC(void){
 	/*==Calibrate ADC==*/
 	ADC1->CR &= ~ADC_CR_ADCALDIF; // calibration in Single-ended inputs Mode.
 	ADC1->CR |= ADC_CR_ADCAL; // Start ADC calibration
-	while (ADC1->CR & ADC_CR_ADCAL); // wait until calibration done (bitwise and until 0 is returned)
+	while(ADC1->CR & ADC_CR_ADCAL); // wait until calibration done (bitwise and until 0 is returned)
 	// while (ADC1->CR & ~ADC_CR_ADCAL) != 0); // Alt calibration test
   // calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1
 	
@@ -121,11 +122,29 @@ void setADC(void){
 	/*== Enable ADC ==*/
 	ADC1->CR |= ADC_CR_ADEN; // Enable ADC1
 	while(!ADC1->ISR & ADC_ISR_ADRD); // wait for ADRDY (not ISR = 0 therfore true until ardy = 1)
-	ADC1->CR |= ADC_CR_ADSTART; // Start ADC1 Software Conversion
+	//ADC1->CR |= ADC_CR_ADSTART; // Start ADC1 Software Conversion
 	
 	/*== Wait for EOC ==*/
-	while(!(ADC1->ISR & ADC_ISR_EOC)){}; // Test EOC flag
-  int ADC1ValueNew = ADC1->DR; // Get ADC1 converted data
+/*	int logictest =1;
+	while(logictest){
+		logictest = !(ADC1->ISR & ADC_ISR_EOC);
+	} // Test EOC flag (and with 0 EOC reg will always give 1)
+	//while(!(ADC1->ISR & ADC_ISR_EOC));
+  // While loop throws an error without the space
+	int ADC1ValueNew = ADC1->DR; // Get ADC1 converted data*/
+}
+
+float read_ADC() {
+	// 1. Start the conversion by setting the ADSTART bit high
+	ADC1->CR |= ADC_CR_ADSTART; // Start ADC1 Software Conversion
+	
+	// 2. Wait for the end of conversion (reported in the ADCx_ISR register by the EOC bit going high)
+  // 3. Read data from the data register (ADCx_DR). Doing this resets the EOC flag.
+	while(!(ADC1->ISR & ADC_ISR_EOC)){} // Test EOC flag
+  int ADC1ConvertedValue = ADC1->DR; // Get ADC1 converted data, returned as 8bit value(or whatever set resolution)
+  // int ADC1ConvertedVoltage = (ADC1ConvertedValue *3300)/4096; // Compute the voltage, for 12bit, in mV
+	float ADC1ConvertedVoltage = (ADC1ConvertedValue *3.3)/(float)256; // Compute the voltage, for 8bit, in V
+	return ADC1ConvertedVoltage;
 }
 
 /*==== ADC set up ====*/
