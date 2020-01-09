@@ -95,10 +95,10 @@ void setADC(void){
 	ADC1->CR |= ADC_CR_ADVREGEN_0; // 01: ADC Voltage regulator enabled
 	delay(10); // Wait for calibration to be done
 	
-	/*Calibrate ADC*/
+	/*==Calibrate ADC==*/
 	ADC1->CR &= ~ADC_CR_ADCALDIF; // calibration in Single-ended inputs Mode.
 	ADC1->CR |= ADC_CR_ADCAL; // Start ADC calibration
-	while (ADC1->CR & ADC_CR_ADCAL); // wait until calibration done
+	while (ADC1->CR & ADC_CR_ADCAL); // wait until calibration done (bitwise and until 0 is returned)
 	// while (ADC1->CR & ~ADC_CR_ADCAL) != 0); // Alt calibration test
   // calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1
 	
@@ -108,8 +108,8 @@ void setADC(void){
 	
 	/*== Configure ADC ==*/
 	ADC1->CFGR &= ~ADC_CFGR_CONT; // ADC_ContinuousConvMode_Enable
-	ADC1->CFGR |= ADC_CFGR_RES_1; // 8-bit data resolution
-	ADC1->CFGR &= ~ADC_CFGR_RES_0; // CHECK WHAT THIS IS DOING
+	ADC1->CFGR |= ADC_CFGR_RES_1; // 8-bit data resolution  = 0x00000010
+	ADC1->CFGR &= ~ADC_CFGR_RES_0; // CHECK WHAT THIS IS DOING  = 0x00000008  setting register to 0?
 	ADC1->CFGR &= ~ADC_CFGR_ALIGN; // Right data alignment
 
 	/*== Configure Multiplexing ==*/ 
@@ -117,10 +117,15 @@ void setADC(void){
 	ADC1->SQR1 |= ADC_SQR1_SQ1_0; // SQ1 = 0x01, start converting ch1 FIND OUT MORE
   ADC1->SQR1 &= ~ADC_SQR1_L; // ADC regular channel sequence length = 0 => 1 conversion/sequence
 	ADC1->SMPR1 |= ADC_SMPR1_SMP7_1 | ADC_SMPR1_SMP7_0; // = 0x03 => sampling time 7.5 ADC clock cycles
+	
+	/*== Enable ADC ==*/
 	ADC1->CR |= ADC_CR_ADEN; // Enable ADC1
-	while(!ADC1->ISR & ADC_ISR_ADRD); // wait for ADRDY
+	while(!ADC1->ISR & ADC_ISR_ADRD); // wait for ADRDY (not ISR = 0 therfore true until ardy = 1)
 	ADC1->CR |= ADC_CR_ADSTART; // Start ADC1 Software Conversion
 	
+	/*== Wait for EOC ==*/
+	while(!(ADC1->ISR & ADC_ISR_EOC)){}; // Test EOC flag
+  int ADC1ValueNew = ADC1->DR; // Get ADC1 converted data
 }
 
 /*==== ADC set up ====*/
