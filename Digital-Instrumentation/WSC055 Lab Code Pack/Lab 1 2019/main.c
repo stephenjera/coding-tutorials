@@ -40,7 +40,11 @@ int main(void)
 	setADC();
 	read_ADC();
 	// Main programme loop 
-	while (1){}
+	while (1){
+		//DAC1_DHR8R1 // Holding Register for Right aligned, 8-bit data
+	
+	
+	}
 
 };
 
@@ -56,6 +60,9 @@ void TIM3_IRQHandler()
 		//GPIOE->BSRRH =  counter << 8; 
 		//counter++;
 		//GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+		
+		DAC1->DHR8R1 = counter ; // Holding Register for Right aligned, 8-bit data
+		counter++;
 	}
 	TIM3->SR &= ~TIM_SR_UIF; // Reset ‘Update’ interrupt flag in the SR register
 	
@@ -79,7 +86,6 @@ void setDAC(void){
 	RCC->APB1ENR |= RCC_APB1ENR_DAC1EN; // Connect DAC to system clock
 	DAC1->CR |= DAC_CR_BOFF1; // Disable the ‘buffer’ function in the DAC control register
 	DAC1->CR |= DAC_CR_EN1; // Enable DAC peripheral
-	//DAC1_DHR8R1
 }
 
 void setADC(void){
