@@ -15,6 +15,10 @@
 #define PreScaler 7999 // Theo added #define's these to make life easier.
 #define AutoReloadReg 10 // PSC(7999) & ARR(999) on 8MHz clk gives 1s. 10 on latter gives 0.01s
 
+#define USER GPIOA->IDR
+
+// https://www.badprog.com/electronics-stm32-using-the-push-button-to-switch-on-the-led6-on-the-stm32f3-discovery-board 
+
 void delay(int a); // prototype for delay function
 void TIM3_IRQHandler(void);
 
@@ -24,7 +28,7 @@ void IRQ_setup(void);
 void ADC_setup(void);
 float read_ADC(void);
 
-float adc_PA0_voltage = 0;
+float adc_voltage = 0;
 
 int main(void)
 {
@@ -44,7 +48,7 @@ int main(void)
 	
 	// Main programme loop - make LED 4 (attached to pin PE.0) turn on and off	
 	while (1) {
-		adc_PA0_voltage = read_ADC();
+		adc_voltage = read_ADC();
 		
 		// Commented out lines just b4 and above 'if' statement in interrupt so LEDs o/p is removed from timer/dac part of code
 		GPIOE->BSRRH = 0xff00; // turn off all bits (just to be sure, don't matter since gonna turn on new ones)
@@ -52,7 +56,10 @@ int main(void)
 		// Convert value back to binary representation w.r.t power rail & shift for LED top 8bit GPIO pins
 		// (e.g. 0x0001 becomes 0x0100) LEDs are top 8 bits. Turn on these new bits
 		//GPIOE->BSRRL = (int)((adc_PA0_voltage * 256) / (double)3.3) << 8;
-		GPIOE->BSRRL = (int)(((double)3.3) / adc_PA0_voltage * 256) << 8;
+		GPIOE->BSRRL = (int)(((double)3.3) / adc_voltage * 256) << 8;
+		if (USER & 0x1) {
+			GPIOE->BSRRL = 0x0004 << 8;
+		}
 	}
 }
 
@@ -76,18 +83,6 @@ int TEN_SECONDS = 10 / ( ((PreScaler+1) * (AutoReloadReg+1)) / (float)SysClk ); 
 void TIM3_IRQHandler() {
 	if ((TIM3->SR & TIM_SR_UIF)) {// Check interrupt source is Update Interrupt
 		
-		//GPIOE->BSRRH = interruptCount; // turn off old count bits
-		if(interruptCount == 0xff00 && (delayCount < TEN_SECONDS)) {
-			delayCount++;
-		}else if(interruptCount == 0xff00 && (delayCount == TEN_SECONDS)) {
-			delayCount = 0;
-			interruptCount = 0x0000 - 0x0100;
-		}else {
-			interruptCount += 0x0100;
-		}
-		//GPIOE->BSRRL = interruptCount; // turn on new count bits
-		DAC1->DHR8R1 = interruptCount >> 8; // ========== ========== ========== for LAB 2 ..
-		// shifted 8 bits to the right cause my var stores e.g. 0x0100 for 1.
 	}
   TIM3->SR &= ~TIM_SR_UIF; // Clear UIF
 }
@@ -140,7 +135,7 @@ void ADC_setup() {
   //int calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1. Nice-to-have but not used
   
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
-	GPIOA->MODER |= 0x00000002; // Set mode of pin PA0 to '10' for 'Analogue' (see on page 19 in basic Microcontroller Ports lecture)
+	GPIOA->MODER |= 0x0000008; // Set mode of pin PA0 to '10' for 'Analogue' (see on page 19 in basic Microcontroller Ports lecture)
 	
 	// 5. Configure ADC using the ADCx_CFGR register to have
 	ADC1->CFGR &= ~ADC_CFGR_CONT; // ADC_NonContinuousConvMode_Enable
@@ -149,7 +144,7 @@ void ADC_setup() {
   ADC1->CFGR &= ~ADC_CFGR_ALIGN; // Right data alignment
 	
   //    while(!ADC1->ISR & ADC_ISR_ADRD); // wait for ADRDY
-  ADC1->SQR1 |= ADC_SQR1_SQ1_0; // SQ1 = 0x01, start converting ch1 (pin PA0, as per page 28 table)
+  ADC1->SQR1 |= ADC_SQR1_SQ1_1; // SQ1 = 0x01, start converting ch1 (pin PA0, as per page 28 table) USE PA1
   ADC1->SQR1 &= ~ADC_SQR1_L; // ‘L’ (length) = ‘0’ (1 channel only). L's 4 bits but still all turn to 0
   ADC1->SMPR1 |= ADC_SMPR1_SMP7_1 | ADC_SMPR1_SMP7_0; // = 0x03(0b11) => sampling time 7.5 ADC clock cycles, others on page 26
   // 7. Enable the ADC
@@ -172,6 +167,7 @@ float read_ADC() {
 	float ADC1ConvertedVoltage = (ADC1ConvertedValue *3.3)/(float)256; // Compute the voltage, for 8bit, in V
 	return ADC1ConvertedVoltage;
 }
+
 
 
 // [NVIC_EnableIRQ(TIM3_IRQn);]
