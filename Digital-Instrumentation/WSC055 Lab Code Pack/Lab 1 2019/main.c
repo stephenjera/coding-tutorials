@@ -17,6 +17,11 @@
 
 #define USER GPIOA->IDR
 
+int counter = 0x0000; // Global variable
+int start   = 0;
+uint32_t test = 0;
+int nottest = 0;
+
 // https://www.badprog.com/electronics-stm32-using-the-push-button-to-switch-on-the-led6-on-the-stm32f3-discovery-board 
 
 void delay(int a); // prototype for delay function
@@ -31,7 +36,7 @@ float read_ADC(void);
 float adc_voltage = 0;
 
 int main(void)
-{
+ {
 	// ========== ========== ========== ~GPIO & Timers for LAB 1~ ========== ========== ==========
 	LED_setup();
 	
@@ -48,7 +53,37 @@ int main(void)
 	
 	// Main programme loop - make LED 4 (attached to pin PE.0) turn on and off	
 	while (1) {
-		adc_voltage = read_ADC();
+		
+		if (USER & 0x1) {
+			//start = 1;
+			GPIOE->BSRRH = 0xff00;
+			adc_voltage = read_ADC();
+			counter = (int)(((double)3.3) / adc_voltage * 256) << 8;
+		  test = (int)(((double)3.3) / adc_voltage * 256);
+			test &= 0xFF;
+			//counter &= 0xFF00;
+			while(test) {
+					
+				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+				delay(1*1000000); // On time  // Can't get accurate time with this method
+				GPIOE->BSRRH =  counter << 8; 
+				counter++;
+				
+//				GPIOE->BSRRH =  counter << 8;
+//				delay(1*1000000); // On time  // Can't get accurate time with this method			
+//				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+//				counter++; // This is some first rate magic, adding to count down?
+				test--;
+				nottest = 1;
+			}
+			while(nottest){
+				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+				delay(1*1000000); // On time  // Can't get accurate time with this method
+				GPIOE->BSRRH =  counter << 8;
+				nottest--;
+				}
+				} else {
+			adc_voltage = read_ADC();
 		
 		// Commented out lines just b4 and above 'if' statement in interrupt so LEDs o/p is removed from timer/dac part of code
 		GPIOE->BSRRH = 0xff00; // turn off all bits (just to be sure, don't matter since gonna turn on new ones)
@@ -57,9 +92,12 @@ int main(void)
 		// (e.g. 0x0001 becomes 0x0100) LEDs are top 8 bits. Turn on these new bits
 		//GPIOE->BSRRL = (int)((adc_PA0_voltage * 256) / (double)3.3) << 8;
 		GPIOE->BSRRL = (int)(((double)3.3) / adc_voltage * 256) << 8;
-		if (USER & 0x1) {
-			GPIOE->BSRRL = 0x0004 << 8;
 		}
+//		while(start){
+//		  //ADC1->CR &= ~(ADC_CR_ADEN); // Disable ADC1
+//			
+//			counter--;
+//		}
 	}
 }
 
