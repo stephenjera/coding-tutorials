@@ -21,6 +21,8 @@ int counter = 0x0000; // Global variable
 int start   = 0;
 uint32_t test = 0;
 int nottest = 0;
+int flash = 0xFF;
+int i = 10;
 
 // https://www.badprog.com/electronics-stm32-using-the-push-button-to-switch-on-the-led6-on-the-stm32f3-discovery-board 
 
@@ -56,33 +58,31 @@ int main(void)
 		
 		if (USER & 0x1) {
 			//start = 1;
-			GPIOE->BSRRH = 0xff00;
+			GPIOE->BSRRH = 0xff00; // Turn off LEDs
 			adc_voltage = read_ADC();
-			counter = (int)(((double)3.3) / adc_voltage * 256) << 8;
-		  test = (int)(((double)3.3) / adc_voltage * 256);
-			test &= 0xFF;
-			//counter &= 0xFF00;
-			while(test) {
-					
+			counter = (int)(((double)3.3) / adc_voltage * 256);
+			counter &= 0xFF;
+			
+			while(counter) {	
 				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
 				delay(1*1000000); // On time  // Can't get accurate time with this method
 				GPIOE->BSRRH =  counter << 8; 
-				counter++;
+				counter--; 
+				//test--;
+				//nottest = 1;
 				
-//				GPIOE->BSRRH =  counter << 8;
-//				delay(1*1000000); // On time  // Can't get accurate time with this method			
-//				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
-//				counter++; // This is some first rate magic, adding to count down?
-				test--;
-				nottest = 1;
-			}
-			while(nottest){
-				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
-				delay(1*1000000); // On time  // Can't get accurate time with this method
-				GPIOE->BSRRH =  counter << 8;
-				nottest--;
 				}
-				} else {
+			for (i = 20; i > 0; i--){
+				GPIOE->BSRRL =  flash << 8; // Bit set register (BSRRL) L = set low
+				delay(1*100000); // On time  // Can't get accurate time with this method
+				GPIOE->BSRRH =  flash << 8; 
+				flash = flash * 2;
+				
+			}
+			
+		} else {
+			counter = 0x0000;
+			i = 10;
 			adc_voltage = read_ADC();
 		
 		// Commented out lines just b4 and above 'if' statement in interrupt so LEDs o/p is removed from timer/dac part of code
