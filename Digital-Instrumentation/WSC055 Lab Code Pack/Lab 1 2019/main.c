@@ -24,6 +24,7 @@ uint32_t test = 0;
 int nottest = 0;
 int flash = 0xFF;
 float adc_voltage = 0;
+int startCountdown;
 
 // https://www.badprog.com/electronics-stm32-using-the-push-button-to-switch-on-the-led6-on-the-stm32f3-discovery-board 
 
@@ -39,7 +40,7 @@ float read_ADC(void);
 int main(void)
  {
 	LED_setup();
-	IRQ_setup(); // timer interrupt
+	//IRQ_setup(); // timer interrupt
 	DAC_setup();
 	ADC_setup();
 		
@@ -47,11 +48,12 @@ int main(void)
 	while (1) {
 		
 		if (USER & 0x1) {
-//			GPIOE->BSRRH = 0xff00; // turn off all bits 
-//			adc_voltage = read_ADC();
-//			counter = (int)(((double)3.3) / adc_voltage * 256);
-//			counter &= 0xFF;
-		  //IRQ_setup(); // timer interrupt
+			GPIOE->BSRRH = 0xff00; // turn off all bits 
+			adc_voltage = read_ADC();
+			counter = (int)(((double)3.3) / adc_voltage * 256);
+			counter &= 0xFF;
+		 IRQ_setup(); // timer interrupt
+			startCountdown = 1;
 			
 //			while(counter) {	
 //				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
@@ -67,9 +69,11 @@ int main(void)
 //				flash = flash * 2;			
 //			}		
 		} else {
-			adc_voltage = read_ADC();
-			GPIOE->BSRRH = 0xff00; // turn off all bits 
-			GPIOE->BSRRL = (int)(((double)3.3) / adc_voltage * 256) << 8;
+			if (startCountdown != 1) {
+				adc_voltage = read_ADC();
+				GPIOE->BSRRH = 0xff00; // turn off all bits 
+				GPIOE->BSRRL = (int)(((double)3.3) / adc_voltage * 256) << 8;
+			}
 		}
 	}
 }
@@ -97,6 +101,16 @@ void TIM3_IRQHandler() {
 		GPIOE->BSRRH =  counter << 8; 
 		counter--;
 		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+		
+		if (counter == 0){
+		 for (int i = 20; i > 0; i--){
+				GPIOE->BSRRL =  flash << 8; // Bit set register (BSRRL) L = set low
+				delay(1*100000); // On time  // Can't get accurate time with this method
+				GPIOE->BSRRH =  flash << 8; 
+				flash = flash * 2;	
+		}
+		 TIM3->CR1 &= ~(TIM_CR1_CEN);
+	}
 		
 	}
   TIM3->SR &= ~TIM_SR_UIF; // Clear UIF
@@ -148,7 +162,10 @@ void ADC_setup() {
   //int calibration_value = ADC1->CALFACT; // Get Calibration Value ADC1. Nice-to-have but not used
   
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
-	GPIOA->MODER |= 0x0000008; // Set mode of pin PA0 to '10' for 'Analogue' (see on page 19 in basic Microcontroller Ports lecture)
+//	GPIOA->MODER |= 0x0000008; // Set mode of pin PA0 to '10' for 'Analogue' (see on page 19 in basic Microcontroller Ports lecture)
+	RCC->AHBENR |= RCC_AHBENR_GPIOCEN;
+	GPIOC->MODER |= 0x0000008; // Set mode of pin PA0 to '10' for 'Analogue' (see on page 19 in basic Microcontroller Ports lecture)
+	
 	
 	// 5. Configure ADC using the ADCx_CFGR register to have
 	ADC1->CFGR &= ~ADC_CFGR_CONT; // ADC_NonContinuousConvMode_Enable
@@ -157,7 +174,11 @@ void ADC_setup() {
   ADC1->CFGR &= ~ADC_CFGR_ALIGN; // Right data alignment
 	
   //    while(!ADC1->ISR & ADC_ISR_ADRD); // wait for ADRDY
-  ADC1->SQR1 |= ADC_SQR1_SQ1_1; // SQ1 = 0x01, start converting ch1  USE PA1
+////  ADC1->SQR1 |= ADC_SQR1_SQ1_1 | ADC_SQR1_SQ1_2; // SQ1 = 0x01, start converting ch1  USE PA1
+
+
+//	ADC1->SQR1 |= ADC_SQR1_SQ1_0; // SQ1 = 0x01, start converting ch1  USE PA1
+	ADC1->SQR1 |= ADC_SQR1_SQ1_2 | ADC_SQR1_SQ1_1 | ADC_SQR1_SQ1_0; // SQ1 = 0x07, start converting ch7  USE PC1
   ADC1->SQR1 &= ~ADC_SQR1_L; // ‘L’ (length) = ‘0’ (1 channel only). L's 4 bits but still all turn to 0
   ADC1->SMPR1 |= ADC_SMPR1_SMP7_1 | ADC_SMPR1_SMP7_0; // = 0x03(0b11) => sampling time 7.5 ADC clock cycles, others on page 26
   // 7. Enable the ADC
