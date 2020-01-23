@@ -13,17 +13,16 @@
 
 #define SysClk 8000000 // Assumed system clock from trial & error, unclear writing on oscillator crystal, and hopefully datasheet
 #define PreScaler 7999 // Theo added #define's these to make life easier.
-#define AutoReloadReg 10 // PSC(7999) & ARR(999) on 8MHz clk gives 1s. 10 on latter gives 0.01s
+#define AutoReloadReg 999 // PSC(7999) & ARR(999) on 8MHz clk gives 1s. 10 on latter gives 0.01s
 
 #define USER GPIOA->IDR
 
 /* GLobal variables */
-int counter = 0x0000; 
+int counter = 0xFF; 
 int start   = 0;
 uint32_t test = 0;
 int nottest = 0;
 int flash = 0xFF;
-int i = 10;
 float adc_voltage = 0;
 
 // https://www.badprog.com/electronics-stm32-using-the-push-button-to-switch-on-the-led6-on-the-stm32f3-discovery-board 
@@ -40,7 +39,7 @@ float read_ADC(void);
 int main(void)
  {
 	LED_setup();
-	//IRQ_setup(); // timer interrupt
+	IRQ_setup(); // timer interrupt
 	DAC_setup();
 	ADC_setup();
 		
@@ -48,25 +47,25 @@ int main(void)
 	while (1) {
 		
 		if (USER & 0x1) {
-			//start = 1;
-			//GPIOE->BSRRH = 0xff00; // Turn off LEDs
-			adc_voltage = read_ADC();
-			counter = (int)(((double)3.3) / adc_voltage * 256);
-			counter &= 0xFF;
-		//	IRQ_setup(); // timer interrupt
-			while(counter) {	
-				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
-				delay(1*1000000); // On time  // Can't get accurate time with this method
-				GPIOE->BSRRH =  counter << 8; 
-				counter--; 
-				}
+//			GPIOE->BSRRH = 0xff00; // turn off all bits 
+//			adc_voltage = read_ADC();
+//			counter = (int)(((double)3.3) / adc_voltage * 256);
+//			counter &= 0xFF;
+		  //IRQ_setup(); // timer interrupt
 			
-			for (i = 20; i > 0; i--){
-				GPIOE->BSRRL =  flash << 8; // Bit set register (BSRRL) L = set low
-				delay(1*100000); // On time  // Can't get accurate time with this method
-				GPIOE->BSRRH =  flash << 8; 
-				flash = flash * 2;			
-			}		
+//			while(counter) {	
+//				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+//				delay(1*1000000); // On time  // Can't get accurate time with this method
+//				GPIOE->BSRRH =  counter << 8; 
+//				counter--; 
+//				}
+//			
+//			for (int i = 20; i > 0; i--){
+//				GPIOE->BSRRL =  flash << 8; // Bit set register (BSRRL) L = set low
+//				delay(1*100000); // On time  // Can't get accurate time with this method
+//				GPIOE->BSRRH =  flash << 8; 
+//				flash = flash * 2;			
+//			}		
 		} else {
 			adc_voltage = read_ADC();
 			GPIOE->BSRRH = 0xff00; // turn off all bits 
@@ -95,9 +94,9 @@ int TEN_SECONDS = 10 / ( ((PreScaler+1) * (AutoReloadReg+1)) / (float)SysClk ); 
 void TIM3_IRQHandler() {
 	if ((TIM3->SR & TIM_SR_UIF)) {// Check interrupt source is Update Interrupt
 		
-//		GPIOE->BSRRH =  counter << 8; 
-//		counter++;
-//		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
+		GPIOE->BSRRH =  counter << 8; 
+		counter--;
+		GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
 		
 	}
   TIM3->SR &= ~TIM_SR_UIF; // Clear UIF
