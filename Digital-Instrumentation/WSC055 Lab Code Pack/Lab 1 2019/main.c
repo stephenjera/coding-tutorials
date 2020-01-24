@@ -52,22 +52,8 @@ int main(void)
 			adc_voltage = read_ADC();
 			counter = (int)(((double)3.3) / adc_voltage * 256);
 			counter &= 0xFF;
-		 IRQ_setup(); // timer interrupt
-			startCountdown = 1;
-			
-//			while(counter) {	
-//				GPIOE->BSRRL =  counter << 8; // Bit set register (BSRRL) L = set low
-//				delay(1*1000000); // On time  // Can't get accurate time with this method
-//				GPIOE->BSRRH =  counter << 8; 
-//				counter--; 
-//				}
-//			
-//			for (int i = 20; i > 0; i--){
-//				GPIOE->BSRRL =  flash << 8; // Bit set register (BSRRL) L = set low
-//				delay(1*100000); // On time  // Can't get accurate time with this method
-//				GPIOE->BSRRH =  flash << 8; 
-//				flash = flash * 2;			
-//			}		
+		  IRQ_setup(); // timer interrupt
+			startCountdown = 1;	
 		} else {
 			if (startCountdown != 1) {
 				adc_voltage = read_ADC();
@@ -79,7 +65,7 @@ int main(void)
 }
 
 // Delay function to occupy processor
-void delay (int a) // takes micros
+void delay (int a) // Takes micros
 {
     volatile int i,j;
 
@@ -180,7 +166,7 @@ void ADC_setup() {
 //	ADC1->SQR1 |= ADC_SQR1_SQ1_0; // SQ1 = 0x01, start converting ch1  USE PA1
 	ADC1->SQR1 |= ADC_SQR1_SQ1_2 | ADC_SQR1_SQ1_1 | ADC_SQR1_SQ1_0; // SQ1 = 0x07, start converting ch7  USE PC1
   ADC1->SQR1 &= ~ADC_SQR1_L; // ‘L’ (length) = ‘0’ (1 channel only). L's 4 bits but still all turn to 0
-  ADC1->SMPR1 |= ADC_SMPR1_SMP7_1 | ADC_SMPR1_SMP7_0; // = 0x03(0b11) => sampling time 7.5 ADC clock cycles, others on page 26
+  ADC1->SMPR1 |=  ADC_SMPR1_SMP7_0; // = 0x03(0b11) => sampling time 7.5 ADC clock cycles, others on page 26
   // 7. Enable the ADC
   // 8. Wait for the ADRDY flag to go ‘high’.
 	ADC1->CR |= ADC_CR_ADEN; // Enable ADC1
