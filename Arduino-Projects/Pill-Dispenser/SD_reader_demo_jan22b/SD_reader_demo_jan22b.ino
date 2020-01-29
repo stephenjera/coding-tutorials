@@ -40,7 +40,7 @@ void setup()
   // or the SD library functions will not work. 
    pinMode(10, OUTPUT);
    
-  if (!SD.begin(4)) {
+  if (!SD.begin(10)) {
     Serial.println("initialization failed!");
     return;
   }
@@ -48,49 +48,49 @@ void setup()
 
 
   
-//  // open the file. note that only one file can be open at a time,
-//  // so you have to close this one before opening another.
-//  myFile = SD.open("test.txt", FILE_WRITE);
-//  
-//  // if the file opened okay, write to it:
-//  if (myFile) {
-//    Serial.print("Writing to test.txt...");
-//    myFile.println("30");
-//    myFile.close(); // close the file:
-//    Serial.println("done.");
-//  } else {
-//    // if the file didn't open, print an error:
-//    Serial.println("error opening test.txt");
-//  }
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  myFile = SD.open("test.txt", FILE_WRITE);
+  
+  // if the file opened okay, write to it:
+  if (myFile) {
+    Serial.print("Writing to test.txt...");
+    myFile.println("30");
+    myFile.close(); // close the file:
+    Serial.println("done.");
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
+  }
 
   
   
-//  // re-open the file for reading:
-//  myFile = SD.open("test.txt");
-//  if (myFile) {
-//    Serial.println("test.txt:");
-//    
-//    // read from the file until there's nothing else in it:
-//    while (myFile.available()) {
-//      //Serial.write(myFile.read());
-//      char character = myFile.read();
-//      if((character >='0') && (character <='9'))
-//        //Serial.write(character - '0');
-//        Serial.print(character - '0');
-//        
-//
+  // re-open the file for reading:
+  myFile = SD.open("test.txt");
+  if (myFile) {
+    Serial.println("test.txt:");
+    
+    // read from the file until there's nothing else in it:
+    while (myFile.available()) {
+      Serial.write(myFile.read());
+      //char character = myFile.read();
+      //if((character >='0') && (character <='9'))
+        //Serial.write(character - '0');
+        //Serial.print(character - '0');
+        
+
 //      if(character == '\n')
-//        Serial.println();
-//      
-//    }
-//    // close the file:
-//    myFile.close();
-//  } else {
-//    // if the file didn't open, print an error:
-//    Serial.println("error opening test.txt");
-//  }
-  num = 30;
-  writeToDatabase((num)+"");
+  //      Serial.println();
+      
+    }
+    // close the file:
+    myFile.close();
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
+  }
+  //num = 30;
+  //writeToDatabase((num)+"");
   
 }
 

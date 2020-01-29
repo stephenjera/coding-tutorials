@@ -38,6 +38,11 @@ void loop ()
   showDate();
   showDay();
   showTime();
+  //Serial.println(now.hour());
+  //Serial.println(now.minute());
+  //Serial.println(now.second());
+  Serial.println(now.unixtime());
+  
 }
    
 
