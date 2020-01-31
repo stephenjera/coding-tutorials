@@ -10,6 +10,7 @@ const int buttonPin = 2;     // the number of the pushbutton pin
 const int ledPin = 13;      // the number of the LED pin
 
 int buttonState = 0;         // variable for reading the pushbutton status
+String savedTime;
 
 void setup() {
   // put your setup code here, to run once:
@@ -94,18 +95,23 @@ void loop() {
 
     if (SD.exists("test.txt")) {
       // Read file
-      Serial.println("File exists");
+      //Serial.println("File exists");
         myFile = SD.open("test.txt");
         if (myFile) {
-          Serial.println("test.txt:");
+          Serial.println("test.txt: File exists");
 
             // read from the file until there's nothing else in it:
             while (myFile.available())
             {
               Serial.write(myFile.read());
+              
             }
           // close the file:
+          //savedTime = myFile.read();
           myFile.close();
+          
+          Serial.print("Saved time: ");
+          Serial.println(savedTime);
           SD.remove("test.txt");
         }
         else {
