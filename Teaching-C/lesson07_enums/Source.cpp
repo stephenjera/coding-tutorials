@@ -1,23 +1,33 @@
 #include <iostream>
+#include <string.h>
 using namespace std;
 
-// Declaring some Enums 
-enum direction { East, West, North, South };
-
+enum Choice
+{
+	EASY = 1,
+	MEDIUM = 2,
+	HARD = 3
+};
 int main() {
-	
-	int dir = East; 
-	int dir2 = West; 
-	cout << "Dir = " << dir << endl;
-	cout << "Dir2 = " << dir2 << endl;
-	cout << "Pick a direction" << endl;
-	cin >> dir;
+	int i = -1;
 
-	if (dir = East) {
-		cout << "You entered East" << endl;
+	// ...<present the user with a menu>...
+	cout << "Please type a number between 1 and 3 \n";
+	cin >> i;
+
+	switch (i)
+	{
+	case EASY:
+		cout << "Easy\n";
+		break;
+	case MEDIUM:
+		cout << "Medium\n";
+		break;
+	case HARD:
+		cout << "Hard\n";
+		break;
+	default:
+		cout << "Invalid Selection\n";
+		break;
 	}
-	else {
-		cout << "Enum failed" << endl; 
-	}
-	
 }
