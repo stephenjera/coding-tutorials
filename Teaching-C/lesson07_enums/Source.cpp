@@ -1,8 +1,15 @@
 #include <iostream>
-#include <string.h>
 using namespace std;
 
-enum Choice
+// Separating enum definitions like below has no effect as each needs
+// to have an unique number assignment 
+enum Wash_type
+{
+	COLOR_WASH = -2,
+	WHITE_WASH = -3
+};
+
+enum Program
 {
 	FILL = 1,
 	HEAT = 2,
@@ -14,6 +21,7 @@ enum Choice
 	DRY = 8,
 	COMPLETE = 9
 };
+
 int main() {
 	int i = -1;
 
@@ -25,6 +33,12 @@ int main() {
 	{
 	case FILL:
 		cout << "FILL\n";
+		break;
+	case COLOR_WASH:
+		cout << "COLOR_WASH\n";
+		break;
+	case WHITE_WASH:
+		cout << "WHITE_WASH\n";
 		break;
 	case HEAT:
 		cout << "HEAT\n";
