@@ -7,4 +7,6 @@
 1. **Lesson 03:** Timer using the ctime library. 
 1. **Lesson 04:** Example of a classes and association.
 1. **Lesson 05:** Fuction to find hypotenuse of a triangle.
+1. **Lesson 06:** Using bitwise values.
+1. **Lesson 05:** Using enums.
 
