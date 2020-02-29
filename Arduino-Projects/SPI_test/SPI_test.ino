@@ -1,32 +1,55 @@
-char dataString[50] = {0};
-int a =0; 
-String data;
-int data2;
-int ledPin = 2;
+/*************************************************************
+ SPI_Hello_Raspi
+   Configures an ATMEGA as an SPI slave and demonstrates
+   bidirectional communication with an Raspberry Pi SPI master
+   by repeatedly sending the text "Hello Raspi"
+****************************************************************/
 
-void setup() {
-Serial.begin(9600);              //Starting serial communication
-pinMode(LED_BUILTIN, OUTPUT);
-pinMode(ledPin, OUTPUT);    
-}
-  
-void loop() {
-//    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-//    delay(200);                       // wait for a second
-//    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-//    delay(200);
-  if (Serial.available() > 0) {
-//    data2 = Serial.read();
-//      if (data2 == 5){
-        digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level)
-        delay(1000);                       // wait for a second
-        digitalWrite(ledPin, LOW);    // turn the LED off by making the voltage LOW
-        delay(1000);                      // wait for a second
-//        } 
-//        data2 = 0;
-//  a++;                          // a value increase every loop
-//  sprintf(dataString,"%02X",a); // convert a value to hexa 
-//  Serial.println(dataString);   // send the data
-//  delay(1000);                  // give the loop some break
+
+/***************************************************************
+ Global Variables
+  -hello[] is an array to hold the data to be transmitted
+  -marker is used as a pointer in traversing data arrays
+/***************************************************************/
+
+unsigned char hello[] = {'H','e','l','l','o',' ',
+                         'R','a','s','p','i','\n'};
+byte marker = 0;
+ 
+
+/***************************************************************  
+ Setup SPI in slave mode (1) define MISO pin as output (2) set
+ enable bit of the SPI configuration register 
+****************************************************************/ 
+                    
+void setup (void)
+{
+ 
+  pinMode(MISO, OUTPUT);
+  SPCR |= _BV(SPE);
+
+}  
+
+/***************************************************************  
+ Loop until the SPI End of Transmission Flag (SPIF) is set
+ indicating a byte has been received.  When a byte is
+ received, load the next byte in the Hello[] array into SPDR
+ to be transmitted to the Raspberry Pi, and increment the marker.
+ If the end of the Hell0[] array has been reached, reset
+ marker to 0.
+****************************************************************/
+
+void loop (void)
+{
+
+  if((SPSR & (1 << SPIF)) != 0)
+  {
+    SPDR = hello[marker];
+    marker++;
+   
+    if(marker > sizeof(hello))
+    {
+      marker = 0;
+    }  
   }
 }
