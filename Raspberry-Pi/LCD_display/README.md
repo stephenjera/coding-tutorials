@@ -5,7 +5,7 @@
 1. [RPLCD Library documentation](https://rplcd.readthedocs.io/en/stable/)
 
 ## Notes
-1. LCD only display characters
+1. LCD only displays characters.
 
 ## Testing
 
