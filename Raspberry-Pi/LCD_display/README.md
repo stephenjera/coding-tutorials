@@ -5,7 +5,7 @@
 1. [RPLCD Library documentation](https://rplcd.readthedocs.io/en/stable/)
 
 ## Notes
-1. LCD only displays characters.
+1. Current map only allows lowcase carracters to display correctly
 
 ## Testing
 
