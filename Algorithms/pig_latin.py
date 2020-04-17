@@ -13,11 +13,11 @@
 
 def string_to_list(input_string):
     """Copy string to list"""
+    input_list = []  # List to store user input
     for x in range(len(input_string)):  # Range function count from 0, increments of 1
-        input_list = [str]  # List to store user input
         input_list.append(input_string[x]),
         # print(len(input_string)),  # Use comma to end loops
-    return input_string
+    return input_list
 
 
 def pig_latin():
@@ -27,26 +27,40 @@ def pig_latin():
         try:
             # word = ""  # Any non-alphabet character will work
             word = input("Enter a word: ")
-            # If input is not a letter
+            # Check if input only has letters
             if word.isalpha():
                 control = False  # Loop escape
                 # Algorithm goes here
                 # Should only have letters at this point
                 # Stings immutable need to convert to lists
-                vowels = ('a', 'e', 'i', 'o', 'u')  # Removed to use lower() function, 'A', 'E', 'I', 'O', 'U')
+
+                vowels = ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U')
                 if word.startswith(vowels):
-                    word
+                    word_list = string_to_list(word)
+                    word_list.append("-yay")
                 else:
-                    pass
-            else:
-                word = input("Enter a word: ")  # Keep looping until only letters entered
+                    word_list = string_to_list(word)  # startswith doesn't work on lists
+                    word_list.append("-")
+                    word_list.append(word[0])  # Can try word_list[0] to see if result is same
+                    word_list.append("ay")
+                    del[word_list[0]]
+                return ''.join(word_list)  # Return a string
+            # else:
+            #    word = input("Enter a word: ")  # Keep looping until only letters entered
         except TypeError:  # This shouldn't trigger as all inputs will be strings
             print("Not a string")
 
-    print(word[0])
+    #print(word[0])
 
 # Main code
 
 
-#pig_latin()
-print(string_to_list("test"))
+print(pig_latin())
+#print(string_to_list("test"))
+
+#list1 = ["a", "b", "c"]
+'''test = ["a", "b", "h"]
+test2 = "ello"
+print(test2.startswith)'''
+#print(list1)
+#print(''.join(list1))
