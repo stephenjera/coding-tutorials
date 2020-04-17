@@ -13,13 +13,23 @@
 
 def pig_latin():
     """Convert word to pig latin, takes a string as input"""
-    try:
-        word = input("Enter a word: ")
-    # If input is not a letter
-    except TypeError:  # This shouldn't trigger as all inputs will be strings
-        pass
-    # Should only have letters at this point
-    # Stings immutable need to convert to lists 
+    control = True
+    while control:
+        try:
+            # word = ""  # Any non-alphabet character will work
+            word = input("Enter a word: ")
+            # If input is not a letter
+            if word.isalpha():
+                control = False  # Loop escape
+                # Algorithm goes here
+                # Should only have letters at this point
+                # Stings immutable need to convert to lists
+
+            else:
+                word = input("Enter a word: ")  # Keep looping until only letters entered
+        except TypeError:  # This shouldn't trigger as all inputs will be strings
+            print("Not a string")
+
     print(word[0])
 
 # Main code
