@@ -34,7 +34,7 @@ def pig_latin():
                 # Should only have letters at this point
                 # Stings immutable need to convert to lists
 
-                vowels = ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U')
+                vowels = ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U')  # Tuple is immutable
                 if word.startswith(vowels):
                     word_list = string_to_list(word)
                     word_list.append("-yay")
