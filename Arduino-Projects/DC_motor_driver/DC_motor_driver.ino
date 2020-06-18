@@ -1,7 +1,7 @@
 /*******************
  * H bridge gude 
- * 10 = rotate 
- * 01 = rotate
+ * 10 = left 
+ * 01 = right
  * 00 or 11 = stop 
  *******************/
 
@@ -15,16 +15,19 @@ void setup() {
   pinMode(DIRA, OUTPUT);
   pinMode(DIRB, OUTPUT);
   Serial.begin(9600);
+  digitalWrite(ENABLE,HIGH); // enable on, 
 }
 
 void loop() {
-  digitalWrite(ENABLE,HIGH); // enable on
   
   digitalWrite(DIRA,HIGH); //one way
   digitalWrite(DIRB,LOW);
-  /* CURRENTLY IGNORES EVERYTHING BEYOND THIS POINT??
-  delay(500); // spin for 3 seconds 
-  digitalWrite(ENABLE,LOW);
+  delay(3000); // spin for 3 seconds 
+  //digitalWrite(ENABLE,LOW);
   digitalWrite(DIRA,HIGH); //stop
-  digitalWrite(DIRB,HIGH);*/
+  digitalWrite(DIRB,HIGH);
+  delay(3000); // off for 3 seconds 
+  digitalWrite(DIRA,LOW); //other way
+  digitalWrite(DIRB,HIGH);
+  delay(3000); // spin for 3 seconds 
 }
