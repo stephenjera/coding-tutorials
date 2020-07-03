@@ -16,7 +16,8 @@ public:
 	int sumOfMultiples(int multiple1, int multiple2, int limit) {
 		int remainder = 0;
 		int total = 0;
-		for (int i = 0; i < limit; i++) {
+		// start at 1 because don't care about 0 
+		for (int i = 1; i < limit; i++) {
 			remainder = i % multiple1;
 			if (remainder != 0) {
 				remainder = i % multiple2;
@@ -294,10 +295,10 @@ int main() {
 	int sum = 0;
 	HandyFunctions testObj;
 
-	/*sum = testObj.sumOfMultiples(3,5,1000);
+	sum = testObj.sumOfMultiples(3,5,6);
 	std::cout << sum << "\n";
 
-	int reversedNumber = testObj.reverseNumber(1,5);
+	/*int reversedNumber = testObj.reverseNumber(1,5);
 	std::cout << reversedNumber << "\n";*/
 
 	/*int palindrome = testObj.findPalindrome(99,99);
