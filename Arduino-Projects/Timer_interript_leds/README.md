@@ -4,3 +4,4 @@
 1. Use Bitwise operators 
 1. Changing on timer interrupt
 ### [Testing timer interrupt](https://www.teachmemicro.com/arduino-timer-interrupt-tutorial/)
+### [ATmega328/P datasheet](https://www.rlocman.ru/i/File/2017/09/29/ATmega328.pdf)
