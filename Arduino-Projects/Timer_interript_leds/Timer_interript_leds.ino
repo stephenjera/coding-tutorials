@@ -6,6 +6,7 @@
 
 const int ledPin = 13;
 int ledArray[] = {2,3,4,5};
+volatile int patternArray[] = {HIGH,HIGH,HIGH,HIGH};
 volatile byte state = LOW;
  
 void setup() {
@@ -30,10 +31,10 @@ void loop() {
   //  COULD ADD A FUNCTION TO REMOVE FOR LOOP REPEAT
    digitalWrite(ledPin, state);
    for (int i = 0; i < sizeof(ledArray)/4; i++) {
-    digitalWrite(ledArray[i])
+    digitalWrite(ledArray[i],patternArray[i]);
   } 
    for (int i = 0; i < sizeof(ledArray)/4; i++) {
-    digitalWrite(ledArray[i])
+    digitalWrite(ledArray[i],patternArray[i]);
   } 
    
 }
@@ -41,4 +42,8 @@ void loop() {
 // Interrupt service routine 
 ISR(TIMER2_OVF_vect){
    state = !state; // Blink LED
+   
+   for (int i = 0; i < sizeof(patternArray)/4; i++) {
+     patternArray[i] = not(patternArray[i]);
+  } 
 }
