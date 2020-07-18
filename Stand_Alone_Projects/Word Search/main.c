@@ -11,20 +11,23 @@
     Not all of the words occur in “text1.txt”.
 •	Output the word, whether it has been found and, if found, the index of its location in the array,*/
 
-// First text file
+// Puzzle text file
 const char* text1 = "C:/A/Intern-Pre-Work/text1.txt";
+// List of search words
+const char* search1 = "C:/A/Intern-Pre-Work/search1.txt";
 
 int main()
 {
     printf("Hello world!\n");
-
+    char puzzleText[255];
+    char searchText[6][3] // Known from file
     FILE *fp;
-    char buff[255];
 
     fp = fopen(text1, "r");
-    fscanf(fp, "%s", buff);
+    fscanf(fp, "%s", puzzleText); // Doesn't read white space
 
-    printf("1 : %s\n", buff );
+    printf("1 : %s\n", puzzleText);
+    //printf("%c\n",buff[3]);
 
     fclose(fp);
     return 0;
