@@ -20,15 +20,33 @@ int main()
 {
     printf("Hello world!\n");
     char puzzleText[255];
-    char searchText[6][3] // Known from file
+    //char searchText[6][3]; // Known from file
     FILE *fp;
 
-    fp = fopen(text1, "r");
-    fscanf(fp, "%s", puzzleText); // Doesn't read white space
+    fp = fopen(search1, "r");
+    if(fp == NULL)
+    {
+        perror("Unable to open file");
+        exit(1);
+    }
+    // fgets(variable to store line, size of line(int),file pointer)
+    while(fgets(puzzleText,sizeof(puzzleText),fp))
+    {
+        printf("%s",puzzleText);
+    }
 
+
+   /* fscanf(fp, "%s", puzzleText); // Doesn't read white space
     printf("1 : %s\n", puzzleText);
-    //printf("%c\n",buff[3]);
-
+    */
     fclose(fp);
+    printf("\nFile closed\n");
+    // ARRAY ONLY SAVES LINE READ LAST
+    int i = 0;
+    for(i ;i <= sizeof(puzzleText); i++)
+    {
+        printf("%c",puzzleText[i]);
+    }
+
     return 0;
 }
