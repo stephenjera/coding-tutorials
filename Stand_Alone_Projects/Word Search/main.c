@@ -19,7 +19,8 @@ const char* search1 = "C:/A/Intern-Pre-Work/search1.txt";
 int main()
 {
     printf("Hello world!\n");
-    char puzzleText[255];
+    char buff[255] = "0";
+    char searchText[8][2];
     //char searchText[6][3]; // Known from file
     FILE *fp;
 
@@ -29,24 +30,53 @@ int main()
         perror("Unable to open file");
         exit(1);
     }
+    int row = 0,col = 0;
     // fgets(variable to store line, size of line(int),file pointer)
-    while(fgets(puzzleText,sizeof(puzzleText),fp))
+    /*while(fgets(buff,sizeof(buff),fp))
     {
-        printf("%s",puzzleText);
-    }
+        printf("%s",buff);
+        searchText[row][col] = buff;
+        row++;
+    }*/
+    // COULD READ FIRST LINE AND CHECK THE ARRAY FOR IT
+    // THEN READ NEXT LINE
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
 
+    searchText[0][0] = buff[0];
+    searchText[0][1] = buff[1];
+    searchText[0][2] = buff[2];
 
+    /*
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);
+    fgets(buff,sizeof(buff),fp);
+    printf("%s",buff);*/
    /* fscanf(fp, "%s", puzzleText); // Doesn't read white space
     printf("1 : %s\n", puzzleText);
     */
     fclose(fp);
     printf("\nFile closed\n");
     // ARRAY ONLY SAVES LINE READ LAST
-    int i = 0;
-    for(i ;i <= sizeof(puzzleText); i++)
+    /*int i = 0;
+    for(i ;i <= sizeof(searchText); i++)
     {
-        printf("%c",puzzleText[i]);
-    }
+        //printf("%c",buff[i]);
+        printf("%c",searchText[i][col]);
+    }*/
+    printf("%c",searchText[0][0]);
+    printf("%c",searchText[0][1]);
+    printf("%c",searchText[0][2]);
 
     return 0;
 }
