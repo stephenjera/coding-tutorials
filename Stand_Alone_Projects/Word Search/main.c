@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*
     Use "text1.txt" as your puzzle file.
@@ -19,12 +20,15 @@ const char* search1 = "C:/A/Intern-Pre-Work/search1.txt";
 int main()
 {
     printf("Hello world!\n");
-    char buff[255] = "0";
-    char searchText[8][2];
+    const char buff[255] = "";
+    char puzzleText[] = "";
+    char searchText[8][2] = {{""},{""}};
+    const char test[5] = {"cat"};
+    char *ret;
     //char searchText[6][3]; // Known from file
     FILE *fp;
 
-    fp = fopen(search1, "r");
+    fp = fopen(text1, "r");
     if(fp == NULL)
     {
         perror("Unable to open file");
@@ -32,7 +36,18 @@ int main()
     }
     int row = 0,col = 0;
     // fgets(variable to store line, size of line(int),file pointer)
-    /*while(fgets(buff,sizeof(buff),fp))
+     while(fgets(buff,sizeof(buff),fp))
+    {
+        printf("%s",buff);
+        ret = strstr(buff,test);
+        printf("The substring is: %s\n", ret);
+        /*
+        int j = 0;
+        for(j = 0; j < sizeof(buff); j++)
+        puzzleText[j] = buff[j];*/
+    }
+    /*
+    while(fgets(buff,sizeof(buff),fp))
     {
         printf("%s",buff);
         searchText[row][col] = buff;
@@ -40,12 +55,13 @@ int main()
     }*/
     // COULD READ FIRST LINE AND CHECK THE ARRAY FOR IT
     // THEN READ NEXT LINE
-    fgets(buff,sizeof(buff),fp);
+   /* fgets(buff,sizeof(buff),fp);
     printf("%s",buff);
+
 
     searchText[0][0] = buff[0];
     searchText[0][1] = buff[1];
-    searchText[0][2] = buff[2];
+    searchText[0][2] = buff[2];*/
 
     /*
     fgets(buff,sizeof(buff),fp);
@@ -73,10 +89,21 @@ int main()
     {
         //printf("%c",buff[i]);
         printf("%c",searchText[i][col]);
-    }*/
+    }
     printf("%c",searchText[0][0]);
     printf("%c",searchText[0][1]);
-    printf("%c",searchText[0][2]);
+    printf("%c",searchText[0][2]);*/
 
-    return 0;
+    // CHANGE TO FUNCTION IF WORKS
 }
+
+//function to compare array elements
+char compareArray(int a[],int b[],int size)	{
+	int i;
+	for(i=0;i<size;i++){
+		if(a[i]!=b[i])
+			return 1;
+	}
+	return 0;
+}
+
