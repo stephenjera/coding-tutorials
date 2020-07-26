@@ -16,36 +16,42 @@
 const char* text1 = "C:/A/Intern-Pre-Work/text1.txt";
 // List of search words
 const char* search1 = "C:/A/Intern-Pre-Work/search1.txt";
+char puzzleText[20] = "";
+char searchText[8][2] = {{""},{""}};
 
 int main()
 {
-    printf("Hello world!\n");
-    const char buff[255] = "";
-    char puzzleText[] = "";
-    char searchText[8][2] = {{""},{""}};
-    const char test[5] = {"cat"};
+    char buff[255] = "";
+    char test[5] = {"cat"};
     char *ret;
     //char searchText[6][3]; // Known from file
     FILE *fp;
 
+    // Open text1 for reading
     fp = fopen(text1, "r");
     if(fp == NULL)
     {
         perror("Unable to open file");
         exit(1);
+    } else
+    {
+        printf("File opened\n");
     }
-    int row = 0,col = 0;
+
     // fgets(variable to store line, size of line(int),file pointer)
      while(fgets(buff,sizeof(buff),fp))
     {
         printf("%s",buff);
-        ret = strstr(buff,test);
-        printf("The substring is: %s\n", ret);
-        /*
+        // ret = strstr(buff,test);
+        //printf("The substring is: %s\n", ret);
         int j = 0;
         for(j = 0; j < sizeof(buff); j++)
-        puzzleText[j] = buff[j];*/
+            {
+                puzzleText[j] = buff[j]; // Save buffer to array
+                printf("%c",puzzleText[j]);
+            }
     }
+
     /*
     while(fgets(buff,sizeof(buff),fp))
     {
@@ -83,6 +89,42 @@ int main()
     */
     fclose(fp);
     printf("\nFile closed\n");
+    // Open search1 for reading
+    fp = fopen(search1, "r");
+    if(fp == NULL)
+    {
+        perror("Unable to open file");
+        exit(1);
+    } else
+    {
+        printf("File opened\n");
+    }
+    // fgets(variable to store line, size of line(int),file pointer)
+    while(fgets(buff,sizeof(buff),fp))
+    {
+        printf("%s",buff);
+        // ret = strstr(buff,test);
+        //printf("The substring is: %s\n", ret);
+        int row = 0,col = 0;
+        for(col = 0; col < sizeof(buff); col++)
+            {
+                searchText[row][col] = buff[col]; // Save buffer to array
+            }
+        col = 0;
+        row++;
+    }
+    fclose(fp);
+    printf("\nFile closed\n\n");
+
+    // Testing if arrays were written to correctly
+    printf("Testing if array was written to correctly\n");
+    int j = 0;
+    for(j = 0; j < sizeof(puzzleText); j++)
+        {
+            printf("%c",puzzleText[j]);
+        }
+
+
     // ARRAY ONLY SAVES LINE READ LAST
     /*int i = 0;
     for(i ;i <= sizeof(searchText); i++)
