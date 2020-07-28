@@ -23,6 +23,7 @@ int main()
 {
     char buff[255] = "";
     char test[5] = {"cat"};
+    int row = 0,col = 0;
     char *ret;
     //char searchText[6][3]; // Known from file
     FILE *fp;
@@ -36,21 +37,31 @@ int main()
     } else
     {
         printf("File opened\n");
+
+        while(!feof(fp)) // While not at the end of file
+            {
+                //Errors caused by space(CR) at the end of text file
+                // fgets(variable to store line, size of line(int),file pointer)
+                fgets(buff,sizeof(buff),fp);
+                printf("Size of buff: %d\n",sizeof(buff)); // Test line
+                printf("Buffer: ");
+                printf("%s\n",buff); // Check if buffer has been updated
+                printf("Puzzle text: ");
+                int j = 0;
+                for(j = 0; j < sizeof(puzzleText); j++)
+                    {
+                        puzzleText[j] = buff[j]; // Save buffer to array
+                        // Check if array has bee updated with buffer
+                        printf("%c",puzzleText[j]);
+                    }
+                // ret = strstr(buff,test);
+                //printf("The substring is: %s\n", ret);
+            }
+            fclose(fp);
+            printf("\nFile closed\n");
     }
 
-    // fgets(variable to store line, size of line(int),file pointer)
-     while(fgets(buff,sizeof(buff),fp))
-    {
-        printf("%s",buff);
-        // ret = strstr(buff,test);
-        //printf("The substring is: %s\n", ret);
-        int j = 0;
-        for(j = 0; j < sizeof(buff); j++)
-            {
-                puzzleText[j] = buff[j]; // Save buffer to array
-                printf("%c",puzzleText[j]);
-            }
-    }
+
 
     /*
     while(fgets(buff,sizeof(buff),fp))
@@ -87,8 +98,7 @@ int main()
    /* fscanf(fp, "%s", puzzleText); // Doesn't read white space
     printf("1 : %s\n", puzzleText);
     */
-    fclose(fp);
-    printf("\nFile closed\n");
+
     // Open search1 for reading
     fp = fopen(search1, "r");
     if(fp == NULL)
@@ -98,21 +108,21 @@ int main()
     } else
     {
         printf("File opened\n");
-    }
-    // fgets(variable to store line, size of line(int),file pointer)
-    while(fgets(buff,sizeof(buff),fp))
-    {
-        printf("%s",buff);
-        // ret = strstr(buff,test);
-        //printf("The substring is: %s\n", ret);
-        int row = 0,col = 0;
-        for(col = 0; col < sizeof(buff); col++)
+         // fgets(variable to store line, size of line(int),file pointer)
+         while(fgets(buff,sizeof(buff),fp))
             {
-                searchText[row][col] = buff[col]; // Save buffer to array
+                printf("%s",buff);
+                // ret = strstr(buff,test);
+                //printf("The substring is: %s\n", ret);
+                for(col = 0; col < sizeof(buff); col++)
+                    {
+                        searchText[row][col] = buff[col]; // Save buffer to array
+                    }
+                col = 0;
+                row++;
             }
-        col = 0;
-        row++;
     }
+
     fclose(fp);
     printf("\nFile closed\n\n");
 
