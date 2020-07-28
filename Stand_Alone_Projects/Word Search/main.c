@@ -58,6 +58,7 @@ int main()
                 //printf("The substring is: %s\n", ret);
             }
             fclose(fp);
+            buff[255] = ""; //clear buffer
             printf("\nFile closed\n");
     }
 
@@ -128,10 +129,21 @@ int main()
 
     // Testing if arrays were written to correctly
     printf("Testing if array was written to correctly\n");
-    int j = 0;
+    int j = 0; // CHANGE THE SCOPEOF j FOR THIS LINE TO ACCESS
     for(j = 0; j < sizeof(puzzleText); j++)
         {
             printf("%c",puzzleText[j]);
+        }
+    printf("\n"); // Formatting line
+    //row = 0;
+    for(row = 0;row < 8; row++)
+        {
+            for(col = 0; col < 4; col++)
+                {
+                    // APPEARS AS IF LAST LETTER NOT WRITTEN CORRECTLY
+                    printf("%c",searchText[row][col]);
+                }
+            printf("\n");
         }
 
 
