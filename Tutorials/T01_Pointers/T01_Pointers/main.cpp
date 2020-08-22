@@ -43,7 +43,7 @@ int main()
 	IntegerPointer1 = &Integer3; // Assign address to pointer
 	*IntegerPointer2 = Integer1 + Integer3; // Assign sum to Integer2
 	cout << *IntegerPointer1 * *IntegerPointer2 << endl; // Print product of Integer3 and Interger2
-	cout << Integer1 << " " << Integer2 << " " << Integer3 << " " << endl; //Print vaalues in integer varaibles 
+	cout << Integer1 << " " << Integer2 << " " << Integer3 << " " << endl; //Print values in integer varaibles 
 
 	// Using AddNumbers function
 	int Num1, Num2, Num3;
@@ -54,7 +54,7 @@ int main()
 	// Call the function AddNumbers here
 	AddNumbers(Num1, Num2, &Num3);
 	// Display the answer here
-	cout << "sum: " << Num3 << endl; // Num3 was modified by the function as adress was passed
+	cout << "sum: " << Num3 << endl; // Num3 was modified by the function as address was passed
 
 	return 0;
 }
