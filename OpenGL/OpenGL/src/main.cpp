@@ -11,7 +11,6 @@ int main(void)
 	if (!glfwInit())
 		return -1;
 
-	
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
@@ -28,6 +27,18 @@ int main(void)
 		std::cout << "Error" << std::endl;
 
 	std::cout << glGetString(GL_VERSION);
+	 
+	float positions[6] = {
+		-0.5f, -0.5f,
+		 0.0f,  0.5f,
+		 0.5f, -0.5f
+	};
+
+	/*Create a vertex buffer*/
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW );
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -36,14 +47,10 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		/* My code */
-
-		/* Draw a triangle */
-		glBegin(GL_TRIANGLES);
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f( 0.0f, 0.5f);
-		glVertex2f( 0.5f, -0.5f);
-		glEnd();
-
+		/*Draw calls*/
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		
+		
 		/* My code */
 
 
