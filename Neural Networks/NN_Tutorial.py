@@ -19,3 +19,4 @@ b = numpy.random.randn()
 
 print(neural_net(3, 1.5, w1, w2, b))  # From pretend dataset (made up)
 
+
