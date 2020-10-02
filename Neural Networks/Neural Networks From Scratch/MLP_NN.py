@@ -1,12 +1,21 @@
 import numpy as np
 
+# TODO: Save activations
+# TODO: Implement back propagation
+# TODO: Implement gradient decent
+# TODO: Implement training
+# TODO: Train with some dummy data
+# TODO: Make some predictions
 
-# Multilayer perceptron
+
 class MLP:
+    """Multilayer Perceptron Class"""
     def __init__(self, num_inputs=4, num_hidden_layers=[3, 5], num_outputs=2):
-        """:param num_inputs: Number of inputs to neural net
-           :param num_hidden_layers: Each entry is the number of neurons in a layer,total is size of array
-           :param num_outputs: Number of outputs to neural net"""
+        """Constructor for MLP. Takes the number of inputs, hidden layers and outputs
+           :param int num_inputs: Number of inputs to neural net
+           :param list num_hidden_layers: Each entry is the number of neurons in a layer,total is size of array
+           :param int num_outputs: Number of outputs to neural net
+        """
         self.num_inputs = num_inputs
         self.num_hidden_layers = num_hidden_layers
         self.num_outputs = num_outputs
@@ -29,6 +38,18 @@ class MLP:
             self.weights.append(w)  # Add newly created data to weights list (creates list of arrays)
         print("\n")
 
+        activations = []
+        for i in range(len(layers)):
+            a = np.zeros(layers[i])
+            activations.append(a)
+        self.activations = activations
+
+        derivatives = []
+        for i in range(len(layers)):
+            d = np.zeros(layers[i], layers[i]+1)
+            derivatives.append(d)
+        self.derivatives = derivatives
+
     def forward_propagation(self, inputs):
         # The first layer number of activation = number of inputs
         activations = inputs
@@ -41,6 +62,7 @@ class MLP:
             # Calculate activations
             activations = self._sigmoid(net_inputs)
             print("Activations: ", activations)
+            slef.activations[i+1] = activations
         print("\n")
         return activations
 
