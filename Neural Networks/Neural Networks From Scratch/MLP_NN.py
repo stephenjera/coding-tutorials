@@ -45,43 +45,88 @@ class MLP:
         self.activations = activations
 
         derivatives = []
-        for i in range(len(layers)):
-            d = np.zeros(layers[i], layers[i]+1)
+        for i in range(len(layers)-1):
+            d = np.zeros((layers[i], layers[i+1]))
             derivatives.append(d)
         self.derivatives = derivatives
 
     def forward_propagation(self, inputs):
+        """Computes the forward propagation of the network based on inputs
+        :param array inputs: inputs signals
+        :returns array activations: output values
+        """
         # The first layer number of activation = number of inputs
         activations = inputs
-
-        for w in self.weights:
+        self.activations[0] = inputs
+        for i, w in enumerate(self.weights):
             # Calculate net inputs
             # Net inputs are activation of the previous layer multiplied by the weights
             net_inputs = np.dot(activations, w)
 
-            # Calculate activations
+            # Apply sigmoid activation function
             activations = self._sigmoid(net_inputs)
             print("Activations: ", activations)
-            slef.activations[i+1] = activations
+            self.activations[i+1] = activations
         print("\n")
         return activations
 
-    def _sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
+    def back_propagation(self, error, verbose=False):
+        # dE/dW_i = (y - a_[i+1]) s'(h_[i+1])) a_i
+        # s'(h_[i+1]) = s(h_[i+1])(1 - s(h_[i+1])
+        # s(h_[i+1]) = a_[i+1]
+
+        # dE/dW_[i-1] = (y - a_[i+1] s'(h_[i+1])) w_i s'(h_i) a_[i-1]
+
+        for i in reversed(range(len(self.derivatives))):
+            activations = self.activations[i+1]
+
+            delta = error * self._sigmoid_derivative(activations)  # ndarray([0.1, 0.2]) --> ndarray([[0.1, 0.2]])
+            delta_reshaped = delta.reshape(delta.shape[0], -1).T
+
+            current_activations = self.activations[i]  # ndarray([0.1, 0.2]) --> ndarray([[0.1], [0.2]])
+            # change activations to column vector
+            current_activations_reshaped = current_activations.reshape(current_activations.shape[0], -1)
+
+            self.derivatives[i] = np.dot(current_activations_reshaped, delta)
+            error = np.dot(delta_reshaped, self.weights[i].T)
+
+            if verbose:
+                print("Derivatives for W{}: {}".format(i, self.derivatives[i]))
+        return error
+
+    @staticmethod
+    def _sigmoid_derivative(x):
+        return x * (1.0 - x)
+
+    @staticmethod
+    def _sigmoid(x):
+        """Sigmoid activation function
+        :param float x: Value to be processed
+        :returns float y: Output
+        """
+        y = 1 / (1 + np.exp(-x))
+        return y
 
 
 if __name__ == '__main__':
     # Create MLP
-    mlp = MLP(5)
+    mlp = MLP(2, [5], 1)
 
-    # Create inputs matrix with random numbers between 0 - 1
-    inputs = np.random.rand(mlp.num_inputs)
+    # Create dummy data
+    inputs = np.array([0.1, 0.2])
+    target = np.array([0.3])
 
     # Perform forward propagation
     outputs = mlp.forward_propagation(inputs)
 
-    # Print the results
+    # Calculate error
+    error = target - outputs
+
+    # Back propagation
+    mlp.back_propagation(error, verbose=True)
+
+    ''''# Print the results
     print("mlp weights: ", mlp.weights)
     print("\n")
     print("The network input is: {}".format(inputs))
-    print("The network output is: {}".format(outputs))
+    print("The network output is: {}".format(outputs))'''
