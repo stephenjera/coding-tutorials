@@ -6,7 +6,7 @@
 *.lnp
 *.dep
 *.scvd
-*.uvguix
+*.uv*
 *.uvoptx
 *.uvopt
 *.uvprojx
