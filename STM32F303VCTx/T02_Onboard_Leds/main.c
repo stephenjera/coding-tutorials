@@ -1,24 +1,18 @@
 #include "stm32f3xx.h"  // Device header
+#include "mappings.h"
 
-#define LEDS_ON 0xFFFF
 /* Function prototypes */
 void led_setup();
 void delay(int a);
 
 int main(void){
-	int counter = 0x0;
 	led_setup();
 	
 	while(1){
 		// BSSR = bit set reset register
-//		GPIOE->BSRR =  counter << 8; // Bit set register (BSRRL) L = set low
-//		delay(1*1000000); // On time  // Can't get accurate time with this method
-//		GPIOE->BSRR =  counter << 8; 
-//		counter++;
-			//delay(1*1000000);
-			GPIOE->BSRR = 0x0000FF00;
+			GPIOE->BSRR = LD6_ON;
 		  delay(1*1000000);
-   	  GPIOE->BSRR =0xFF000000;
+   	  GPIOE->BSRR =LD_ALL_OFF;
 		  delay(1*1000000);
 	}
 	
