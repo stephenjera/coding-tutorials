@@ -1,4 +1,5 @@
 import numpy as np
+from random import random
 
 # TODO: Save activations
 # TODO: Implement back propagation
@@ -35,10 +36,10 @@ class MLP:
             # Number of rows = current layer
             # Number of columns = number of neurons in next layer
             w = np.random.rand(layers[i], layers[i+1])
-            print("weight matrix{}: {}".format(i, w))
+            # print("weight matrix{}: {}".format(i, w))
             # Creates weight matrices
             self.weights.append(w)  # Add newly created data to weights list
-        print("\n")
+        # print("\n")
 
         # Create a place to save activations
         activations = []
@@ -78,7 +79,7 @@ class MLP:
             # Activation(a) of layer 3 = sigmoid(h_3)  (h = output)
             # h_3 = a_3 * W_2, the activation is for next layer
             self.activations[i+1] = activations
-        print("\n")
+        # print("\n")
         return activations  # Return output layer activations
 
     def back_propagation(self, error_nn, verbose=False):
@@ -105,7 +106,50 @@ class MLP:
 
             if verbose:
                 print("Derivatives for W{}: {}".format(i, self.derivatives[i]))
+                print("\n")
         return error_nn
+
+    def gradient_decent(self, learning_rate):
+        for i in range(len(self.weights)):
+            weights = self.weights[i]
+            # print("Original W{} {}".format(i, weights))
+            # print("\n")
+            derivatives = self.derivatives[i]
+            weights += derivatives * learning_rate
+            # print("Modified W{} {}".format(i, weights))
+            # print("\n")
+
+    def train_model(self, inputs, targets, epochs, learning_rate):
+        """Trains the neural network
+        :param inputs
+        :param targets
+        :param epochs: Number of times to feed whole dataset to neural network
+        :param learning_rate
+        """
+        for i in range(epochs):
+            sum_error = 0
+            for (input, target) in zip(inputs, targets):
+                # Perform forward propagation
+                output = self.forward_propagation(input)
+
+                # Calculate error
+                error = target - output
+
+                # Back propagation
+                self.back_propagation(error)
+
+                # Apply gradient decent
+                self.gradient_decent(learning_rate)
+
+                sum_error += self.mse(target, output)
+
+            # Report error
+            print("Error: {} at epoch {}".format(sum_error / len(inputs), i))
+
+    @staticmethod
+    def mse(target, output):
+        """Calculates Mean Squared Error"""
+        return np.average((target - output)**2)
 
     @staticmethod
     def _sigmoid_derivative(x):
@@ -122,13 +166,25 @@ class MLP:
 
 
 if __name__ == '__main__':
+    # Create dataset to train network for the sum operation
+    inputs = np.array([[random() / 2 for _ in range(2)] for _ in range(1000)])
+    targets = np.array([[i[0] + i[1]] for i in inputs])
+
     # Create MLP
     mlp = MLP(2, [5], 1)
 
-    # Create dummy data
-    inputs = np.array([0.1, 0.2])
-    target = np.array([0.3])
+    # Train MLP
+    mlp.train_model(inputs, targets, 50, 0.1)
 
+    # Create dummy data
+    input = np.array([0.5, 0.1])
+    target = np.array([0.1])
+    
+    output = mlp.forward_propagation(input)
+    print()
+    print()
+    print("Network thinks {} + {} = {}".format(input[0], input[1], output[0]))
+    '''
     # Perform forward propagation
     outputs = mlp.forward_propagation(inputs)
 
@@ -138,7 +194,10 @@ if __name__ == '__main__':
     # Back propagation
     mlp.back_propagation(error, verbose=True)
 
-    ''''# Print the results
+    # Apply gradient decent
+    mlp.gradient_decent(learning_rate=1)'''
+
+    '''# Print the results
     print("mlp weights: ", mlp.weights)
     print("\n")
     print("The network input is: {}".format(inputs))
