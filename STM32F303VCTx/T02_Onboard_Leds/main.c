@@ -11,6 +11,7 @@ int main(void){
 	while(1){
 		// BSSR = bit set reset register
 			GPIOE->BSRR = LD6_ON;
+		  GPIOE->BSRR = LD7_ON;
 		  delay(1*1000000);
    	  GPIOE->BSRR =LD_ALL_OFF;
 		  delay(1*1000000);
