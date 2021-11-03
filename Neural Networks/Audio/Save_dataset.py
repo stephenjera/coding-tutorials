@@ -52,7 +52,7 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, nu
                                                 hop_length=hop_length)
                     mfcc = mfcc.T  # TODO find out why this is better to work with
 
-                    # store mfcc for segement if it has expected length
+                    # store mfcc for segment if it has expected length
                     if len(mfcc) == expected_num_mfcc_vectors_per_segment:
                         data["mfcc"].append(mfcc.tolist())  # can't save numpy arrays as json files
                         data["labels"].append(i - 1)  # each iterations is a different folder
@@ -63,4 +63,4 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, nu
 
 
 if __name__ == "__main__":
-    save_mfcc(DATASET_PATH, JSON_PATH, num_segments=1)
+    save_mfcc(DATASET_PATH, JSON_PATH, num_segments=2)
