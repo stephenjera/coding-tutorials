@@ -57,6 +57,8 @@ for key, value in notes_to_frequency.items():
     # print(is_dir)
     if not os.path.exists(note_path):
         os.mkdir(note_path)
+        with open(os.path.join(note_path, key + ".txt"), 'x') as temp_file:
+            temp_file.write("Hello")
         print("Directory '% s' created" % key)
     else:
         print(key + " is already a directory")
