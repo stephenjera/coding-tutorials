@@ -41,24 +41,23 @@ parent_dir = "working_with_files"
 path = os.path.join(parent_dir, directory)
 
 # Create the directory
-is_dir = bool(os.path.isdir(directory))
+is_dir = os.path.isdir(directory)
 print(path)
-print(is_dir)
-# TODO: fix error checking
-if not is_dir:
+# print(is_dir)
+if not os.path.exists(path):
     os.mkdir(path)
     print("Directory '% s' created" % directory)
 else:
-    print("Already a directory")
+    print(directory + " is already a directory")
 
 for key, value in notes_to_frequency.items():
     # create notes directory
     note_path = os.path.join(path, key)
     is_dir = os.path.isfile(note_path)
-    print(is_dir)
-    if not is_dir:
+    # print(is_dir)
+    if not os.path.exists(note_path):
         os.mkdir(note_path)
         print("Directory '% s' created" % key)
     else:
-        print("Already a directory")
+        print(key + " is already a directory")
 
