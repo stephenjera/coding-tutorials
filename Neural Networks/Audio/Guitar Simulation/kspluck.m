@@ -38,5 +38,4 @@ P = filter([1 zeros(1,p-1) -1], 1, X);
 
 %no initial conditions
 y=filter(b1,a1,P);
-size(y)
 Y = y;
