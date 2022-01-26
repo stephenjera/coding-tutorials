@@ -1,3 +1,7 @@
+"""
+This code creates the JSON file of the notes
+"""
+
 import os
 import librosa
 import math

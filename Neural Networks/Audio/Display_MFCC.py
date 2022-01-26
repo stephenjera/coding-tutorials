@@ -1,3 +1,7 @@
+"""
+This code displays the MFCC and spectrogram of the selected AUDIO_FILE
+"""
+
 import matplotlib.pyplot as plt
 import librosa.display
 

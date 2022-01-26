@@ -1,3 +1,9 @@
+"""
+This code takes a folder with multiple wav files and processes them with librosa
+and plots the spectrograms
+
+"""
+
 import librosa
 import librosa.display
 import numpy as np
@@ -10,14 +16,14 @@ import os
 
 def load_data(name):
     file_names = []
-    path = 'Data'
+    path = 'Guitar Notes Dataset'
     x = 0
     for root, directories, files in os.walk(path, topdown=False):
         for name in files:
             print(os.path.join(root, name))
             file_names.append(os.path.join(root, name))
 #        for name in directories:
- #           print(os.path.join(root, name))
+#           print(os.path.join(root, name))
     return file_names
 
 

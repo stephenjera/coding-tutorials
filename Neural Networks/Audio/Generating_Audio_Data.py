@@ -1,3 +1,8 @@
+"""
+This code creates sine waves at the frequency of musical notes and
+adds some variance to them
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import wave

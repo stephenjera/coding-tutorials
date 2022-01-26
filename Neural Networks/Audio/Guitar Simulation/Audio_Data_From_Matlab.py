@@ -1,3 +1,7 @@
+"""
+This code uses a Matlab file to create simulated audio data for musical notes
+"""
+
 import matlab.engine
 import os
 import random

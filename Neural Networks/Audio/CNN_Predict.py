@@ -1,3 +1,9 @@
+"""
+This code takes the DATASET_PATH path and MODEL_PATH to predict the
+expected index, the model must be provided with the correct data.
+
+"""
+
 import numpy as np
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
@@ -5,7 +11,7 @@ from CNN import load_data
 from CNN import predict
 
 
-DATASET_PATH = "Guitar_Notes_Dataset.json"
+DATASET_PATH = "Simulated_Dataset_Matlab.json"
 MODEL_PATH = "CNN_model_Matlab.h5"
 
 

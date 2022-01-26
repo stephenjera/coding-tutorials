@@ -1,3 +1,8 @@
+"""
+This code trains a convolutional neural network to predict on audio
+data and saves the model
+"""
+
 import json
 import numpy as np
 from sklearn.model_selection import train_test_split
