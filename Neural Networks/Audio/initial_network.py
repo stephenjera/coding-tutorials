@@ -28,47 +28,64 @@ hop_size = 512
 
 
 def create_training_data():
-    class_num = []
     for catergory in CATEGORIES:
         path = os.path.join(DATADIR, catergory)  # path to notes
         class_num = CATEGORIES.index(catergory)  # convert labels to numbers
-        samples_array = np.array([[]])
         for note in os.listdir(path):
             try:
                 # Load with Librosa
-                samples_array, sr = librosa.load(os.path.join(path, note), duration=3)
-                #print("Samples array: ", samples_array)
+                samples_array, sr = librosa.load(os.path.join(path, note), sr=22050, duration=3)
+                training_data.append([samples_array, class_num])
+                # print("Samples array: ", samples_array)
             except Exception as e:
                 pass
 
-    # Extracting short time fourier transform
-    stft_samples = [i for i in range(len(samples_array))]
-    for i in range(len(samples_array)):
-        stft_samples = librosa.stft(samples_array, n_fft=frame_size, hop_length=hop_size)
-        #print("stft array: ", stft_samples)
 
-    # Calculating spectrogram
-    spectrograms = [i for i in range(len(stft_samples))]
-    for stft in range(len(stft_samples)):
-        spectrograms = np.abs(stft_samples[stft]) ** 2
-        training_data.append([spectrograms, class_num])
+# Extracting short time fourier transform
+def extract_stft(sample, frame_size=2048, hop_size=512):
+    s_samples = [i for i in range(len(sample))]
+    for i in range(len(sample)):
+        s_samples = librosa.stft(sample, n_fft=frame_size, hop_length=hop_size)
+    return s_samples
 
 
 create_training_data()
-random.shuffle(training_data)  # Stop network from learning incorrect pattern
+# random.shuffle(training_data)  # Stop network from learning incorrect pattern
 print("Length of training data: ", len(training_data))
 print("Type of training data: ", type(training_data))
-#print(training_data)
-#for sample in training_data:
-    #print(sample[1])
+print(training_data)
 
+"""
+# Extracting short time fourier transform
+for i in range(len(training_data)-1):
+    print("i: ", i)
+    training_data[i][0] = extract_stft(training_data[i][0])
+
+print("Length of training data: ", len(training_data))
+print("Type of training data: ", type(training_data))
+print(training_data)
+
+# Calculating spectrogram
+for i in range(len(training_data)-1):
+    print("i: ", i)
+    training_data[i][0] = np.abs(training_data[i][0]) ** 2
+#for sample in training_data:
+    #print(sample[0])
+
+#print(training_data)
+print("Length of training data: ", len(training_data))
+print("Type of training data: ", type(training_data))
+print(training_data)
+"""
 for features, label in training_data:
     X.append(features)
     Y.append(label)
 
 # X needs to be a numpy array
 X = np.array(X).reshape(-1, len(CATEGORIES))
-
+X = tf.ragged.constant(X)
+X = tf.RaggedTensor.to_tensor(X)
+#max_seq = X.bounding_shape()[-1]
 print("X shape: ", X.shape)
 print(type(X))
 #print(X)
@@ -79,15 +96,16 @@ print(type(X))
 #tf.convert_to_tensor(X, dtype=tf.float32)
 
 Y = np.array(Y).reshape(-1, len(CATEGORIES))
+#Y = tf.ragged.constant(Y)
 print("Y shape: ", Y.shape)
 print(type(Y))
 #print(Y)
 
 # Normailse data
-X = X/len(CATEGORIES)
+# X = X/len(CATEGORIES)
 #print(X)
-
-
+"""
+"""
 # Build model
 model = Sequential([
     Dense(units=16, input_shape=X.shape, activation="relu"),
@@ -99,7 +117,7 @@ model.summary()
 model.compile(optimizer=Adam(learning_rate=0.0001),
               loss="sparse_categorical_crossentropy",
               metrics=["accuracy"])
-model.fit(x=X, y=Y, batch_size=1, epochs=10, verbose=2)
+model.fit(x=X, y=Y, batch_size=1, epochs=50, verbose=2)
 
 """
 model.add( input_shape=X.shape[1:]))

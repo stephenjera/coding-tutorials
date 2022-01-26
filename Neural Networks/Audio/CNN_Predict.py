@@ -1,11 +1,12 @@
 import numpy as np
 from tensorflow.keras.models import load_model
+import matplotlib.pyplot as plt
 from CNN import load_data
 from CNN import predict
 
 
-DATASET_PATH = "simulated_data.json"
-MODEL_PATH = "CNN_model.h5"
+DATASET_PATH = "Guitar_Notes_Dataset.json"
+MODEL_PATH = "CNN_model_Matlab.h5"
 
 
 def prepare_data(dataset):
@@ -32,4 +33,18 @@ if __name__ == "__main__":
     X, y = prepare_data(DATASET_PATH)
 
     # make prediction on a sample
-    predict(model, X[2], y[2])
+    predicted_index = []
+    for i in range(len(X)):
+        predicted_index.append(predict(model, X[i], y[i]))
+
+    # plot graph
+    xaxis = []
+    xaxis.extend(range(0, len(X)))
+    plt.scatter(xaxis, predicted_index)
+    plt.title("Predicted Note of Sample")
+    plt.xlabel('Sample')
+    plt.ylabel('Predicted Index')
+    plt.show()
+
+
+

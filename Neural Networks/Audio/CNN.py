@@ -3,13 +3,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 
-DATASET_PATH = "simulated_data.json"
-MODEL_PATH = "CNN_model.h5"
+DATASET_PATH = "Simulated_Dataset_Matlab_two_seg.json"
+MODEL_PATH = "CNN_model_Matlab_two_seg.h5"
 
 
 def load_data(dataset_path):
     """ Loads training dataset from json file
-
         :param dataset_path (str): path to json file
         :return X (ndarray): inputs
         :return y (ndarray): targets
@@ -82,6 +81,7 @@ def predict(model, X, y):
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
+    return predicted_index
 
 
 if __name__ == "__main__":

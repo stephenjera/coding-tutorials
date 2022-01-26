@@ -20,7 +20,7 @@ def create_training_data():
         for note in os.listdir(path):
             try:
                 # Load with Librosa
-                samples_array, sr = librosa.load(os.path.join(path, note), duration=3)
+                samples_array, sr = librosa.load(os.path.join(path, note), sr=22050, duration=3)
                 training_data.append([samples_array, class_num])
             except Exception as e:
                 pass

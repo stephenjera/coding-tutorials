@@ -41,10 +41,10 @@ def extract_stft(samples_in):
 
 def calc_spectrogram(s_samples):
     # Calculating spectrogram
-    y_samples = [i for i in range(len(s_samples))]
+    x_samples = [i for i in range(len(s_samples))]
     for i in range(len(s_samples)):
-        y_samples[i] = np.abs(s_samples[i]) ** 2
-    return y_samples
+        x_samples[i] = np.abs(s_samples[i]) ** 2
+    return x_samples
 
 
 # Visualising the spectrogram
@@ -63,19 +63,27 @@ if __name__ == '__main__':
     file_names = load_data("test")
     print(file_names)
     samples = load_with_librosa(file_names)
+    print("printing samples")
     print(samples)
     s_samples = extract_stft(samples)
     print(s_samples)
+    print("printing s_samples")
     spectrograms = calc_spectrogram(s_samples)
+
+    # label encoding
+    X = [] # Features data
+
     print("printing spectrograms")
+    print(len(spectrograms))
     print(spectrograms)
+
 
     # Visualising the spectrogram
     frame_size = 2048
     hop_size = 512
     sr = 22050
     # Log amplitude spectrogram
-    Y_log_sample = librosa.power_to_db(spectrograms[1])
+    Y_log_sample = librosa.power_to_db(spectrograms[3])
     print(Y_log_sample)
     plot_spectrogram(Y_log_sample, sr, hop_size, y_axis="log")
     plt.show()

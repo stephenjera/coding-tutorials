@@ -4,10 +4,11 @@ import math
 import json
 
 DATASET_PATH = "Guitar Notes Dataset"
-JSON_PATH = "data.json"
+JSON_PATH = "Guitar_Notes_Dataset.json"
 SAMPLE_RATE = 22050
-DURATION = 2  # measured in seconds, this value is currently incorrect (all files are variable lengths)
+DURATION = 4  # measured in seconds, this value is currently incorrect (all files are variable lengths)
 SAMPLES_PER_TRACK = SAMPLE_RATE * DURATION
+
 
 def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, num_segments=5):
     # dictionary to store data

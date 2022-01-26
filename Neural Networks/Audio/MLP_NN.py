@@ -2,8 +2,10 @@ import json
 import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
+import os
 
-DATASET_PATH = "data.json"
+DATASET_PATH = "simulated_data.json"
+MODEL_PATH = "MLP_SAVE.h5"
 
 
 def load_data(dataset_path):
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         keras.layers.Dense(64, activation="relu"),
 
         # 3rd hidden layer
-        keras.layers.Dense(5, activation="softmax")  # currently 5 bust should match all notes
+        keras.layers.Dense(27, activation="softmax")  # currently 5 but should match all notes
     ])
 
     # compile network
@@ -56,5 +58,7 @@ if __name__ == "__main__":
     model.fit(inputs_train, targets_train,
               validation_data=(inputs_test, targets_test),
               epochs=50,
-              batch_size=5)
+              batch_size=10)
 
+    # if os.path.isfile(MODEL_PATH) is False:
+    model.save(MODEL_PATH)
