@@ -13,7 +13,13 @@ random.seed(20)
 
 
 def create_wav(filename, freq, pluck_position=0.9):
-    eng = matlab.engine.start_matlab()
+    """
+    Creates a wav file for the specified frequency
+            :param filename: name of note
+            :param freq: note frequency
+            :param pluck_position: simulate pluck position on guitar
+    """
+    eng = matlab.engine.start_matlab()  # start matlab engine
     e = eng.audioread('excite-picked-nodamp.wav')
     e = eng.transpose(e)
 
@@ -32,7 +38,7 @@ def create_wav(filename, freq, pluck_position=0.9):
 
 
 if __name__ == "__main__":
-    # Create the directory
+    # create the directory
     if not os.path.exists(directory):
         os.mkdir(directory)
         print("Directory '% s' created" % directory)
@@ -42,6 +48,7 @@ if __name__ == "__main__":
     for key, value in notes_to_frequency.items():
         # create notes directory
         note_path = os.path.join(directory, key)
+        # if path does not exist create it
         if not os.path.exists(note_path):
             os.mkdir(note_path)
             # generate correct pitch signal
