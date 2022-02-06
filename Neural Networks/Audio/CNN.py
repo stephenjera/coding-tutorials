@@ -3,20 +3,33 @@ This code trains a convolutional neural network to predict on audio
 data and saves the model
 """
 
+# TODO Correctly format docstrings
+
 import json
 import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
+from Notes_to_Frequency import notes_to_frequency
 
-DATASET_PATH = "Simulated_Dataset_Matlab_two_seg.json"
-MODEL_PATH = "CNN_model_Matlab_two_seg.h5"
+DATASET_PATH = "Simulated_Dataset_Matlab.json"
+MODEL_PATH = "CNN_model_Matlab.h5"
+
+
+def get_nth_key(dictionary, n=0):
+    if n < 0:
+        n += len(dictionary)
+    for i, key in enumerate(dictionary.keys()):
+        if i == n:
+            return key
+    raise IndexError("dictionary index out of range")
 
 
 def load_data(dataset_path):
-    """ Loads training dataset from json file
-        :param dataset_path (str): path to json file
-        :return X (ndarray): inputs
-        :return y (ndarray): targets
+    """
+    Loads training dataset from json file
+            :param dataset_path (str): path to json file
+            :return X (ndarray): inputs
+            :return y (ndarray): targets
     """
 
     with open(dataset_path, "r") as fp:
@@ -30,6 +43,17 @@ def load_data(dataset_path):
 
 
 def prepare_datasets(test_size, validation_size):
+    """
+    Create test and validation datasets
+            :param test_size: size of test set
+            :param validation_size: size of validation set
+            :returns X_train (ndarray): training inputs
+            :returns X_validation (ndarray): validation inputs
+            :returns X_test (ndarray): testing inputs
+            :returns y_train (ndarray): training targets
+            :returns y_validation (ndarray): validation targets
+            :returns y_test (ndarray): testing targets
+    """
     # load data
     X, y = load_data(DATASET_PATH)
 
@@ -86,7 +110,9 @@ def predict(model, X, y):
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
-    return predicted_index
+    predicted_note = get_nth_key(notes_to_frequency, predicted_index)
+    # return predicted_index
+    return predicted_note
 
 
 if __name__ == "__main__":
