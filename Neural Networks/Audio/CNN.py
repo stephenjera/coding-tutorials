@@ -7,12 +7,22 @@ data and saves the model
 
 import json
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
+from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 
-DATASET_PATH = "Simulated_Dataset_Matlab.json"
-MODEL_PATH = "CNN_model_Matlab.h5"
+DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset3.json"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Hybrid3.h5"
+
+# tweaking model
+DROPOUT = 0.3
+NUMBER_OF_NOTES = 6  # number of notes to categorise
+LEARNING_RATE = 0.0001
+LOSS = "sparse_categorical_crossentropy"
+BATCH_SIZE = 8
+EPOCHS = 150
 
 
 def get_nth_key(dictionary, n=0):
@@ -36,6 +46,7 @@ def load_data(dataset_path):
         data = json.load(fp)
 
     # convert lists to numpy arrays
+    # X = np.array(data["spectrogram"])  # for testing Spectrograms
     X = np.array(data["mfcc"])
     y = np.array(data["labels"])
 
@@ -93,10 +104,10 @@ def build_model(input_shape):
     # flatten the output and feed into Dense layer
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(64, activation="relu"))
-    model.add(keras.layers.Dropout(0.3))  # avoid over fitting
+    model.add(keras.layers.Dropout(DROPOUT))  # avoid over fitting
 
     # output layer
-    model.add(keras.layers.Dense(27, activation="softmax"))  # 27 is number of notes to categorise
+    model.add(keras.layers.Dense(NUMBER_OF_NOTES, activation="softmax"))
 
     return model
 
@@ -123,18 +134,39 @@ if __name__ == "__main__":
     input_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3])
     model = build_model(input_shape)
 
+    # print model
+    # plot_model(model, to_file='CNN_Model_Files/Model.png')
+
     # compile the network
-    optimizer = keras.optimizers.Adam(learning_rate=0.0001)
+    optimizer = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
     model.compile(optimizer=optimizer,
-                  loss="sparse_categorical_crossentropy",
+                  loss=LOSS,
                   metrics=["accuracy"])
 
     # train the network
-    model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=10, epochs=50)
-
+    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=BATCH_SIZE, epochs=EPOCHS)
+    #print(history.history.keys())
     # evaluate the CNN on the test set
     test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=1)
     print("Accuracy on test set is: {}".format(test_accuracy))
+
+    # plot accuracy
+    plt.plot(history.history["accuracy"])
+    plt.plot(history.history["val_accuracy"])
+    plt.title("Model Accuracy")
+    plt.ylabel("Accuracy")
+    plt.xlabel("Epoch")
+    plt.legend(["train", "validation"], loc="upper left")
+    plt.show()
+
+    # plot loss val_loss
+    plt.plot(history.history["loss"])
+    plt.plot(history.history["val_loss"])
+    plt.title("Model Loss")
+    plt.ylabel("Loss")
+    plt.xlabel("Epoch")
+    plt.legend(["train", "validation" ], loc="upper right")
+    plt.show()
 
     # save model
     model.save(MODEL_PATH)

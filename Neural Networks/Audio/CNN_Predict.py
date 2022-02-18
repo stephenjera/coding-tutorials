@@ -11,8 +11,8 @@ from CNN import load_data
 from CNN import predict
 
 
-DATASET_PATH = "Simulated_Dataset_Matlab.json"
-MODEL_PATH = "CNN_model_Matlab.h5"
+DATASET_PATH = "Dataset_JSON_Files/Only_A4_Recorded_Trimmed3.json"  # data used for predictions
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Hybrid3.h5"
 
 
 def prepare_data(dataset):
@@ -47,9 +47,9 @@ if __name__ == "__main__":
     xaxis = []
     xaxis.extend(range(0, len(X)))
     plt.scatter(xaxis, predicted_index)
-    plt.title("Predicted Note of Sample")
+    plt.title("Predicted Note of Only_A4_Recorded_Trimmed3 using CNN_Model_Matlab_Hybrid3")
     plt.xlabel('Sample')
-    plt.ylabel('Predicted Index')
+    plt.ylabel('Predicted Note')
     plt.show()
 
 
