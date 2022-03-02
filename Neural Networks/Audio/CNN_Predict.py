@@ -4,15 +4,19 @@ expected index, the model must be provided with the correct data.
 
 """
 
+# TODO calculate confusion matrix metrics
+
 import numpy as np
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 from CNN import load_data
 from CNN import predict
 
 
-DATASET_PATH = "Dataset_JSON_Files/Only_A4_Recorded_Trimmed3.json"  # data used for predictions
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Hybrid3.h5"
+DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Two_Seg.json"  # data used for predictions
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Test_2.h5"
 
 
 def prepare_data(dataset):
@@ -39,15 +43,21 @@ if __name__ == "__main__":
     X, y = prepare_data(DATASET_PATH)
 
     # make prediction on a sample
+    predicted_note = []
     predicted_index = []
     for i in range(len(X)):
-        predicted_index.append(predict(model, X[i], y[i]))
+        note, index = predict(model, X[i], y[i])
+        predicted_note.append(note)
+        predicted_index.append(index)
+    # https://stackoverflow.com/questions/40729875/calculate-precision-and-recall-in-a-confusion-matrix
+    conf = confusion_matrix(y, predicted_index)
+    sns.heatmap(conf, annot=True)
 
     # plot graph
     xaxis = []
     xaxis.extend(range(0, len(X)))
-    plt.scatter(xaxis, predicted_index)
-    plt.title("Predicted Note of Only_A4_Recorded_Trimmed3 using CNN_Model_Matlab_Hybrid3")
+    plt.scatter(xaxis, predicted_note)
+    plt.title("Predicted Note of OnlyA4Recorded using CNN_Model_Matlab_Test")
     plt.xlabel('Sample')
     plt.ylabel('Predicted Note')
     plt.show()
