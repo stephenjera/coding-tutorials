@@ -7,22 +7,24 @@ data and saves the model
 
 import json
 import numpy as np
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 
-DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset3.json"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Hybrid3.h5"
+DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test_2.json"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Test_2.h5"
 
 # tweaking model
 DROPOUT = 0.3
-NUMBER_OF_NOTES = 6  # number of notes to categorise
+NUMBER_OF_NOTES = 2  # number of notes to categorise
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 8
-EPOCHS = 150
+BATCH_SIZE = 32
+EPOCHS = 20
 
 
 def get_nth_key(dictionary, n=0):
@@ -113,17 +115,24 @@ def build_model(input_shape):
 
 
 def predict(model, X, y):
+    """
+    Predict on data
+    :param model:
+    :param X:
+    :param y:
+    :return: predicted_note , predicted_index
+    """
 
     X = X[np.newaxis, ...]  # predict on 1 sample at a time
     # print("shape of X = {}".format(X.shape))
     prediction = model.predict(X)  # X -> 3D array [number of time bins, mfcc_coefficients, channel]
-    # print("prediction = {}".format(prediction))
+    #print("prediction = {}".format(prediction))
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
     predicted_note = get_nth_key(notes_to_frequency, predicted_index)
     # return predicted_index
-    return predicted_note
+    return predicted_note, predicted_index
 
 
 if __name__ == "__main__":
