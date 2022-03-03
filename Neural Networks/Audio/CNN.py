@@ -15,12 +15,12 @@ import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 
-DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test_2.json"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Test_2.h5"
+DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Test.h5"
 
 # tweaking model
 DROPOUT = 0.3
-NUMBER_OF_NOTES = 2  # number of notes to categorise
+NUMBER_OF_NOTES = 2  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
 BATCH_SIZE = 32
@@ -39,9 +39,9 @@ def get_nth_key(dictionary, n=0):
 def load_data(dataset_path):
     """
     Loads training dataset from json file
-            :param dataset_path (str): path to json file
-            :return X (ndarray): inputs
-            :return y (ndarray): targets
+        :param dataset_path (str): path to json file
+        :return X (ndarray): inputs
+        :return y (ndarray): targets
     """
 
     with open(dataset_path, "r") as fp:
@@ -55,17 +55,43 @@ def load_data(dataset_path):
     return X, y
 
 
+def plot_history(history):
+    """
+    Plots accuracy/loss for training/validation set as a function of the epochs
+        :param history: Training history of model
+    """
+
+    fig, axs = plt.subplots(2)
+
+    # create accuracy sublpot
+    axs[0].plot(history.history["accuracy"], label="train accuracy")
+    axs[0].plot(history.history["val_accuracy"], label="test accuracy")
+    axs[0].set_ylabel("Accuracy")
+    axs[0].legend(loc="lower right")
+    axs[0].set_title("Accuracy evaluation")
+
+    # create error sublpot
+    axs[1].plot(history.history["loss"], label="train error")
+    axs[1].plot(history.history["val_loss"], label="test error")
+    axs[1].set_ylabel("Error")
+    axs[1].set_xlabel("Epoch")
+    axs[1].legend(loc="upper right")
+    axs[1].set_title("Error evaluation")
+
+    plt.show()
+
+#TODO verify docstring makes sense
 def prepare_datasets(test_size, validation_size):
     """
     Create test and validation datasets
-            :param test_size: size of test set
-            :param validation_size: size of validation set
-            :returns X_train (ndarray): training inputs
-            :returns X_validation (ndarray): validation inputs
-            :returns X_test (ndarray): testing inputs
-            :returns y_train (ndarray): training targets
-            :returns y_validation (ndarray): validation targets
-            :returns y_test (ndarray): testing targets
+        :param test_size (float): Value in [0, 1] indicating percentage of data set to allocate to test split
+        :param validation_size (float): Value in [0, 1] indicating percentage of train set to allocate to validation split
+        :return X_train (ndarray): Input training set
+        :return X_validation (ndarray): Input validation set
+        :return X_test (ndarray): Input test set
+        :return y_train (ndarray): Target training set
+        :return y_validation (ndarray): Target validation set
+        :return y_test (ndarray): Target test set
     """
     # load data
     X, y = load_data(DATASET_PATH)
@@ -85,6 +111,12 @@ def prepare_datasets(test_size, validation_size):
 
 
 def build_model(input_shape):
+    """
+    Generate CNN model
+        :param input_shape: Shape of input set
+        :return model: CNN model
+    """
+
     # create model
     model = keras.Sequential()
 
@@ -113,14 +145,15 @@ def build_model(input_shape):
 
     return model
 
-
+#TODO complete docstring
 def predict(model, X, y):
     """
     Predict on data
-    :param model:
-    :param X:
-    :param y:
-    :return: predicted_note , predicted_index
+        :param model:
+        :param X:
+        :param y:
+        :return: predicted_note
+        :return: predicted_index
     """
 
     X = X[np.newaxis, ...]  # predict on 1 sample at a time
@@ -136,6 +169,7 @@ def predict(model, X, y):
 
 
 if __name__ == "__main__":
+
     # create training, validation and test sets
     X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
 
@@ -152,13 +186,21 @@ if __name__ == "__main__":
                   loss=LOSS,
                   metrics=["accuracy"])
 
-    # train the network
-    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=BATCH_SIZE, epochs=EPOCHS)
-    #print(history.history.keys())
-    # evaluate the CNN on the test set
-    test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=1)
-    print("Accuracy on test set is: {}".format(test_accuracy))
+    model.summary()
 
+    # train the model
+    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation),
+                        batch_size=BATCH_SIZE, epochs=EPOCHS)
+    #print(history.history.keys())
+
+    # plot accuracy/error for training and validation
+    plot_history(history)
+
+    # evaluate model on the test set
+    test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=2)
+    print("Accuracy on test set is: ", test_accuracy)
+
+    """
     # plot accuracy
     plt.plot(history.history["accuracy"])
     plt.plot(history.history["val_accuracy"])
@@ -176,7 +218,7 @@ if __name__ == "__main__":
     plt.xlabel("Epoch")
     plt.legend(["train", "validation" ], loc="upper right")
     plt.show()
-
+    """
     # save model
     model.save(MODEL_PATH)
 
