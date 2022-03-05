@@ -8,16 +8,24 @@ import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 
-DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Spectrograms.json"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Test_2.h5"
+DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid2.h5"
 
 # tweaking model
 DROPOUT = 0.3
-NUMBER_OF_NOTES = 27  # number of notes to classify
+NUMBER_OF_NOTES = 6  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 32
+BATCH_SIZE = 8
 EPOCHS = 30
+
+def get_nth_key(dictionary, n=0):
+    if n < 0:
+        n += len(dictionary)
+    for i, key in enumerate(dictionary.keys()):
+        if i == n:
+            return key
+    raise IndexError("dictionary index out of range")
 
 
 def load_data(dataset_path):
@@ -117,7 +125,7 @@ def build_model(input_shape):
 
 
 #TODO complete function and docstring
-def predict(model, X, y):
+def predict(model, X, y,i):
     """
         Predict on data
             :param model:
@@ -126,8 +134,14 @@ def predict(model, X, y):
             :return: predicted_note
             :return: predicted_index
         """
-    pass
 
+    prediction = model.predict(X)  # [number of time bins, mfcc_coefficients]
+    # extract index with max value
+    predicted_index = np.argmax(prediction, axis=1)
+    print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
+    #predicted_note = get_nth_key(notes_to_frequency, predicted_index)
+    # return predicted_index
+    return predicted_index
 
 if __name__ == "__main__":
 
@@ -141,7 +155,7 @@ if __name__ == "__main__":
     #TODO complete printing of model
 
     # print model
-    # plot_model(model, to_file='CNN_Model_Files/Model.png')
+    plot_model(model, to_file='LSTM_Model_Files/LSTM_Model.png')
 
     # compile model
     optimiser = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
