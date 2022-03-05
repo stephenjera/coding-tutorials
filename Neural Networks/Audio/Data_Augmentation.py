@@ -30,8 +30,7 @@ def save_audio(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, n
     # dictionary to store data
     data = {
         "mapping": [],
-        # "spectrogram": [],
-        "signal": [],  # not in use for Spectrogram conversion
+        "signal": [],
         "labels": []
     }
     num_samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
@@ -113,20 +112,68 @@ def prepare_datasets(test_size, validation_size):
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
-if __name__ == "__main__":
-    # convert wav to JSON
-    save_audio(DATASET_PATH, JSON_PATH, num_segments=2)
-
-    # create training, validation and test sets
-    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
-
-    librosa.display.waveplot(np.asarray(X_train[0]), sr=SAMPLE_RATE)
-    plt.show()
-
-    # example of an augmentation chain
+def augment(signal, label):
+    """
+    Takes a signal and put it through an augmentation chain
+    :param signal:
+    :param label:
+    :return: signal , label
+    """
+    # augmentation chain
     augment = Compose([
         # p is the probability of augmentation being applied
         AddGaussianNoise(min_amplitude=0.1, max_amplitude=0.2, p=1),
         TimeStretch(min_rate=0.8, max_rate=1.2, p=1)
     ])
+    signal = augment(signal, sample_rate=SAMPLE_RATE)
+    return signal, label
+
+def save_split_dataset(json_path,  X_train, X_validation, X_test, y_train, y_validation, y_test):
+    data = {
+        "X_train_augmented": [],
+        "X_validation": [],
+        "X_test": [],
+        "y_train_augmented": [],
+        "y_validation": [],
+        "y_test" : []
+    }
+
+    for i in range(len(X_train)):
+        data["X_train_augmented"].append(X_train[i].tolist())
+        data["y_train_augmented"].append(y_train[i].tolist())
+
+    data["X_validation"] = X_validation.tolist()
+    data["X_test"] = X_test.tolist()
+    data["y_validation"] = y_validation.tolist()
+    data["y_test"] = y_test.tolist()
+
+    with open(json_path, "w") as fp:
+        json.dump(data, fp, indent=4)
+
+
+
+
+if __name__ == "__main__":
+    # convert wav to JSON
+    save_audio(DATASET_PATH, JSON_PATH, num_segments=2)
+
+    # create training, validation and test sets
+    X_train, X_validation, X_test, y_train, y_validation,\
+    y_test = prepare_datasets(0.25, 0.2)
+
+    X_train_augmented = []
+    y_train_augmented = []
+    for i in range(len(X_train)):
+        signal, label = augment(np.asarray(X_train[i]), y_train[i])
+        X_train_augmented.append(signal)
+        y_train_augmented.append(label)
+
+    save_split_dataset(JSON_PATH, X_train_augmented, X_validation,
+                       X_test, y_train_augmented, y_validation, y_test )
+
+
+    #librosa.display.waveplot(np.asarray(X_train[0]), sr=SAMPLE_RATE)
+    #plt.show()
+
+
 
