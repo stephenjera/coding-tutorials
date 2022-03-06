@@ -7,15 +7,16 @@ expected index, the model must be provided with the correct data.
 # TODO calculate confusion matrix metrics
 
 import numpy as np
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, \
+    precision_score, recall_score, f1_score, classification_report
 import seaborn as sns
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 from LSTM import load_data
 from LSTM import predict
 
-DATASET_PATH = "Dataset_JSON_Files/OnlyA4.json"  # data used for predictions
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid2.h5"
+DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset.json"  # data used for predictions
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid_Aug.h5"
 
 
 def prepare_data(dataset):
@@ -47,27 +48,57 @@ if __name__ == "__main__":
     predicted_note = []
     predicted_index = []
     predicted_index = predict(model, X, y)
+    """
     #for i in range(len(X)):
         #print("X:", X[i].shape)
         #note, index = predict(model, X, y)
         #predicted_note.append(note)
         #predicted_index.append(index)
     # https://stackoverflow.com/questions/40729875/calculate-precision-and-recall-in-a-confusion-matrix
-    labels = ["A4", "A5"]
-    conf = confusion_matrix(y, predicted_index)
-    sns.heatmap(conf, annot=True)
+    """
+    # labels = ["A4", "A5"]
+    print(predicted_index)
+    cm = confusion_matrix(y, predicted_index)
+
+    # calculate metrics
+    report = classification_report(y, predicted_index, zero_division=0)
+    accuracy = accuracy_score(y, predicted_index)
+    precision_macro = precision_score(y, predicted_index, average="macro")
+    precision_micro = precision_score(y, predicted_index, average="micro")
+    recall_macro = recall_score(y, predicted_index, average="macro")
+    recall_micro = recall_score(y, predicted_index, average="micro")
+    f1_score_macro = f1_score(y, predicted_index, average="macro")
+    f1_score_micro = f1_score(y, predicted_index, average="micro")
+
+    # calculate metrics from confusion matrix
+    true_pos = np.diag(cm)  # true positives are the diagonal of cm
+    false_pos = np.sum(cm, axis=0) - true_pos
+    false_neg = np.sum(cm, axis=1) - true_pos
+
+    # print metrics
+    print("Accuracy: ", accuracy)
+    print("Precision macro: ", precision_macro)
+    print("Precision micro: ", precision_micro)
+    print("Recall macro: ", recall_macro)
+    print("Recall micro: ", recall_micro)
+    print("F1 score macro: ", f1_score_macro)
+    print("F1 score micro: ", f1_score_micro)
+    print(report)
+
+    # plot confusion matrix
+    sns.heatmap(cm, annot=True)
     plt.title("Confusion matrix")
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.show()
 
     """
-    # plot confustion matrix
-    #xaxis = []
-    #xaxis.extend(range(0, len(X)))
-    #plt.scatter(xaxis, predicted_index)
+    # plot graph
+    xaxis = []
+    xaxis.extend(range(0, len(X)))
+    plt.scatter(xaxis, predicted_note)
     plt.title("Predicted Note of OnlyA4Recorded using CNN_Model_Matlab_Test")
     plt.xlabel('Sample')
     plt.ylabel('Predicted Note')
     plt.show()
-    """
+   """
