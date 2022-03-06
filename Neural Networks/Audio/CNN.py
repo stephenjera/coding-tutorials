@@ -171,7 +171,22 @@ def predict(model, X, y):
 if __name__ == "__main__":
 
     # create training, validation and test sets
-    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+    #X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+    with open("Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json", "r") as fp:
+        data = json.load(fp)
+
+    # convert lists to numpy arrays
+    X_train = np.array(data["X_train_augmented"])
+    X_validation = np.array(data["X_validation"])
+    X_test = np.array(data["X_test"])
+    y_train = np.array(data["y_train_augmented"])
+    y_validation = np.array(data["y_validation"])
+    y_test = np.array((data["y_test"]))
+
+    # CNN expects 3D array inputs are only 2D
+    X_train = X_train[..., np.newaxis]  # 4D array -> [num_samples, number of time bins, mfcc_coefficients, channel]
+    X_test = X_test[..., np.newaxis]
+    X_validation = X_validation[..., np.newaxis]
 
     # build the CNN
     input_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3])
@@ -220,6 +235,6 @@ if __name__ == "__main__":
     plt.show()
     """
     # save model
-    model.save(MODEL_PATH)
+    #model.save(MODEL_PATH)
 
 
