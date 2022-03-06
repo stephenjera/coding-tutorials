@@ -26,16 +26,16 @@ NUM_SEGMENTS = 4
 SAMPLES_PER_TRACK = SAMPLE_RATE * DURATION
 
 
-def save_audio(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, num_segments=5):
+def load_dataset(dataset_path):
     # dictionary to store data
     data = {
         "mapping": [],
         "signal": [],
         "labels": []
     }
-    num_samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
-    expected_num_mfcc_vectors_per_segment = math.ceil(num_samples_per_segment / hop_length)  # round up always
 
+    # mappings, signal, label
+    #data = [[],[],[]]
     # Loop through all the data
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
         # dirpath = current folder path
@@ -48,6 +48,7 @@ def save_audio(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, n
             dirpath_components = dirpath.split("\\")  # TODO confirm what this actually does
             semantic_label = dirpath_components[-1]
             data["mapping"].append(semantic_label)
+            #data[0].append(semantic_label)
             print("\nProcessing {}".format(semantic_label))
 
             # process files for specific note
@@ -55,34 +56,14 @@ def save_audio(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, n
                 # load audio file
                 file_path = os.path.join(dirpath, f)
                 signal, sr = librosa.load(file_path, sr=SAMPLE_RATE, duration=DURATION)
-
-                data["signal"].append(signal.tolist()) # can't save numpy arrays as json
+                data["signal"].append(signal)
+                #data[1].append(signal)
                 data["labels"].append(i - 1)  # each iterations is a different folder
-
-    with open(json_path, "w") as fp:
-        json.dump(data, fp, indent=4)
-
-
-def load_data(dataset_path):
-    """
-    Loads training dataset from json file
-        :param dataset_path (str): path to json file
-        :return X (ndarray): inputs
-        :return y (ndarray): targets
-    """
-
-    with open(dataset_path, "r") as fp:
-        data = json.load(fp)
-
-    # convert lists to numpy arrays
-    # X = np.array(data["spectrogram"])  # for testing Spectrograms
-    X = np.array(data["signal"])
-    y = np.array(data["labels"])
-
-    return X, y
+                #data[2].append(i - 1)
+    return data
 
 
-def prepare_datasets(test_size, validation_size):
+def prepare_datasets(data, test_size, validation_size):
     """
     Create test and validation datasets
         :param test_size (float): Value in [0, 1] indicating percentage of data set to allocate to test split
@@ -95,8 +76,11 @@ def prepare_datasets(test_size, validation_size):
         :return y_test (ndarray): Target test set
     """
     # load data
-    X, y = load_data(JSON_PATH)
-
+    #X, y = load_data(JSON_PATH)
+    X = data["signal"]
+    y = data["labels"]
+    print("DatasetsX: ", len(X))
+    print("Datasetsy: ", len(y))
     # create train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
 
@@ -128,7 +112,10 @@ def augment(signal, label):
     signal = augment(signal, sample_rate=SAMPLE_RATE)
     return signal, label
 
-def save_split_dataset(json_path,  X_train, X_validation, X_test, y_train, y_validation, y_test):
+
+def save_mfcc(json_path,  X_train, X_validation, X_test, y_train,
+              y_validation, y_test,n_mfcc=13, n_fft=2048, hop_length=512,
+              num_segments=1):
     data = {
         "X_train_augmented": [],
         "X_validation": [],
@@ -138,15 +125,65 @@ def save_split_dataset(json_path,  X_train, X_validation, X_test, y_train, y_val
         "y_test" : []
     }
 
-    for i in range(len(X_train)):
-        data["X_train_augmented"].append(X_train[i].tolist())
-        data["y_train_augmented"].append(y_train[i].tolist())
+    num_samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
+    expected_num_mfcc_vectors_per_segment = math.ceil(num_samples_per_segment / hop_length)  # round up always
 
+    # create mfcc for training data
+    for i in range(len(X_train)):
+        # process segments extracting mfcc and storing data
+        #for s in range(num_segments):
+            #start_sample = num_samples_per_segment * s  # s=0 -> 0
+            #finish_sample = start_sample + num_samples_per_segment  # s=0 -> num_samples_per_segment
+
+            mfcc = librosa.feature.mfcc(X_train[i],
+                                        sr=SAMPLE_RATE,
+                                        n_fft=n_fft,
+                                        n_mfcc=n_mfcc,
+                                        hop_length=hop_length)
+            mfcc = mfcc.T  # TODO find out why this is better to work with
+            if len(mfcc) == expected_num_mfcc_vectors_per_segment:
+                data["X_train_augmented"].append(mfcc.tolist())
+                data["y_train_augmented"].append(y_train[i])
+
+    # create mfcc for validation data
+    for j in range(len(X_validation)):
+        # process segments extracting mfcc and storing data
+        #for s in range(num_segments):
+            #start_sample = num_samples_per_segment * s  # s=0 -> 0
+            #finish_sample = start_sample + num_samples_per_segment  # s=0 -> num_samples_per_segment
+
+            mfcc = librosa.feature.mfcc(X_test[j],
+                                        sr=SAMPLE_RATE,
+                                        n_fft=n_fft,
+                                        n_mfcc=n_mfcc,
+                                        hop_length=hop_length)
+            mfcc = mfcc.T  # TODO find out why this is better to work with
+            if len(mfcc) == expected_num_mfcc_vectors_per_segment:
+                data["X_validation"].append(mfcc.tolist())
+                data["y_validation"].append(y_test[j])
+
+    # create mfcc for test data
+    for k in range(len(X_test)):
+        # process segments extracting mfcc and storing data
+        #for s in range(num_segments):
+            #start_sample = num_samples_per_segment * s  # s=0 -> 0
+            #finish_sample = start_sample + num_samples_per_segment  # s=0 -> num_samples_per_segment
+
+            mfcc = librosa.feature.mfcc(X_test[k],
+                                        sr=SAMPLE_RATE,
+                                        n_fft=n_fft,
+                                        n_mfcc=n_mfcc,
+                                        hop_length=hop_length)
+            mfcc = mfcc.T  # TODO find out why this is better to work with
+            if len(mfcc) == expected_num_mfcc_vectors_per_segment:
+                data["X_test"].append(mfcc.tolist())
+                data["y_test"].append(y_test[k])
+    """
     data["X_validation"] = X_validation.tolist()
     data["X_test"] = X_test.tolist()
     data["y_validation"] = y_validation.tolist()
     data["y_test"] = y_test.tolist()
-
+    """
     with open(json_path, "w") as fp:
         json.dump(data, fp, indent=4)
 
@@ -155,21 +192,25 @@ def save_split_dataset(json_path,  X_train, X_validation, X_test, y_train, y_val
 
 if __name__ == "__main__":
     # convert wav to JSON
-    save_audio(DATASET_PATH, JSON_PATH, num_segments=2)
+    data = load_dataset(DATASET_PATH)
+    print(data)
 
     # create training, validation and test sets
     X_train, X_validation, X_test, y_train, y_validation,\
-    y_test = prepare_datasets(0.25, 0.2)
+    y_test = prepare_datasets(data, 0.25, 0.2)
 
-    X_train_augmented = []
-    y_train_augmented = []
+    print("X train size: ", len(X_train))
+    X_train_augmented = X_train.copy()
+    y_train_augmented = y_train.copy()
     for i in range(len(X_train)):
-        signal, label = augment(np.asarray(X_train[i]), y_train[i])
+        signal, label = augment(X_train[i], y_train[i])
         X_train_augmented.append(signal)
         y_train_augmented.append(label)
+    print("X train augmented: ", len(X_train_augmented))
+    print(y_train_augmented)
 
-    save_split_dataset(JSON_PATH, X_train_augmented, X_validation,
-                       X_test, y_train_augmented, y_validation, y_test )
+    save_mfcc(JSON_PATH, X_train_augmented, X_validation,
+                       X_test, y_train_augmented, y_validation, y_test)
 
 
     #librosa.display.waveplot(np.asarray(X_train[0]), sr=SAMPLE_RATE)
