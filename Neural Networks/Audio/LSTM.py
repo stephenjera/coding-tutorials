@@ -8,8 +8,9 @@ import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 
-DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid2.h5"
+#DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
+DATASET_PATH = "Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json"
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid_Aug.h5"
 
 # tweaking model
 DROPOUT = 0.3
@@ -125,7 +126,7 @@ def build_model(input_shape):
 
 
 #TODO complete function and docstring
-def predict(model, X, y,i):
+def predict(model, X, y):
     """
         Predict on data
             :param model:
@@ -146,7 +147,19 @@ def predict(model, X, y,i):
 if __name__ == "__main__":
 
     # create training, validation and test sets
-    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+    #X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+    # quick and dirty load of dataset
+    with open("Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json", "r") as fp:
+        data = json.load(fp)
+
+    # convert lists to numpy arrays
+    X_train = np.array(data["X_train_augmented"])
+    X_validation = np.array(data["X_validation"])
+    X_test = np.array(data["X_test"])
+    y_train = np.array(data["y_train_augmented"])
+    y_validation = np.array(data["y_validation"])
+    y_test = np.array((data["y_test"]))
+
 
     # Build LSTM
     input_shape = (X_train.shape[1], X_train.shape[2]) # 130, 13 [number of slices, mfcc coeffceints]
