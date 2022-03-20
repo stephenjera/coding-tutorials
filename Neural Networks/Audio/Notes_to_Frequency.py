@@ -1,4 +1,16 @@
-notes_to_frequency = {
+notes_to_frequency_IDMT_limited = {
+  "A3": 220.00,
+  "A4": 440.00,
+  "E2": 82.41,
+  "F2": 87.31
+}
+
+notes_to_frequency_ = {
+  "A4": 440.00,
+  "A5": 880.00,
+}
+
+notes_to_frequency__ = {
   "A4": 440.00,
   "A5": 880.00,
   "B4": 493.88,
@@ -7,7 +19,7 @@ notes_to_frequency = {
   "G5": 783.99,
 }
 
-notes_to_frequency_ = {
+notes_to_frequency = {
   "D4": 293.66,
   "D#4": 311.13,
   "E4": 329.63,
