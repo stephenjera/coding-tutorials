@@ -7,24 +7,32 @@ data and saves the model
 
 import json
 import numpy as np
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, \
+    precision_score, recall_score, f1_score, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
+from Notes_to_Frequency import  notes_to_frequency_IDMT_limited
 
-DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_Test.h5"
+# DATASET_PATH = "Dataset_JSON_Files/IDMT-SMT-GUITAR_V2_Dataset.json"
+# MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_IDMT-SMT-GUITAR.h5"
+
+# DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
+DATASET_PATH ="Dataset_JSON_Files/IDMT-SMT-GUITAR_Limited_1"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_IDMT_Limited.h5"
+
+LABELS = notes_to_frequency_IDMT_limited.keys()  # Lables for graphs
 
 # tweaking model
-DROPOUT = 0.3
-NUMBER_OF_NOTES = 2  # number of notes to classify
+DROPOUT = 0
+NUMBER_OF_NOTES = 4  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 32
-EPOCHS = 20
+BATCH_SIZE = 4
+EPOCHS = 30
 
 
 def get_nth_key(dictionary, n=0):
@@ -55,7 +63,7 @@ def load_data(dataset_path):
     return X, y
 
 
-def plot_history(history):
+def plot_history(history, plt_title=""):
     """
     Plots accuracy/loss for training/validation set as a function of the epochs
         :param history: Training history of model
@@ -68,7 +76,7 @@ def plot_history(history):
     axs[0].plot(history.history["val_accuracy"], label="test accuracy")
     axs[0].set_ylabel("Accuracy")
     axs[0].legend(loc="lower right")
-    axs[0].set_title("Accuracy evaluation")
+    axs[0].set_title(plt_title + " Accuracy Evaluation")
 
     # create error sublpot
     axs[1].plot(history.history["loss"], label="train error")
@@ -76,7 +84,7 @@ def plot_history(history):
     axs[1].set_ylabel("Error")
     axs[1].set_xlabel("Epoch")
     axs[1].legend(loc="upper right")
-    axs[1].set_title("Error evaluation")
+    axs[1].set_title(plt_title + " Error Evaluation")
 
     plt.show()
 
@@ -95,6 +103,8 @@ def prepare_datasets(test_size, validation_size):
     """
     # load data
     X, y = load_data(DATASET_PATH)
+    print("X shape: ", X.shape)
+    print("y shape: ", y.shape)
 
     # create train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
@@ -171,10 +181,13 @@ def predict(model, X, y):
 if __name__ == "__main__":
 
     # create training, validation and test sets
-    #X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+
+    """
     with open("Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json", "r") as fp:
         data = json.load(fp)
-
+    
+    
     # convert lists to numpy arrays
     X_train = np.array(data["X_train_augmented"])
     X_validation = np.array(data["X_validation"])
@@ -187,9 +200,15 @@ if __name__ == "__main__":
     X_train = X_train[..., np.newaxis]  # 4D array -> [num_samples, number of time bins, mfcc_coefficients, channel]
     X_test = X_test[..., np.newaxis]
     X_validation = X_validation[..., np.newaxis]
-
+    """
     # build the CNN
     input_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3])
+    #input_shape = (X_train.shape[0], X_train.shape[1])
+    print(X_train.shape)
+    print(type(X_train[0]))
+    print(type(X_train[1]))
+    print(type(X_train[2]))
+
     model = build_model(input_shape)
 
     # print model
@@ -209,11 +228,48 @@ if __name__ == "__main__":
     #print(history.history.keys())
 
     # plot accuracy/error for training and validation
-    plot_history(history)
+    plot_history(history, plt_title="Simulated Dataset")
 
     # evaluate model on the test set
-    test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=2)
-    print("Accuracy on test set is: ", test_accuracy)
+    #test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=2)
+    #print("Accuracy on test set is: ", test_accuracy)
+
+    # make prediction on a sample
+    predicted_note = []
+    predicted_index = []
+    for i in range(len(X_test)):
+        note, index = predict(model, X_test[i], y_test[i])
+        predicted_note.append(note)
+        predicted_index.append(index)
+
+    cm = confusion_matrix(y_test, predicted_index)
+
+    # calculate metrics
+    report = classification_report(y_test, predicted_index, zero_division=0, target_names=LABELS)
+    accuracy = accuracy_score(y_test, predicted_index)
+    precision_macro = precision_score(y_test, predicted_index, average="macro", zero_division=0)
+    precision_micro = precision_score(y_test, predicted_index, average="micro", zero_division=0)
+    recall_macro = recall_score(y_test, predicted_index, average="macro", zero_division=0)
+    recall_micro = recall_score(y_test, predicted_index, average="micro", zero_division=0)
+    f1_score_macro = f1_score(y_test, predicted_index, average="macro", zero_division=0)
+    f1_score_micro = f1_score(y_test, predicted_index, average="micro", zero_division=0)
+
+    print("Accuracy: ", accuracy)
+    print("Precsion macro: ", precision_macro)
+    print("Precsion micro: ", precision_micro)
+    print("Recall macro: ", recall_macro)
+    print("Recall micro: ", recall_micro)
+    print("F1 score macro: ", f1_score_macro)
+    print("F1 score micro: ", f1_score_micro)
+    print(report)
+
+    # plot confusion matrix
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
+    disp.plot()
+    plt.title("Simulated Dataset Confusion Matrix")
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.show()
 
     """
     # plot accuracy
@@ -235,6 +291,7 @@ if __name__ == "__main__":
     plt.show()
     """
     # save model
-    #model.save(MODEL_PATH)
+    model.save(MODEL_PATH)
+
 
 
