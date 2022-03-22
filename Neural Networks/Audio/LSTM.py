@@ -1,16 +1,24 @@
 import json
 import numpy as np
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, \
+    precision_score, recall_score, f1_score, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
-from Notes_to_Frequency import notes_to_frequency
+from Notes_to_Frequency import notes_to_frequency_limited
+from Notes_to_Frequency import  notes_to_frequency_IDMT_limited
+from Notes_to_Frequency import  notes_to_frequency_6
 
 #DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
-DATASET_PATH = "Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json"
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid_Aug.h5"
+#DATASET_PATH = "Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json"
+DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Extended.json"
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Extended.h5"
+
+#LABELS = notes_to_frequency_IDMT_limited.keys()  # Lables for graphs
+LABELS = notes_to_frequency_6.keys()
+PLOT_TITLE = "Simulated Dataset Extended"  # Dataset name to be used in graph titles
 
 # tweaking model
 DROPOUT = 0.3
@@ -18,7 +26,7 @@ NUMBER_OF_NOTES = 6  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
 BATCH_SIZE = 8
-EPOCHS = 30
+EPOCHS = 40
 
 def get_nth_key(dictionary, n=0):
     if n < 0:
@@ -47,7 +55,7 @@ def load_data(dataset_path):
     return X, y
 
 
-def plot_history(history):
+def plot_history(history, plt_title=""):
     """
     Plots accuracy/loss for training/validation set as a function of the epochs
         :param history: Training history of model
@@ -61,7 +69,7 @@ def plot_history(history):
     axs[0].plot(history.history["val_accuracy"], label="test accuracy")
     axs[0].set_ylabel("Accuracy")
     axs[0].legend(loc="lower right")
-    axs[0].set_title("Accuracy evaluation")
+    axs[0].set_title(plt_title + " Accuracy evaluation")
 
     # create error sublpot
     axs[1].plot(history.history["loss"], label="train error")
@@ -69,7 +77,7 @@ def plot_history(history):
     axs[1].set_ylabel("Error")
     axs[1].set_xlabel("Epoch")
     axs[1].legend(loc="upper right")
-    axs[1].set_title("Error evaluation")
+    axs[1].set_title(plt_title + " Error evaluation")
 
     plt.show()
 
@@ -137,18 +145,20 @@ def predict(model, X, y):
         """
 
     prediction = model.predict(X)  # [number of time bins, mfcc_coefficients]
+    #print("prediction = {}".format(prediction))
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
-    #predicted_note = get_nth_key(notes_to_frequency, predicted_index)
+    # predicted_note = get_nth_key(notes_to_frequency, predicted_index)
     # return predicted_index
-    return predicted_index
+    return predicted_index, prediction
 
 if __name__ == "__main__":
 
     # create training, validation and test sets
-    #X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
+    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(0.25, 0.2)
     # quick and dirty load of dataset
+    """
     with open("Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json", "r") as fp:
         data = json.load(fp)
 
@@ -159,7 +169,7 @@ if __name__ == "__main__":
     y_train = np.array(data["y_train_augmented"])
     y_validation = np.array(data["y_validation"])
     y_test = np.array((data["y_test"]))
-
+    """
 
     # Build LSTM
     input_shape = (X_train.shape[1], X_train.shape[2]) # 130, 13 [number of slices, mfcc coeffceints]
@@ -168,7 +178,7 @@ if __name__ == "__main__":
     #TODO complete printing of model
 
     # print model
-    plot_model(model, to_file='LSTM_Model_Files/LSTM_Model.png')
+    # plot_model(model, to_file='LSTM_Model_Files/LSTM_Model.png')
 
     # compile model
     optimiser = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
@@ -183,11 +193,43 @@ if __name__ == "__main__":
                         batch_size=BATCH_SIZE, epochs=EPOCHS)
 
     # plot accuracy/error for training and validation
-    plot_history(history)
+    plot_history(history, plt_title=PLOT_TITLE)
 
     # evaluate model on test set
-    test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=2)
-    print('\nTest accuracy:', test_accuracy)
+    # test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=2)
+    # print('\nTest accuracy:', test_accuracy)
 
     # save model
     model.save(MODEL_PATH)
+
+    # make prediction on a samples
+    predicted_index = predict(model, X_test, y_test)
+
+    cm = confusion_matrix(y_test, predicted_index)
+
+    # calculate metrics
+    report = classification_report(y_test, predicted_index, zero_division=0, target_names=LABELS)
+    accuracy = accuracy_score(y_test, predicted_index)
+    precision_macro = precision_score(y_test, predicted_index, average="macro", zero_division=0)
+    precision_micro = precision_score(y_test, predicted_index, average="micro", zero_division=0)
+    recall_macro = recall_score(y_test, predicted_index, average="macro", zero_division=0)
+    recall_micro = recall_score(y_test, predicted_index, average="micro", zero_division=0)
+    f1_score_macro = f1_score(y_test, predicted_index, average="macro", zero_division=0)
+    f1_score_micro = f1_score(y_test, predicted_index, average="micro", zero_division=0)
+
+    print("Accuracy: ", accuracy)
+    print("Precsion macro: ", precision_macro)
+    print("Precsion micro: ", precision_micro)
+    print("Recall macro: ", recall_macro)
+    print("Recall micro: ", recall_micro)
+    print("F1 score macro: ", f1_score_macro)
+    print("F1 score micro: ", f1_score_micro)
+    print(report)
+
+    # plot confusion matrix
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
+    disp.plot()
+    plt.title(PLOT_TITLE + " Confusion Matrix")
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.show()
