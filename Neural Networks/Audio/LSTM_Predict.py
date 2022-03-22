@@ -7,16 +7,21 @@ expected index, the model must be provided with the correct data.
 # TODO calculate confusion matrix metrics
 
 import numpy as np
-from sklearn.metrics import confusion_matrix, accuracy_score, \
+import pandas as pd
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, \
     precision_score, recall_score, f1_score, classification_report
 import seaborn as sns
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 from LSTM import load_data
 from LSTM import predict
+from Notes_to_Frequency import notes_to_frequency_6
 
-DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset.json"  # data used for predictions
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Matlab_Hybrid_Aug.h5"
+DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Extended.h5"
+
+LABELS = notes_to_frequency_6.keys()
+PLOT_TITLE = "Simulated Dataset Extended"  # Dataset name to be used in graph titles
 
 
 def prepare_data(dataset):
@@ -44,10 +49,15 @@ if __name__ == "__main__":
     X, y = load_data(DATASET_PATH)
     print("loadedX:", X.shape)
 
-    # make prediction on a sample
-    predicted_note = []
-    predicted_index = []
-    predicted_index = predict(model, X, y)
+    # make prediction on a samples
+    #predicted_note = []
+    prediction = pd.DataFrame(columns=LABELS)
+    predicted_index, pred = predict(model, X, y)
+    #print(pred)
+    for i in range(len(pred)):
+        prediction.loc[len(prediction.index)] = pred[i]
+
+    print(prediction)
     """
     #for i in range(len(X)):
         #print("X:", X[i].shape)
@@ -63,12 +73,12 @@ if __name__ == "__main__":
     # calculate metrics
     report = classification_report(y, predicted_index, zero_division=0)
     accuracy = accuracy_score(y, predicted_index)
-    precision_macro = precision_score(y, predicted_index, average="macro")
-    precision_micro = precision_score(y, predicted_index, average="micro")
-    recall_macro = recall_score(y, predicted_index, average="macro")
-    recall_micro = recall_score(y, predicted_index, average="micro")
-    f1_score_macro = f1_score(y, predicted_index, average="macro")
-    f1_score_micro = f1_score(y, predicted_index, average="micro")
+    precision_macro = precision_score(y, predicted_index, average="macro", zero_division=0)
+    precision_micro = precision_score(y, predicted_index, average="micro", zero_division=0)
+    recall_macro = recall_score(y, predicted_index, average="macro", zero_division=0)
+    recall_micro = recall_score(y, predicted_index, average="micro", zero_division=0)
+    f1_score_macro = f1_score(y, predicted_index, average="macro", zero_division=0)
+    f1_score_micro = f1_score(y, predicted_index, average="micro", zero_division=0)
 
     # calculate metrics from confusion matrix
     true_pos = np.diag(cm)  # true positives are the diagonal of cm
@@ -85,9 +95,19 @@ if __name__ == "__main__":
     print("F1 score micro: ", f1_score_micro)
     print(report)
 
+    """
     # plot confusion matrix
     sns.heatmap(cm, annot=True)
     plt.title("Confusion matrix")
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.show()
+    """
+
+    # plot confusion matrix
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+    disp.plot()
+    plt.title(PLOT_TITLE + " Confusion Matrix")
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.show()
