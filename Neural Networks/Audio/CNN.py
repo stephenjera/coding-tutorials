@@ -16,22 +16,24 @@ import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 from Notes_to_Frequency import  notes_to_frequency_IDMT_limited
+from Notes_to_Frequency import notes_to_frequency_6
 
 # DATASET_PATH = "Dataset_JSON_Files/IDMT-SMT-GUITAR_V2_Dataset.json"
 # MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_IDMT-SMT-GUITAR.h5"
 
-# DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
-DATASET_PATH ="Dataset_JSON_Files/IDMT-SMT-GUITAR_Limited_1"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_IDMT_Limited.h5"
+#DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
+DATASET_PATH ="Dataset_JSON_Files/Simulated_Dataset_Matlab_Extended.json"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Extended.h5"
 
-LABELS = notes_to_frequency_IDMT_limited.keys()  # Lables for graphs
+LABELS = notes_to_frequency_6.keys()  # Lables for graphs
+PLOT_TITLE = "Simulated Dataset Extended"  # Dataset name to be used in graph titles
 
 # tweaking model
-DROPOUT = 0
-NUMBER_OF_NOTES = 4  # number of notes to classify
+DROPOUT = 0.3
+NUMBER_OF_NOTES = 6  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 EPOCHS = 30
 
 
@@ -169,13 +171,13 @@ def predict(model, X, y):
     X = X[np.newaxis, ...]  # predict on 1 sample at a time
     # print("shape of X = {}".format(X.shape))
     prediction = model.predict(X)  # X -> 3D array [number of time bins, mfcc_coefficients, channel]
-    #print("prediction = {}".format(prediction))
+    print("prediction = {}".format(prediction))
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
-    predicted_note = get_nth_key(notes_to_frequency, predicted_index)
+    predicted_note = get_nth_key(notes_to_frequency_6, predicted_index)
     # return predicted_index
-    return predicted_note, predicted_index
+    return predicted_note, predicted_index, prediction
 
 
 if __name__ == "__main__":
@@ -228,11 +230,14 @@ if __name__ == "__main__":
     #print(history.history.keys())
 
     # plot accuracy/error for training and validation
-    plot_history(history, plt_title="Simulated Dataset")
+    plot_history(history, plt_title=PLOT_TITLE)
 
     # evaluate model on the test set
     #test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=2)
     #print("Accuracy on test set is: ", test_accuracy)
+
+    # save model
+    model.save(MODEL_PATH)
 
     # make prediction on a sample
     predicted_note = []
@@ -266,7 +271,7 @@ if __name__ == "__main__":
     # plot confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
     disp.plot()
-    plt.title("Simulated Dataset Confusion Matrix")
+    plt.title(PLOT_TITLE + " Confusion Matrix")
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.show()
@@ -290,8 +295,7 @@ if __name__ == "__main__":
     plt.legend(["train", "validation" ], loc="upper right")
     plt.show()
     """
-    # save model
-    model.save(MODEL_PATH)
+
 
 
 
