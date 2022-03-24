@@ -1,5 +1,6 @@
 import json
 import numpy as np
+import pandas as pd
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, \
     precision_score, recall_score, f1_score, classification_report
 import seaborn as sns
@@ -13,20 +14,23 @@ from Notes_to_Frequency import  notes_to_frequency_6
 
 #DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
 #DATASET_PATH = "Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json"
-DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Extended.json"
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Extended.h5"
+DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Test.h5"
 
 #LABELS = notes_to_frequency_IDMT_limited.keys()  # Lables for graphs
-LABELS = notes_to_frequency_6.keys()
-PLOT_TITLE = "Simulated Dataset Extended"  # Dataset name to be used in graph titles
+LABELS = notes_to_frequency_limited.keys()
+PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+RESULTS_PATH = "Results/LSTM_Results/"
+MODEL_NAME = "Simulated_Dataset_Matlab_Test"
 
 # tweaking model
 DROPOUT = 0.3
-NUMBER_OF_NOTES = 6  # number of notes to classify
+NUMBER_OF_NOTES = 2  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 8
-EPOCHS = 40
+BATCH_SIZE = 32
+EPOCHS = 1
+
 
 def get_nth_key(dictionary, n=0):
     if n < 0:
@@ -148,7 +152,7 @@ def predict(model, X, y):
     #print("prediction = {}".format(prediction))
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
-    print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
+    #print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
     # predicted_note = get_nth_key(notes_to_frequency, predicted_index)
     # return predicted_index
     return predicted_index, prediction
@@ -203,12 +207,14 @@ if __name__ == "__main__":
     model.save(MODEL_PATH)
 
     # make prediction on a samples
-    predicted_index = predict(model, X_test, y_test)
+    predicted_index, pred = predict(model, X_test, y_test)
 
     cm = confusion_matrix(y_test, predicted_index)
 
     # calculate metrics
     report = classification_report(y_test, predicted_index, zero_division=0, target_names=LABELS)
+    # for saving to csv
+    report_dict = classification_report(y_test, predicted_index, zero_division=0, target_names=LABELS, output_dict=True)
     accuracy = accuracy_score(y_test, predicted_index)
     precision_macro = precision_score(y_test, predicted_index, average="macro", zero_division=0)
     precision_micro = precision_score(y_test, predicted_index, average="micro", zero_division=0)
@@ -225,6 +231,13 @@ if __name__ == "__main__":
     print("F1 score macro: ", f1_score_macro)
     print("F1 score micro: ", f1_score_micro)
     print(report)
+
+    # save report to csv
+    # get same format as unmodfied report
+    report_dict.update({"accuracy": {"precision": None, "recall": None, "f1-score": report_dict["accuracy"],
+                                "support": report_dict['macro avg']['support']}})
+    df = pd.DataFrame(report_dict).transpose()
+    df.to_csv(RESULTS_PATH + MODEL_NAME + "_Report.csv")
 
     # plot confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
