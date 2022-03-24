@@ -7,6 +7,7 @@ data and saves the model
 
 import json
 import numpy as np
+import pandas as pd
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, \
     precision_score, recall_score, f1_score, classification_report
 import seaborn as sns
@@ -17,24 +18,28 @@ from tensorflow.keras.utils import plot_model
 from Notes_to_Frequency import notes_to_frequency
 from Notes_to_Frequency import  notes_to_frequency_IDMT_limited
 from Notes_to_Frequency import notes_to_frequency_6
+from Notes_to_Frequency import notes_to_frequency_limited
 
 # DATASET_PATH = "Dataset_JSON_Files/IDMT-SMT-GUITAR_V2_Dataset.json"
 # MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_IDMT-SMT-GUITAR.h5"
 
 #DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
-DATASET_PATH ="Dataset_JSON_Files/Simulated_Dataset_Matlab_Extended.json"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Extended.h5"
+DATASET_PATH ="Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Test.h5"
 
-LABELS = notes_to_frequency_6.keys()  # Lables for graphs
-PLOT_TITLE = "Simulated Dataset Extended"  # Dataset name to be used in graph titles
+LABELS = notes_to_frequency_limited.keys()  # Lables for graphs
+PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+RESULTS_PATH = "Results/CNN_Results/"
+MODEL_NAME = "Simulated_Dataset_Matlab_Test"
+NOTES_TO_FREQ = notes_to_frequency_limited
 
 # tweaking model
 DROPOUT = 0.3
-NUMBER_OF_NOTES = 6  # number of notes to classify
+NUMBER_OF_NOTES = 2  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 8
-EPOCHS = 30
+BATCH_SIZE = 32
+EPOCHS = 1
 
 
 def get_nth_key(dictionary, n=0):
@@ -158,7 +163,7 @@ def build_model(input_shape):
     return model
 
 #TODO complete docstring
-def predict(model, X, y):
+def predict(model, X, y, notes_to_freq):
     """
     Predict on data
         :param model:
@@ -171,11 +176,11 @@ def predict(model, X, y):
     X = X[np.newaxis, ...]  # predict on 1 sample at a time
     # print("shape of X = {}".format(X.shape))
     prediction = model.predict(X)  # X -> 3D array [number of time bins, mfcc_coefficients, channel]
-    print("prediction = {}".format(prediction))
+    #print("prediction = {}".format(prediction))
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
-    print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
-    predicted_note = get_nth_key(notes_to_frequency_6, predicted_index)
+    #print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
+    predicted_note = get_nth_key(notes_to_freq, predicted_index)
     # return predicted_index
     return predicted_note, predicted_index, prediction
 
@@ -243,7 +248,7 @@ if __name__ == "__main__":
     predicted_note = []
     predicted_index = []
     for i in range(len(X_test)):
-        note, index = predict(model, X_test[i], y_test[i])
+        note, index, pred = predict(model, X_test[i], y_test[i], NOTES_TO_FREQ)
         predicted_note.append(note)
         predicted_index.append(index)
 
@@ -251,6 +256,8 @@ if __name__ == "__main__":
 
     # calculate metrics
     report = classification_report(y_test, predicted_index, zero_division=0, target_names=LABELS)
+    # for saving to csv
+    report_dict = classification_report(y_test, predicted_index, zero_division=0, target_names=LABELS, output_dict=True)
     accuracy = accuracy_score(y_test, predicted_index)
     precision_macro = precision_score(y_test, predicted_index, average="macro", zero_division=0)
     precision_micro = precision_score(y_test, predicted_index, average="micro", zero_division=0)
@@ -267,6 +274,13 @@ if __name__ == "__main__":
     print("F1 score macro: ", f1_score_macro)
     print("F1 score micro: ", f1_score_micro)
     print(report)
+
+    # save report to csv
+    # get same format as unmodfied report
+    report_dict.update({"accuracy": {"precision": None, "recall": None, "f1-score": report_dict["accuracy"],
+                                     "support": report_dict['macro avg']['support']}})
+    df = pd.DataFrame(report_dict).transpose()
+    df.to_csv(RESULTS_PATH + MODEL_NAME + "_Report.csv")
 
     # plot confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
