@@ -17,12 +17,18 @@ from CNN import load_data
 from CNN import predict
 from Notes_to_Frequency import notes_to_frequency
 from Notes_to_Frequency import notes_to_frequency_6
+from Notes_to_Frequency import  notes_to_frequency_limited
 
-DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_2.json"  # data used for predictions
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Extended.h5"
 
-LABELS = notes_to_frequency_6.keys()
-PLOT_TITLE = "Simulated Dataset Extended "  # Dataset name to be used in graph titles
+DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Test.h5"
+RESULTS_PATH = "Results/CNN_Results/"
+MODEL_NAME = "Simulated_Dataset_Matlab_Test"
+DATASET_NAME = "Only_A5_Recorded_1"
+NOTES_TO_FREQ = notes_to_frequency_limited
+LABELS = notes_to_frequency_limited.keys()
+PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+
 
 def prepare_data(dataset):
     # load dataset
@@ -51,18 +57,33 @@ if __name__ == "__main__":
     predicted_note = []
     predicted_index = []
     prediction = pd.DataFrame(columns=LABELS)
-    print(LABELS)
+    #print(LABELS)
     #prediction.columns = list(LABELS)
 
     for i in range(len(X)):
-        note, index, pred = predict(model, X[i], y[i])
+        note, index, pred = predict(model, X[i], y[i],NOTES_TO_FREQ)
         predicted_note.append(note)
         predicted_index.append(index)
         prediction.loc[len(prediction.index)] = pred[0]
 
     #print(y)
-    print(predicted_index)
-    print(prediction)
+    # print(predicted_index)
+    # print full dataframe
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.precision', 3,
+                           ):
+        print(prediction)
+
+    # save results as csv
+    description = prediction.describe()
+    prediction.to_csv(RESULTS_PATH + "Prediction_" + MODEL_NAME + DATASET_NAME + ".csv")
+    description.to_csv(RESULTS_PATH + "Description_" + MODEL_NAME + DATASET_NAME + ".csv")
+
+    print(prediction.describe())
+
+
+    """
     cm = confusion_matrix(y, predicted_index)
     # tn, fp, fn, tp = confusion_matrix(y, predicted_index).ravel()
     # print("tn: {} fp: {} fn: {} tp: {}".format(tn, fp, fn, tp))
@@ -115,6 +136,6 @@ if __name__ == "__main__":
     plt.xlabel('Note Sample')
     plt.ylabel('Predicted Note')
     plt.show()
-
+    """
 
 
