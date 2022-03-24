@@ -16,12 +16,16 @@ import matplotlib.pyplot as plt
 from LSTM import load_data
 from LSTM import predict
 from Notes_to_Frequency import notes_to_frequency_6
+from Notes_to_Frequency import notes_to_frequency_limited
+
 
 DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Extended.h5"
-
-LABELS = notes_to_frequency_6.keys()
-PLOT_TITLE = "Simulated Dataset Extended"  # Dataset name to be used in graph titles
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Test.h5"
+RESULTS_PATH = "Results/LSTM_Results/"
+MODEL_NAME = "Simulated_Dataset_Matlab_Test"
+DATASET_NAME = "Only_A5_Recorded_1"
+LABELS = notes_to_frequency_limited.keys()
+PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
 
 
 def prepare_data(dataset):
@@ -57,7 +61,22 @@ if __name__ == "__main__":
     for i in range(len(pred)):
         prediction.loc[len(prediction.index)] = pred[i]
 
-    print(prediction)
+    # print full dataframe
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.precision', 3,
+                           ):
+        print(prediction)
+
+
+
+    # save results as csv
+    description = prediction.describe()
+    prediction.to_csv(RESULTS_PATH + "Prediction_" + MODEL_NAME + DATASET_NAME + ".csv")
+    description.to_csv(RESULTS_PATH + "Description_"+ MODEL_NAME + DATASET_NAME + ".csv")
+    #sns.barplot(data=prediction)
+    #plt.show()
+
     """
     #for i in range(len(X)):
         #print("X:", X[i].shape)
@@ -67,6 +86,8 @@ if __name__ == "__main__":
     # https://stackoverflow.com/questions/40729875/calculate-precision-and-recall-in-a-confusion-matrix
     """
     # labels = ["A4", "A5"]
+
+    """
     print(predicted_index)
     cm = confusion_matrix(y, predicted_index)
 
@@ -95,15 +116,13 @@ if __name__ == "__main__":
     print("F1 score micro: ", f1_score_micro)
     print(report)
 
-    """
     # plot confusion matrix
     sns.heatmap(cm, annot=True)
     plt.title("Confusion matrix")
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.show()
-    """
-
+    
     # plot confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm)
     disp.plot()
@@ -112,7 +131,6 @@ if __name__ == "__main__":
     plt.ylabel('True')
     plt.show()
 
-    """
     # plot graph
     xaxis = []
     xaxis.extend(range(0, len(X)))
@@ -121,4 +139,4 @@ if __name__ == "__main__":
     plt.xlabel('Sample')
     plt.ylabel('Predicted Note')
     plt.show()
-   """
+    """
