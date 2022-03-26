@@ -18,7 +18,6 @@ DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
 MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Test.h5"
 
 #LABELS = notes_to_frequency_IDMT_limited.keys()  # Lables for graphs
-LABELS = notes_to_frequency_limited.keys()
 PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
 RESULTS_PATH = "Results/LSTM_Results/"
 MODEL_NAME = "Simulated_Dataset_Matlab_Test"
@@ -39,6 +38,14 @@ def get_nth_key(dictionary, n=0):
         if i == n:
             return key
     raise IndexError("dictionary index out of range")
+
+
+def get_mappings(dataset_path):
+    with open(dataset_path, "r") as fp:
+        data = json.load(fp)
+
+    mapping = data["mapping"]
+    return mapping
 
 
 def load_data(dataset_path):
@@ -156,6 +163,10 @@ def predict(model, X, y):
     # predicted_note = get_nth_key(notes_to_frequency, predicted_index)
     # return predicted_index
     return predicted_index, prediction
+
+
+LABELS = get_mappings(DATASET_PATH)
+
 
 if __name__ == "__main__":
 
