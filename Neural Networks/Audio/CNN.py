@@ -27,11 +27,11 @@ from Notes_to_Frequency import notes_to_frequency_limited
 DATASET_PATH ="Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
 MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Test.h5"
 
-LABELS = notes_to_frequency_limited.keys()  # Lables for graphs
+# LABELS = notes_to_frequency_limited.keys()  # Lables for graphs
 PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
 RESULTS_PATH = "Results/CNN_Results/"
 MODEL_NAME = "Simulated_Dataset_Matlab_Test"
-NOTES_TO_FREQ = notes_to_frequency_limited
+#NOTES_TO_FREQ = notes_to_frequency_limited
 
 # tweaking model
 DROPOUT = 0.3
@@ -49,6 +49,14 @@ def get_nth_key(dictionary, n=0):
         if i == n:
             return key
     raise IndexError("dictionary index out of range")
+
+
+def get_mappings(dataset_path):
+    with open(dataset_path, "r") as fp:
+        data = json.load(fp)
+
+    mapping = data["mapping"]
+    return mapping
 
 
 def load_data(dataset_path):
@@ -163,7 +171,7 @@ def build_model(input_shape):
     return model
 
 #TODO complete docstring
-def predict(model, X, y, notes_to_freq):
+def predict(model, X, y):
     """
     Predict on data
         :param model:
@@ -180,10 +188,11 @@ def predict(model, X, y, notes_to_freq):
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     #print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
-    predicted_note = get_nth_key(notes_to_freq, predicted_index)
+    # predicted_note = get_nth_key(notes_to_freq, predicted_index)
     # return predicted_index
-    return predicted_note, predicted_index, prediction
+    return predicted_index, prediction
 
+LABELS = get_mappings(DATASET_PATH)  # Lables for graphs
 
 if __name__ == "__main__":
 
@@ -245,11 +254,11 @@ if __name__ == "__main__":
     model.save(MODEL_PATH)
 
     # make prediction on a sample
-    predicted_note = []
+    #predicted_note = []
     predicted_index = []
     for i in range(len(X_test)):
-        note, index, pred = predict(model, X_test[i], y_test[i], NOTES_TO_FREQ)
-        predicted_note.append(note)
+        index, pred = predict(model, X_test[i], y_test[i], NOTES_TO_FREQ)
+        #predicted_note.append(note)
         predicted_index.append(index)
 
     cm = confusion_matrix(y_test, predicted_index)
