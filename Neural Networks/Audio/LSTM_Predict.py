@@ -15,17 +15,17 @@ from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 from LSTM import load_data
 from LSTM import predict
-from Notes_to_Frequency import notes_to_frequency_6
-from Notes_to_Frequency import notes_to_frequency_limited
+from LSTM import get_mappings
 
 
+MODEL_DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
 DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
 MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Test.h5"
 RESULTS_PATH = "Results/LSTM_Results/"
 MODEL_NAME = "Simulated_Dataset_Matlab_Test"
 DATASET_NAME = "Only_A5_Recorded_1"
-LABELS = notes_to_frequency_limited.keys()
 PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+LABELS = get_mappings(MODEL_DATASET_PATH)
 
 
 def prepare_data(dataset):
@@ -67,7 +67,6 @@ if __name__ == "__main__":
                            'display.precision', 3,
                            ):
         print(prediction)
-
 
 
     # save results as csv
