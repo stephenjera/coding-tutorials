@@ -15,18 +15,20 @@ from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 from CNN import load_data
 from CNN import predict
+from CNN import get_mappings
 from Notes_to_Frequency import notes_to_frequency
 from Notes_to_Frequency import notes_to_frequency_6
 from Notes_to_Frequency import  notes_to_frequency_limited
 
-
+MODEL_DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
 DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
 MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Test.h5"
 RESULTS_PATH = "Results/CNN_Results/"
 MODEL_NAME = "Simulated_Dataset_Matlab_Test"
 DATASET_NAME = "Only_A5_Recorded_1"
-NOTES_TO_FREQ = notes_to_frequency_limited
-LABELS = notes_to_frequency_limited.keys()
+LABELS = get_mappings(MODEL_DATASET_PATH)
+#NOTES_TO_FREQ = notes_to_frequency_limited
+
 PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
 
 
@@ -54,15 +56,15 @@ if __name__ == "__main__":
     X, y = prepare_data(DATASET_PATH)
 
     # make prediction on a sample
-    predicted_note = []
+    #predicted_note = []
     predicted_index = []
     prediction = pd.DataFrame(columns=LABELS)
     #print(LABELS)
     #prediction.columns = list(LABELS)
 
     for i in range(len(X)):
-        note, index, pred = predict(model, X[i], y[i],NOTES_TO_FREQ)
-        predicted_note.append(note)
+        index, pred = predict(model, X[i], y[i])
+        #predicted_note.append(note)
         predicted_index.append(index)
         prediction.loc[len(prediction.index)] = pred[0]
 
