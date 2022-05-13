@@ -20,16 +20,14 @@ from Notes_to_Frequency import notes_to_frequency
 from Notes_to_Frequency import notes_to_frequency_6
 from Notes_to_Frequency import  notes_to_frequency_limited
 
-MODEL_DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
-DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Test.h5"
+MODEL_DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_12frets_1.json"
+DATASET_PATH = "Dataset_JSON_Files/Only_G4_Recorded_1.json"  # data used for predictions
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_12frets_1.h5"
 RESULTS_PATH = "Results/CNN_Results/"
-MODEL_NAME = "Simulated_Dataset_Matlab_Test"
-DATASET_NAME = "Only_A5_Recorded_1"
+MODEL_NAME = "Simulated_Dataset_Matlab_12frets_1"
+DATASET_NAME = "Only_G4_Recorded_1"
+PLOT_TITLE = "Only_G4_Recorded_1"  # Dataset name to be used in graph titles
 LABELS = get_mappings(MODEL_DATASET_PATH)
-#NOTES_TO_FREQ = notes_to_frequency_limited
-
-PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
 
 
 def prepare_data(dataset):
@@ -78,9 +76,11 @@ if __name__ == "__main__":
         print(prediction)
 
     # save results as csv
+    prediction = prediction.round(2)  # round to 2 dp
     description = prediction.describe()
-    prediction.to_csv(RESULTS_PATH + "Prediction_" + MODEL_NAME + DATASET_NAME + ".csv")
-    description.to_csv(RESULTS_PATH + "Description_" + MODEL_NAME + DATASET_NAME + ".csv")
+    description = description.round(2)  # round to 2 dp
+    prediction.to_csv(RESULTS_PATH + "Prediction_" + MODEL_NAME + "_" + DATASET_NAME + ".csv")
+    description.to_csv(RESULTS_PATH + "Description_" + MODEL_NAME + "_"+ DATASET_NAME + ".csv")
 
     print(prediction.describe())
 
