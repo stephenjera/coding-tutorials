@@ -18,14 +18,15 @@ from LSTM import predict
 from LSTM import get_mappings
 
 
-MODEL_DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
-DATASET_PATH = "Dataset_JSON_Files/Only_A5_Recorded_1.json"  # data used for predictions
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Test.h5"
+MODEL_DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_12frets_1.json"
+DATASET_PATH = "Dataset_JSON_Files/Only_A4_Recorded_1.json"  # data used for predictions
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_12frets_1.h5"
 RESULTS_PATH = "Results/LSTM_Results/"
-MODEL_NAME = "Simulated_Dataset_Matlab_Test"
-DATASET_NAME = "Only_A5_Recorded_1"
-PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+MODEL_NAME = "Simulated_Dataset_Matlab_12frets_1"
+DATASET_NAME = "Only_A4_Recorded_1"
+PLOT_TITLE = "Only_A4_Recorded_1"  # Dataset name to be used in graph titles
 LABELS = get_mappings(MODEL_DATASET_PATH)
+TRANSCRIPTIONS = "Transcriptions/"
 
 
 def prepare_data(dataset):
@@ -39,6 +40,18 @@ def prepare_data(dataset):
     print("returned shape of y = {}".format(y.shape))
 
     return X, y
+
+
+def transcribe(file_name="Transcription.ly"):
+    with open(TRANSCRIPTIONS + file_name, "w") as f:
+        f.write("\\version \"2.22.2\"  % necessary for upgrading to future LilyPond versions.")
+        f.write("\\header{")
+        f.write("    title = \"A scale in LilyPond\"")
+        f.write("}")
+        f.write("\\relative {")
+        f.write("c' d e f g a b c")
+        f.write("}")
+        f.close()
 
 
 if __name__ == "__main__":
@@ -61,6 +74,7 @@ if __name__ == "__main__":
     for i in range(len(pred)):
         prediction.loc[len(prediction.index)] = pred[i]
 
+    prediction = prediction.round(2)
     # print full dataframe
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
@@ -70,11 +84,15 @@ if __name__ == "__main__":
 
 
     # save results as csv
+    #print(prediction)
     description = prediction.describe()
-    prediction.to_csv(RESULTS_PATH + "Prediction_" + MODEL_NAME + DATASET_NAME + ".csv")
-    description.to_csv(RESULTS_PATH + "Description_"+ MODEL_NAME + DATASET_NAME + ".csv")
+    description = description.round(2)
+    prediction.to_csv(RESULTS_PATH + "Prediction_" + MODEL_NAME + "_" + DATASET_NAME + ".csv")
+    description.to_csv(RESULTS_PATH + "Description_"+ MODEL_NAME + "_" + DATASET_NAME + ".csv")
+    print(description)
     #sns.barplot(data=prediction)
     #plt.show()
+
 
     """
     #for i in range(len(X)):
