@@ -20,26 +20,22 @@ from Notes_to_Frequency import  notes_to_frequency_IDMT_limited
 from Notes_to_Frequency import notes_to_frequency_6
 from Notes_to_Frequency import notes_to_frequency_limited
 
-# DATASET_PATH = "Dataset_JSON_Files/IDMT-SMT-GUITAR_V2_Dataset.json"
-# MODEL_PATH = "CNN_Model_Files/CNN_Model_Matlab_IDMT-SMT-GUITAR.h5"
 
-#DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
-DATASET_PATH ="Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
-MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_Test.h5"
+DATASET_PATH ="Dataset_JSON_Files/Simulated_Dataset_Matlab_12frets_1.json"
+MODEL_PATH = "CNN_Model_Files/CNN_Model_Simulated_Dataset_Matlab_12frets_1.h5"
 
-# LABELS = notes_to_frequency_limited.keys()  # Lables for graphs
-PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+
+PLOT_TITLE = "Simulated_Dataset_Matlab_12frets_1"  # Dataset name to be used in graph titles
 RESULTS_PATH = "Results/CNN_Results/"
-MODEL_NAME = "Simulated_Dataset_Matlab_Test"
-#NOTES_TO_FREQ = notes_to_frequency_limited
+MODEL_NAME = "Simulated_Dataset_Matlab_12frets_1"
 
 # tweaking model
 DROPOUT = 0.3
-NUMBER_OF_NOTES = 2  # number of notes to classify
+NUMBER_OF_NOTES = 37  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 32
-EPOCHS = 1
+BATCH_SIZE = 4
+EPOCHS = 200
 
 
 def get_nth_key(dictionary, n=0):
@@ -90,6 +86,7 @@ def plot_history(history, plt_title=""):
     axs[0].plot(history.history["accuracy"], label="train accuracy")
     axs[0].plot(history.history["val_accuracy"], label="test accuracy")
     axs[0].set_ylabel("Accuracy")
+    axs[1].set_xlabel("Epoch")
     axs[0].legend(loc="lower right")
     axs[0].set_title(plt_title + " Accuracy Evaluation")
 
@@ -188,7 +185,7 @@ def predict(model, X, y):
     # extract index with max value
     predicted_index = np.argmax(prediction, axis=1)
     #print("Expected index: {}, Predicted index: {}".format(y, predicted_index))
-    # predicted_note = get_nth_key(notes_to_freq, predicted_index)
+    #predicted_note = get_nth_key(notes_to_freq, predicted_index)
     # return predicted_index
     return predicted_index, prediction
 
@@ -257,7 +254,7 @@ if __name__ == "__main__":
     #predicted_note = []
     predicted_index = []
     for i in range(len(X_test)):
-        index, pred = predict(model, X_test[i], y_test[i], NOTES_TO_FREQ)
+        index, pred = predict(model, X_test[i], y_test[i])
         #predicted_note.append(note)
         predicted_index.append(index)
 
@@ -289,17 +286,16 @@ if __name__ == "__main__":
     report_dict.update({"accuracy": {"precision": None, "recall": None, "f1-score": report_dict["accuracy"],
                                      "support": report_dict['macro avg']['support']}})
     df = pd.DataFrame(report_dict).transpose()
-    df.to_csv(RESULTS_PATH + MODEL_NAME + "_Report.csv")
+    #df.to_csv(RESULTS_PATH + MODEL_NAME + "_Report.csv")
 
     # plot confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
-    disp.plot()
+    disp.plot(xticks_rotation=45)
     plt.title(PLOT_TITLE + " Confusion Matrix")
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.show()
 
-    """
     # plot accuracy
     plt.plot(history.history["accuracy"])
     plt.plot(history.history["val_accuracy"])
@@ -317,7 +313,7 @@ if __name__ == "__main__":
     plt.xlabel("Epoch")
     plt.legend(["train", "validation" ], loc="upper right")
     plt.show()
-    """
+
 
 
 
