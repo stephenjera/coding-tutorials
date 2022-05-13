@@ -25,6 +25,7 @@ Objects/
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.exe
 /.vscode
 
 # User-specific files
