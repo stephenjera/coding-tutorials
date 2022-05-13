@@ -13,9 +13,9 @@ import numpy as np
 import librosa.display
 import soundfile as sf
 import matplotlib.pyplot as plt
-from audiomentations import Compose, AddGaussianNoise, TimeStretch
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, FrequencyMask,\
+    PolarityInversion, Gain, GainTransition, LoudnessNormalization, TimeMask
 from sklearn.model_selection import train_test_split
-from audiomentations import Compose, AddGaussianNoise, TimeStretch
 
 
 DATASET_PATH = "Hybrid_Limited_Dataset"  # name of folder with audio files
@@ -106,8 +106,12 @@ def augment(signal, label):
     # augmentation chain
     augment = Compose([
         # p is the probability of augmentation being applied
-        AddGaussianNoise(min_amplitude=0.1, max_amplitude=0.2, p=1),
-        TimeStretch(min_rate=0.8, max_rate=1.2, p=1)
+        AddGaussianNoise(min_amplitude=0.1, max_amplitude=0.2),
+        TimeStretch(min_rate=0.8, max_rate=1.2),
+        FrequencyMask(0.2, 0.5),
+        PolarityInversion(),
+        TimeMask(fade=True),
+        LoudnessNormalization()
     ])
     signal = augment(signal, sample_rate=SAMPLE_RATE)
     return signal, label
