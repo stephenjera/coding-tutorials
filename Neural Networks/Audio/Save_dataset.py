@@ -1,5 +1,6 @@
 """
 This code creates the JSON file of the notes
+pre-processing of audio takes place here
 """
 
 # TODO Correctly format docstrings
@@ -10,12 +11,12 @@ import librosa
 import math
 import json
 
-# DATASET_PATH = "Simulated_Dataset_Matlab_Limited"
-# JSON_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Limited.json"
-DATASET_PATH = "Only_A4_Recorded_Trimmed"  # name of folder with audio files
-JSON_PATH = "Dataset_JSON_Files/Only_A4_Recorded_Trimmed3.json"  # name of file to be created
+
+DATASET_PATH = "Simulated_Dataset_Matlab_Test"  # name of folder with audio files
+JSON_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test_1.json"  # name of file to be created
 SAMPLE_RATE = 22050
-DURATION = 3  # length of audio files measured in seconds(all files are variable lengths)
+DURATION = 4  # length of audio files measured in seconds
+NUM_SEGMENTS = 1
 SAMPLES_PER_TRACK = SAMPLE_RATE * DURATION
 
 
@@ -100,4 +101,4 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, nu
 
 
 if __name__ == "__main__":
-    save_mfcc(DATASET_PATH, JSON_PATH, num_segments=DURATION)
+    save_mfcc(DATASET_PATH, JSON_PATH, num_segments=NUM_SEGMENTS)
