@@ -6,29 +6,30 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_s
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
 import tensorflow.keras as keras
 from tensorflow.keras.utils import plot_model
-from Notes_to_Frequency import notes_to_frequency_limited
-from Notes_to_Frequency import  notes_to_frequency_IDMT_limited
-from Notes_to_Frequency import  notes_to_frequency_6
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
-#DATASET_PATH = "Dataset_JSON_Files/Hybrid_Limited_Dataset2.json"
-#DATASET_PATH = "Dataset_Augmented_JSON_Files/Hybrid_Limited_Dataset.json"
-DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_Test.json"
-MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_Test.h5"
 
-#LABELS = notes_to_frequency_IDMT_limited.keys()  # Lables for graphs
-PLOT_TITLE = "Simulated Dataset Matlab Test"  # Dataset name to be used in graph titles
+DATASET_PATH = "Dataset_JSON_Files/Simulated_Dataset_Matlab_12frets_1.json"
+MODEL_PATH = "LSTM_Model_Files/LSTM_Model_Simulated_Dataset_Matlab_12frets_1.h5"
+PLOT_TITLE = "Simulated_Dataset_Matlab_12frets_1"  # Dataset name to be used in graph titles
 RESULTS_PATH = "Results/LSTM_Results/"
-MODEL_NAME = "Simulated_Dataset_Matlab_Test"
+MODEL_NAME = "Simulated_Dataset_Matlab_12frets_1"
 
 # tweaking model
-DROPOUT = 0.3
-NUMBER_OF_NOTES = 2  # number of notes to classify
+DROPOUT = 0
+NUMBER_OF_NOTES = 37  # number of notes to classify
 LEARNING_RATE = 0.0001
 LOSS = "sparse_categorical_crossentropy"
-BATCH_SIZE = 32
-EPOCHS = 1
+BATCH_SIZE = 4
+EPOCHS = 200
+
+param_grid = {"batch_size": [4, 8, 16, 32],
+              "epochs": [25, 50, 75, 100, 125, 150],
+              "learning_rate": [0.001, 0.0001, 0.00001]
+              }
 
 
 def get_nth_key(dictionary, n=0):
@@ -79,6 +80,7 @@ def plot_history(history, plt_title=""):
     axs[0].plot(history.history["accuracy"], label="train accuracy")
     axs[0].plot(history.history["val_accuracy"], label="test accuracy")
     axs[0].set_ylabel("Accuracy")
+    axs[1].set_xlabel("Epoch")
     axs[0].legend(loc="lower right")
     axs[0].set_title(plt_title + " Accuracy evaluation")
 
@@ -118,7 +120,7 @@ def prepare_datasets(test_size, validation_size):
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
-def build_model(input_shape):
+def build_model(input_shape, num_notes, dropout=0.0):
     """Generates RNN-LSTM model
     :param input_shape (tuple): Shape of input set
     :return model: RNN-LSTM model
@@ -136,10 +138,10 @@ def build_model(input_shape):
     model.add(keras.layers.Dense(64, activation='relu'))
 
     # dropout layer (mitigate overfitting)
-    model.add(keras.layers.Dropout(DROPOUT))
+    model.add(keras.layers.Dropout(dropout))
 
     # output layer
-    model.add(keras.layers.Dense(NUMBER_OF_NOTES, activation='softmax'))
+    model.add(keras.layers.Dense(num_notes, activation='softmax'))
 
     return model
 
@@ -188,9 +190,10 @@ if __name__ == "__main__":
 
     # Build LSTM
     input_shape = (X_train.shape[1], X_train.shape[2]) # 130, 13 [number of slices, mfcc coeffceints]
-    model = build_model(input_shape)
 
-    #TODO complete printing of model
+    callback = keras.callbacks.EarlyStopping(monitor='loss', patience=10)
+    model = build_model(input_shape, NUMBER_OF_NOTES, DROPOUT)
+
 
     # print model
     # plot_model(model, to_file='LSTM_Model_Files/LSTM_Model.png')
@@ -205,7 +208,7 @@ if __name__ == "__main__":
 
     # train the model
     history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation),
-                        batch_size=BATCH_SIZE, epochs=EPOCHS)
+                        batch_size=BATCH_SIZE, epochs=EPOCHS, callbacks=[callback])
 
     # plot accuracy/error for training and validation
     plot_history(history, plt_title=PLOT_TITLE)
@@ -243,6 +246,7 @@ if __name__ == "__main__":
     print("F1 score micro: ", f1_score_micro)
     print(report)
 
+    #report_dict = report_dict.round(2)
     # save report to csv
     # get same format as unmodfied report
     report_dict.update({"accuracy": {"precision": None, "recall": None, "f1-score": report_dict["accuracy"],
@@ -252,7 +256,7 @@ if __name__ == "__main__":
 
     # plot confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
-    disp.plot()
+    disp.plot(xticks_rotation=45)
     plt.title(PLOT_TITLE + " Confusion Matrix")
     plt.xlabel('Predicted')
     plt.ylabel('True')
