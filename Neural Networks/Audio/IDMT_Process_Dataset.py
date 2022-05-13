@@ -12,10 +12,13 @@ import numpy as np
 DATASET_PATH = "IDMT-SMT-GUITAR_V2_Dataset/dataset1"
 JSON_PATH = "Dataset_JSON_Files/IDMT-SMT-GUITAR_V2_Dataset.json"
 SAMPLE_RATE = 22050
-DURATION = 2  # length of audio files measured in seconds
+DURATION = 1  # length of audio files measured in seconds
+NUM_SEGMENTS = 1
+SAMPLES_PER_TRACK = SAMPLE_RATE * DURATION
+deleted = []
 
 
-def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512):
+def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, num_segments=1):
     # dictionary to store data
     dataset = {"audioFileName": [],
                "mfcc": [],
@@ -24,6 +27,9 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512):
                "stringNumber": []
                }
 
+    num_samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
+    expected_num_mfcc_vectors_per_segment = math.ceil(num_samples_per_segment / hop_length)
+    print("expected_num_mfcc_vectors_per_segment: ", expected_num_mfcc_vectors_per_segment)
     # Loop through all the data
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
         # dirpath = current folder path
@@ -52,24 +58,34 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512):
                     # get data into processable format
                     soup = BeautifulSoup(data, "xml")
                     dataset["audioFileName"].append(soup.audioFileName.text)
-                    dataset["labels"].append(soup.pitch.text)
+                    dataset["labels"].append(int(soup.pitch.text))
                     dataset["fretNumber"].append(soup.fretNumber.text)
                     dataset["stringNumber"].append(soup.stringNumber.text)
                 elif split_tup[1] == ".wav":
                     # load audio file
                     signal, sr = librosa.load(file_path, sr=SAMPLE_RATE, duration=DURATION)
+                    # process segments extracting mfcc and storing data
+                    for s in range(num_segments):
+                        start_sample = num_samples_per_segment * s  # s=0 -> 0
+                        finish_sample = start_sample + num_samples_per_segment  # s=0 -> num_samples_per_segment
+                        mfcc = librosa.feature.mfcc(signal[start_sample:finish_sample],
+                                                    sr=sr,
+                                                    n_fft=n_fft,
+                                                    n_mfcc=n_mfcc,
+                                                    hop_length=hop_length)
+                        mfcc = mfcc.T  # TODO find out why this is better to work with
 
-                    mfcc = librosa.feature.mfcc(signal,
-                                                sr=sr,
-                                                n_fft=n_fft,
-                                                n_mfcc=n_mfcc,
-                                                hop_length=hop_length)
-                    mfcc = mfcc.T  # TODO find out why this is better to work with
-                    dataset["mfcc"].append(mfcc.tolist())  # can't save numpy arrays
+                        # store mfcc for segment if it has expected length
+                        if len(mfcc) == expected_num_mfcc_vectors_per_segment:
+                            dataset["mfcc"].append(mfcc.tolist())  # can't save numpy arrays
+                        else:
+                            deleted.append(file_path)
+
         # print(dataset)
 
-        with open(json_path, "w") as fp:
-            json.dump(dataset, fp, indent=4)
+    with open(json_path, "w") as fp:
+        json.dump(dataset, fp, indent=4)
+
         """
         # Reading the data inside the xml file to a variable under the name  data
         with open("IDMT-SMT-GUITAR_V2_Dataset/dataset1/"
@@ -120,5 +136,6 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512):
 
 
 if __name__ == "__main__":
-    save_mfcc(DATASET_PATH, JSON_PATH)
+    save_mfcc(DATASET_PATH, JSON_PATH, num_segments=NUM_SEGMENTS)
+    print(deleted)
 
