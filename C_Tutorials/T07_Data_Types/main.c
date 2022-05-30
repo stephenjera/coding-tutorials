@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <ctype.h>
 
 // Primitive data types are built into the language 
 
@@ -14,19 +13,4 @@ int main(){
     printf("An unsigned int %d bytes is the same size as a signed int %d bytes\n", sizeof(unsigned int), sizeof(signed int));
     printf("A long is size: %d bytes\n", sizeof(long));
     printf("A long long is size: %d bytes\n", sizeof(long long));
-
-    char a = 'a';
-    // Array of size 3 present interesting behaviour 
-    char b[4] = {'b','o','o'};
-
-    printf("a: %c, b: %s\n", a, b);
-    for(int i=0; i <= 4; i++){
-        // Check if last element in array is a space
-        if(isspace(b[i])){
-            // It's not a space it prints 'a' to the console 
-            printf("space");
-        } else {
-            printf("%c", b[i]);
-        }
-    }
 }
