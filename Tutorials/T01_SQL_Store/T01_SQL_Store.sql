@@ -51,7 +51,24 @@ WHERE NOT birth_date >= '1990-01-01' OR
 -- where the total price is greater than 30 
 SELECT *
 FROM order_items
-WHERE order_id = 6 AND (quantity * unit_price > 30)
+WHERE order_id = 6 AND (quantity * unit_price > 30);
+
+
+-- Using the IN statement to combine multiple operators 
+SELECT *
+FROM customers 
+WHERE state = 'VA' OR state = 'FL' or state = 'GA';
+
+-- The above can be replaced with 
+SELECT * 
+FROM customers 
+WHERE state IN ('VA', 'FL', 'GA');
+
+-- Return products with 
+-- quantity in stock equal to 49, 38 and 72
+SELECT *
+FROM products 
+WHERE quantity_in_stock IN (49, 38 , 72)
 
 
 
