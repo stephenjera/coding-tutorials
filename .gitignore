@@ -14,6 +14,7 @@
 *.uvproj
 *.obj
 *.dbgconf
+*.config
 Objects/
 =======
 ## Ignore Visual Studio temporary files, build results, and
