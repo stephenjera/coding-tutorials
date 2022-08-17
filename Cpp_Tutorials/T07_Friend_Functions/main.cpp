@@ -28,7 +28,6 @@ int main(){
     //myObj.printVar()
 
     printVar2(myObj);
-    //std::cout << "\nmyObj: " << myObj << "\n&myObj: " << &myObj << std::endl; 
 
 }
 
