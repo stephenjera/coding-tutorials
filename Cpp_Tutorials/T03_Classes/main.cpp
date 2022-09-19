@@ -10,7 +10,9 @@ int main(){
     auto test = honda.getModel();
     cout << test << endl;
     test = lorry.getModel();
+    cout << test << endl;
     honda.move();
     lorry.move();
-    
+
+    return 0; 
 }

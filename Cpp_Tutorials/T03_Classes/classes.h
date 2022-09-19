@@ -1,16 +1,16 @@
-#pragma once
+#ifndef CLASSES_H
+#define CLASSES_H
 #include <string>
+#include <iostream>
 using std::string;
 
-// Class declerations 
+// Class declarations 
 class Vehicle{
     public:
-        // Constructor declration
-        Vehicle(string);
-        //destructor declrations
+        // //destructor declaration
         ~Vehicle();
 
-        // Member function declrations
+        // Member function declarations
         void setModel(string);
         string getModel();
 
@@ -36,3 +36,4 @@ class Truck : public Vehicle{
     private:
         string model;
 };
+#endif

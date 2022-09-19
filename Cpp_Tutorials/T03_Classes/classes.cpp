@@ -3,7 +3,7 @@
 using std::cout;
 
 // Member function defintions
-// Parameters can't have same name a private variables in class
+// Parameters can't have same name as private variables in class
 void Vehicle::setModel(string m){
     model = m;
 }
@@ -12,12 +12,7 @@ string Vehicle::getModel(){
     return model;
 }
 
-// Constructor definition 
-Vehicle::Vehicle(string model){
-    setModel(model);
-}
-
-// Destructor definition
+//Destructor definition
 Vehicle::~Vehicle(){
     cout << "Bye bye\n";
 }
@@ -28,7 +23,15 @@ void Car::move(){
     cout << "Move car\n";
 }
 
-// Truck virtual funtions
+Car::Car(string model){
+    setModel(model);
+}
+
+// Truck virtual functions
 void Truck::move(){
     cout << "Move Truck\n";
+}
+
+Truck::Truck(string model){
+    setModel(model);
 }
