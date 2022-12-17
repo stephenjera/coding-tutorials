@@ -1,5 +1,5 @@
-CREATE DATABASE "Football_db2"
+CREATE DATABASE "Football_db"
     WITH
-    OWNER = postgres
+    --OWNER = docker
     ENCODING = 'UTF8'
     CONNECTION LIMIT = -1;

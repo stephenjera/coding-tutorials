@@ -1,3 +1,6 @@
+--\c "host=docker port=5432 dbname=Football_db connect_timeout=10"
+--\connect Football_db -- connect to footbal_db
+
 CREATE TABLE "group_name" (
   "group_id" serial,
   "group_name" text,
