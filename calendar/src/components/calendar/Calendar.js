@@ -13,7 +13,8 @@ function Calendar() {
 
   return (
     <div>
-      <Fullcalendar
+      <div>
+         <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
         headerToolbar={{
@@ -26,6 +27,7 @@ function Calendar() {
         selectable={true}
         dateClick={handleDateClick}
       />
+      </div>
     </div>
     
   );
