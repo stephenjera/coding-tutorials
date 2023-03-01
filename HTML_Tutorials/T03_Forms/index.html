@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Forms</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    </head>
+
+    <body>
+        <!--Method is how the data gets sent GET is unsecure-->
+        <form action="my_data_gets_sent_here.php" method="POST">
+            <br>
+            <div>
+                <label for="fname">First Name:</label>
+                <!-- name is the value given to the input when submitted-->
+                <input type="text" id="fname" name="fname" placeholder="First Name" required>
+            </div>
+            <br> <!--Add a line break-->
+            <div>
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lname" placeholder="Last Name" required>
+            </div>
+            <br>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" maxlength="25" required>
+            </div>
+            <br>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="placeholder@mail.com" required>
+            </div>
+            <br>
+            <div>
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <br>
+            <div>
+                <label for="bdate">Birth Day:</label>
+                <input type="date" id="bdate" name="bdate">
+            </div>
+            <br>
+            <div>
+                <label for="quanity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" min="0" max="99" value="42">
+            </div>
+            <br>
+            <div>
+                <label for="title">Title:</label>
+
+                <label for="mr">Mr.</label>
+                <input type="radio" id="mr" name="title">
+                <label for="miss">Miss.</label>
+                <input type="radio" id="miss" name="title">
+            </div>
+            <br>
+            <div>
+                <label for="payment">Payment</label>
+                <select id="payment" name="payment">
+                    <option>VISA</option>
+                    <option>MASTERCARD</option> 
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="sub">Subscribe</label>
+                <input type="checkbox" id="sub" name="sub">
+            </div>
+            <br>
+            <div>
+                <input type="reset">
+                <input type="submit">
+            </div>
+
+        </form>
+    </body>
+
+</html>
