@@ -1,5 +1,7 @@
+$main-content-colour: azure;
+
 body {
-    background-color: azure;
+    background-color: $main-content-colour;
 }
 
 p {
