@@ -16,4 +16,3 @@ def form():
 if __name__ == "__main__":
     # Run app in debug mode
     app.run(debug=True)
-
