@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Names</title>
+  </head>
+
+  <body>
+    <h1>Names</h1>
+    <pre>
+        First Name: {{ name.first_name }} 
+        Last Name: {{ name.last_name }}
+    </pre>
+    <p>
+      <button><a href="{{ url_for('index') }}">Home</a></button>
+      {%if index < max_index %}
+      <button>
+        <a href="{{ url_for('names', index=index + 1) }}">Next</a>
+      </button>
+      {% else %}
+      <button>
+        <a href="{{ url_for('names', index=0) }}">Start Over</a>
+      </button>
+      {% endif %}
+    </p>
+  </body>
+</html>

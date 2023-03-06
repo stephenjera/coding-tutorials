@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Hello World</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <h1>The power of names</h1>
+
+    <h2>Names</h2>
+    <ul>
+      {% for name in names %}
+      <li>
+        <a href="{{ url_for('names', index=loop.index0) }}">
+          {{ name.first_name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
