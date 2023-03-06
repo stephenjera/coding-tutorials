@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Name</title>
+  </head>
+  <body>
+    <h1>Delete Name</h1>
+    <pre>
+        First Name: {{ name.first_name }} 
+        Last Name: {{ name.last_name }}
+    </pre>
+
+    <h2>Are you sure?</h2>
+    <form method="post">
+      <button type="submit">yes</button>
+      <a href="{{ url_for('index') }}">No</a>
+    </form>
+  </body>
+</html>
