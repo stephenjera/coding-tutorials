@@ -20,6 +20,19 @@ def names(index):
         abort(404)
 
 
+@app.route("/api/names/")
+def api_names():
+    return db
+
+
+@app.route("/api/names/<int:index>")
+def api_names_index(index):
+    try:
+        return db[index]
+    except IndexError:
+        abort(404)
+
+
 if __name__ == "__main__":
     # Run app in debug mode
     app.run(debug=True)
