@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events</title>
+  </head>
+  <body>
+    <h1 id="demo">Change me</h1>
+    <button onclick="document.getElementById('demo').innerHTML = Date()">
+      Change time
+    </button>
+
+    <button onclick="this.innerHTML = Date()">The time is?</button>
+    <button id="button" onclick="displayDate()">The time is?</button>
+
+    <button onmouseover="this.style.backgroundColor = 'pink'" onmouseout="this.style.backgroundColor = 'white'">hover over me</button>
+
+    <script>
+      function displayDate() {
+        document.getElementById('button').innerHTML = Date()
+      }
+    </script>
+  </body>
+</html>
