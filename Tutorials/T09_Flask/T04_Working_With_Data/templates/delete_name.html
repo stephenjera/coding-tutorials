@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Delete Name</title>
-  </head>
-  <body>
+{% extends "base.html" %} 
+
+{% block title %} Delete Name {% endblock %}
+
+{% block content %}
     <h1>Delete Name</h1>
     <pre>
         First Name: {{ name.first_name }} 
@@ -18,5 +14,4 @@
       <button type="submit">yes</button>
       <a href="{{ url_for('index') }}">No</a>
     </form>
-  </body>
-</html>
+{% endblock %}
