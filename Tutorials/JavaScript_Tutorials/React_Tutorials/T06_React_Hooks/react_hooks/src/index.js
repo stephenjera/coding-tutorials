@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-
+import Component1, { Component4, Component5 } from './pages/UseContextExample'
+import Ref from './pages/UseRefExample'
 // The React useState Hook allows us to track state in a function component.
 // State generally refers to data or properties that need to be tracking in an application.
 
@@ -29,29 +30,34 @@ function Car () {
       <button type='button' onClick={updateColor}>
         Blue
       </button>
+      <hr />
     </>
   )
 }
 
-
-function Timer() {
-  const [count, setCount] = useState(0);
+function Timer () {
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     let timer = setTimeout(() => {
-    setCount((count) => count + 1);
-  }, 1000);
-  // clean up timer to prevent memory leaks (uses return)
-  return () => clearTimeout(timer)
-  }, []); // run only when dependencies change [] = run once
+      setCount(count => count + 1)
+    }, 1000)
+    // clean up timer to prevent memory leaks (uses return)
+    return () => clearTimeout(timer)
+  }, []) // run only when dependencies change [] = run once
 
-  return <h1>I've rendered {count} times!</h1>;
+  return <h1>I've rendered {count} times!</h1>
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <>
-    <Car /> 
+    <Car />
     <Timer />
+    <Ref />
+    <Component4 />
+    <Component5 />
+    {/*Undefined because component 1 sets value */}
+    <Component1 />
   </>
 )
