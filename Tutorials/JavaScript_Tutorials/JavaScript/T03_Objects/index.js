@@ -1,3 +1,19 @@
+const unknown = "meaning" 
+const PI = Math.PI
+
+// what properties objects support
+const obj = {
+    p1: 10,
+    p2: 20,
+    f1() {},
+    f2: () => {},
+    // dynamic properties not to be mistaken for an array
+    [unknown]: 42, // meaning is evaluated to meaning
+    'stringPI': PI,
+    PI // same as above line, shorthand syntax
+  };
+
+
 const person = {
   firstName: 'John',
   lastName: 'Doe',
@@ -6,6 +22,15 @@ const person = {
     return this.firstName + ' ' + this.lastName
   }
 }
+
+console.log(`obj.unknown: ${obj.unknown}`)
+console.log(`obj.meaning: ${obj.meaning}`)
+console.log(`obj.PI: ${obj.PI}`)
+console.log(`obj.stringPI: ${obj.stringPI}`)
+console.log(`obj.f1: ${obj.f1}`)
+console.log(`obj.f2: ${obj.f2}`)
+
+console.log()
 
 console.log(`First name: ${person.firstName}`)
 console.log(`Last name: ${person.lastName}`)
