@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  database:
+    container_name: postgres
+    hostname: dockerhost
+    image: postgres:14
+    ports:
+      - '5432:5432'
+    restart: always
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PW
+      POSTGRES_DB: $POSTGRES_DB
+      PGDATA: /tmp # create temp so datbase is initialised on start up
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    # volumes:
+    #   - ./db:/var/lib/postgresql/data
+    #   - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_MAIL
+      - PGADMIN_DEFAULT_PASSWORD=$PGADMIN_PW
+    ports:
+      - '5050:80'
+    restart: always
