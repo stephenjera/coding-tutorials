@@ -39,7 +39,7 @@ app.get('/events/:id', async (req, res) => {
 // Add event
 app.post('/addEvent', async (req, res) => {
   try {
-    //const { description } = req.body
+    //const { events } = req.body
     console.log(req.body)
     const newEvent = await pool.query(
       'insert into events (event) values($1) returning *',
