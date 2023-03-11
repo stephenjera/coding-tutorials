@@ -1,4 +1,10 @@
-### add event
+### Get all events 
+GET http://localhost:3001/allEvents
+
+### Get event
+GET http://localhost:3001/events/1
+
+### Add event
 POST http://localhost:3001/addEvent
 Content-Type: application/json
 
@@ -11,3 +17,13 @@ Content-Type: application/json
     "allDay": "BOOLEAN"
 }
 
+### Update event 
+PUT http://localhost:3001/events/1
+Content-Type: application/json
+
+{
+    "id": "INTEGER"
+}
+
+### Delete event
+DELETE http://localhost:3001/events/6

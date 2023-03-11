@@ -14,7 +14,7 @@ export const credentials = {
 }
 
 export default async function createTable () {
-  const sql = await readFile('./database/init.sql', 'utf-8')
+  const sql = await readFile('./database.sql', 'utf-8')
   console.log('File data is', sql)
   const pool = new Pool(credentials)
   await pool.connect()
@@ -22,9 +22,4 @@ export default async function createTable () {
   await pool.end()
 }
 
-// module.exports = createTable
-// ;(async () => {
-//   const clientResult = await createTable()
-//   console.log('Time with client: ' + clientResult /*.rows[0]['now']*/)
-// })()
 
