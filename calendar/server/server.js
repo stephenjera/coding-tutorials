@@ -1,37 +1,37 @@
-// server/index.js
-//const express = require('express')
 import express from 'express'
-import * as dotenv from 'dotenv'
+import createTable from './db.js'
+import { credentials } from './db.js'
 import pg from 'pg'
-import { readFile } from 'fs/promises'
 
 const PORT = process.env.PORT || 3001
+const { Pool } = pg
 const app = express()
-const { Client } = pg
-dotenv.config()
 
-const credentials = {
-  host: 'localhost',
-  user: process.env.POSTGRES_USER,
-  port: 5432,
-  password: process.env.POSTGRES_PW,
-  database: process.env.POSTGRES_DB
-}
+/* middleware */
+app.use(express.json())
 
-async function createTable () {
-  const sql = await readFile('./database/init.sql', 'utf-8')
-  console.log('File data is', sql)
-  const client = new Client(credentials)
-  await client.connect()
-  await client.query(sql)
-  await client.end()
+/* Routes */
 
-}
+// Add event
+app.post('/addEvent', async (req, res) => {
+  try {
+    const pool = new Pool(credentials)
+    const { description } = req.body
+    console.log(req.body)
+    const newEvent = await pool.query(
+      "INSERT INTO events (event) values($1) returning *", [req.body]
+    )
+    res.json(newEvent.rows)
+  } catch (err) {
+    console.error(err.message)
+  }
+})
 
-;(async () => {
-  const clientResult = await createTable()
-  console.log('Time with client: ' + clientResult/*.rows[0]['now']*/)
-})()
+// Update event
+
+// Delete event
+
+createTable()
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)

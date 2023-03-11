@@ -1,0 +1,13 @@
+### add event
+POST http://localhost:3001/addEvent
+Content-Type: application/json
+
+{
+    "id": "INTEGER",
+    "start": "TIMESTAMP",
+    "end": "TIMESTAMP",
+    "startStr": "text",
+    "endStr": "text",
+    "allDay": "BOOLEAN"
+}
+
