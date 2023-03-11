@@ -3,6 +3,7 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
 import pg from 'pg'
+import { readFile } from 'fs/promises'
 
 const PORT = process.env.PORT || 3001
 const app = express()
@@ -17,18 +18,19 @@ const credentials = {
   database: process.env.POSTGRES_DB
 }
 
-async function clientDemo () {
+async function createTable () {
+  const sql = await readFile('./database/init.sql', 'utf-8')
+  console.log('File data is', sql)
   const client = new Client(credentials)
   await client.connect()
-  const now = await client.query('SELECT NOW()')
+  await client.query(sql)
   await client.end()
 
-  return now
 }
 
-(async () => {
-  const clientResult = await clientDemo()
-  console.log('Time with client: ' + clientResult.rows[0]['now'])
+;(async () => {
+  const clientResult = await createTable()
+  console.log('Time with client: ' + clientResult/*.rows[0]['now']*/)
 })()
 
 app.listen(PORT, () => {
