@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flaskr-carved-rock = {editable = true, path = "."}
+
+[dev-packages]
+coverage = "*"
+pylint = "*"
+pytest-cov = "*"
+yapf = "*"
+pytest-watch = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+lint = "pylint src tests"
+style = "yapf -rpi src tests"

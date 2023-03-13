@@ -1,0 +1,9 @@
+[style]
+allow_split_before_dict_value=False
+based_on_style=pep8
+blank_line_before_nested_class_or_def=False
+blank_lines_around_top_level_definition=1
+column_limit=80
+split_before_dict_set_generator=False
+split_before_first_argument=False
+split_before_named_assigns=False
