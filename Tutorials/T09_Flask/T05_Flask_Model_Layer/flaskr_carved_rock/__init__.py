@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flaskr_carved_rock.sqla import sqla
 
 
 def create_app(test_config=None):
@@ -35,6 +36,13 @@ def create_app(test_config=None):
 
     db.init_app(app)
 
+    # configure SQLAlchemy
+    app.config.from_mapping(
+        SQLALCHEMY_DATABASE_URI=f'sqlite:///{app.config["DATABASE"]}',
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
+    )
+    sqla.init_app(app) 
+
     # apply the blueprints to the app
     from flaskr_carved_rock import auth, blog
 
@@ -48,3 +56,8 @@ def create_app(test_config=None):
     app.add_url_rule("/", endpoint="index")
 
     return app
+
+
+# app = create_app()
+
+# sqla= SQLAlchemy(app)

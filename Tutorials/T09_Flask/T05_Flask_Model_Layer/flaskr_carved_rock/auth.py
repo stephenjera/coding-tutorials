@@ -12,6 +12,7 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from flaskr_carved_rock.db import get_db
+#from flaskr_carved_rock.models.my_model import MyModel
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 

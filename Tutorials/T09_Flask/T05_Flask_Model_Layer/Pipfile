@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 flask = "*"
 flaskr-carved-rock = {editable = true, path = "."}
+flask-sqlalchemy = "*"
 
 [dev-packages]
 coverage = "*"
