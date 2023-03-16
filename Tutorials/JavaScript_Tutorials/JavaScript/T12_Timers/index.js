@@ -1,3 +1,10 @@
+// using regular function syntax
+setTimeout(function() { myFunction("I love You !!!"); }, 3000);
+
+function myFunction(value) {
+  console.log(value)
+}
+
 const theOne = delay => {
   console.log(`${delay} seconds has passed`)
 }
