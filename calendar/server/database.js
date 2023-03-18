@@ -1,6 +1,8 @@
-import * as dotenv from 'dotenv'
+//import * as dotenv from 'dotenv'
+import dotenv from 'dotenv'
 import pg from 'pg'
-import { readFile } from 'fs/promises'
+import * as fs from 'fs';
+
 
 const { Pool } = pg
 dotenv.config()
@@ -14,7 +16,7 @@ export const credentials = {
 }
 
 export default async function createTable () {
-  const sql = await readFile('./database.sql', 'utf-8')
+  const sql = await fs.promises.readFile('./database.sql', 'utf-8')
   console.log('File data is', sql)
   const pool = new Pool(credentials)
   await pool.connect()
