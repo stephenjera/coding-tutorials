@@ -13,30 +13,52 @@ const { stringify } = JSON
 function Calendar () {
   const [events, setEvents] = useState([])
   const [modalShow, setModalShow] = React.useState(false)
-  const handleDateClick = arg => {
-    // bind with an arrow function
-    console.log(`handleDateClick: ${stringify(arg)}`)
-    setModalShow(true)
-  }
 
   const handleSelect = info => {
     console.log(`info: ${stringify(info)}`)
+    setModalShow(true)
     const { start, end } = info
     console.log(info)
-    const eventNamePrompt = prompt('Enter, event name')
-    if (eventNamePrompt) {
-      setEvents([
-        ...events,
-        {
-          start,
-          end,
-          title: eventNamePrompt,
-          id: uuid()
-        }
-      ])
+    setEvents([
+      ...events,
+      {
+        start,
+        end,
+        title: 'Enter Title',
+        id: uuid()
+      }])
+    //const eventNamePrompt = prompt('Enter, event name')
+    // if (eventNamePrompt) {
+    //   setEvents([
+    //     ...events,
+    //     {
+    //       start,
+    //       end,
+    //       title: eventNamePrompt,
+    //       id: uuid()
+    //     }
+    //   ])
+    // }
+  }
+  const onSubmitForm = async e => {
+    e.preventDefault()
+    try {
+      setEvents(previousState => {
+        // update only the colour and not overwrite previous data
+        return { ...previousState, title: 'blue' }
+      })
+
+      const body = events
+      const response = fetch('http://localhost:3001/addEvent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: stringify(body)
+      })
+      console.log(response)
+    } catch (err) {
+      console.error(err.message)
     }
   }
-
   return (
     <div>
       <div>
@@ -54,11 +76,16 @@ function Calendar () {
           editable={false}
           selectable={true}
           select={handleSelect}
-          dateClick={handleDateClick}
           events={events}
-          eventContent={info => <EventItem info={info} />}
+          eventDisplay='block'
+          eventContent={events => <EventItem info={events} />}
         />
-        <EditEvent show={modalShow} onHide={() => setModalShow(false)} />
+        <EditEvent
+          onSubmitForm={onSubmitForm}
+          events={events}
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
       </div>
     </div>
   )
