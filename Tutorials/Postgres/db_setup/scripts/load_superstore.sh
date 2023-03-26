@@ -8,6 +8,15 @@ DATABASE=superstore
 TABLE=superstore
 
 # Connect to the PostgreSQL database inside the container
+#docker exec -it $CONTAINER_NAME psql -U $DB_USER -c "create database $DATABASE"
+
+# Create a server in pgAdmin
+#docker exec -it pgadmin bash -c 'python /pgadmin4/setup.py --load-servers /pgadmin4/servers.json'
+
+# Copy csv to container 
+docker cp ../datasets/$CSV_FILE postgres:/var/lib/postgresql/data
+
+# Connect to the "superstore" database
 docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "create table if not exists $TABLE (
     id serial not null,
     ship_model varchar(255) not null,
@@ -27,7 +36,7 @@ docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "create table i
 ) ;"
 
 # Load the data from the CSV file into the table
-docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "COPY %TABLE(
+docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "TRUNCATE TABLE $TABLE; COPY $TABLE(
     ship_model,
     segment,
     country,
@@ -41,8 +50,11 @@ docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "COPY %TABLE(
     quantity,
     discount,
     profit)
-    FROM '/var/lib/postgresql/data/datasets/$CSV_FILE' DELIMITER ',' CSV HEADER;"
+    FROM '/var/lib/postgresql/data/$CSV_FILE' DELIMITER ',' CSV HEADER;"
+
 
 # Check that the data has been loaded into the table
 docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "SELECT * FROM $TABLE;"
 
+#Remove CSV from container
+docker exec -it postgres rm /var/lib/postgresql/data/superstore.csv
