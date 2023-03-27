@@ -7,11 +7,9 @@ CSV_FILE=superstore.csv
 DATABASE=superstore
 TABLE=superstore
 
-# Connect to the PostgreSQL database inside the container
-#docker exec -it $CONTAINER_NAME psql -U $DB_USER -c "create database $DATABASE"
 
-# Create a server in pgAdmin
-#docker exec -it pgadmin bash -c 'python /pgadmin4/setup.py --load-servers /pgadmin4/servers.json'
+# Create supersotre database
+docker exec -it $CONTAINER_NAME createdb -U $DB_USER $DATABASE
 
 # Copy csv to container 
 docker cp ../datasets/$CSV_FILE postgres:/var/lib/postgresql/data
