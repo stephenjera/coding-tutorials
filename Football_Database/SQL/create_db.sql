@@ -1,4 +1,4 @@
-CREATE DATABASE "Football_db"
+CREATE DATABASE "football_db"
     WITH
     --OWNER = docker
     ENCODING = 'UTF8'

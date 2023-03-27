@@ -1,0 +1,13 @@
+dbt_football:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: docker
+      password: docker
+      port: 5432
+      dbname: postgres
+      schema: dbt_football
+      threads: 1
+      keepalives_idle: 0

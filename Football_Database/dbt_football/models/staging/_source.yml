@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+ - name: football 
+   database: footbal_db
+   schema: dbt_football
+   tables:
+    - name: cards
+      description: TODO
+    - name: clubs
+      description: TODO
+    - name: colours
+      description: TODO
+    - name: goals
+      description: TODO
+    - name: group_name
+      description: TODO
+    - name: matches
+      description: TODO
+    - name: players 
+      description: TODO
+    - name: venues
+      description: TODO
