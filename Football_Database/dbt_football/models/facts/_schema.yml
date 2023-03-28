@@ -8,7 +8,7 @@ models:
     - name: match_id 
     - name: colour 
     - name: time_given
-  - name: fct_football__cards
+  - name: fct_football__goals
     columns:
     - name: goal_id 
     - name: player_id 

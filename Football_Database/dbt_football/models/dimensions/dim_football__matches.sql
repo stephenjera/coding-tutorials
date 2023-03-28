@@ -1,6 +1,7 @@
 with
     points as (
         select
+            match_id,
             week,
             date_time,
             club as home_team,
@@ -32,6 +33,7 @@ with
     ),
     final as (
         select
+            match_id,
             venue,
             week,
             date_time,
