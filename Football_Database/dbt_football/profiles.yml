@@ -7,7 +7,7 @@ dbt_football:
       user: docker
       password: docker
       port: 5432
-      dbname: postgres
+      dbname: football_db
       schema: dbt_football
       threads: 1
       keepalives_idle: 0

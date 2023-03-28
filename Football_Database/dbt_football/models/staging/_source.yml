@@ -2,8 +2,8 @@ version: 2
 
 sources:
  - name: football 
-   database: footbal_db
-   schema: dbt_football
+   database: football_db
+   schema: public
    tables:
     - name: cards
       description: TODO
