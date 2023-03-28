@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 dbt-core = "*"
 dbt-postgres = "*"
+flask = "*"
 
 [dev-packages]
 shandy-sqlfmt = {extras = ["jinjafmt"], version = "*"}

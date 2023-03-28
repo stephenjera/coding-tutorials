@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Get CSV</title>
+  </head>
+  <body>
+    <h1>Get CSV</h1>
+    <div id="wdc"></div>
+    <form action="/connect" method="post">
+        <label for="hostname">Hostname:</label>
+        <input type="text" name="hostname" value="localhost"><br>
+        <label for="port">Port:</label>
+        <input type="text" name="port" value="5432"><br>
+        <label for="database">Database:</label>
+        <input type="text" name="database" value="football_db"><br>
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="docker"><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password"><br>
+        <input type="submit" value="Connect">
+      </form>
+  </body>
+</html>
