@@ -1,0 +1,48 @@
+with
+    points as (
+        select
+            week,
+            date_time,
+            club as home_team,
+            home_score,
+            away_id,
+            away_score,
+            venue,
+            case
+                when home_score > away_score
+                then 3
+                when home_score = away_score
+                then 1
+                when home_score < away_score
+                then 0
+                else null
+            end as home_points,
+            case
+                when away_score > home_score
+                then 3
+                when away_score = home_score
+                then 1
+                when away_score < home_score
+                then 0
+                else null
+            end as away_points
+        from {{ ref("stg_football__matches") }}
+        inner join {{ ref("stg_football__clubs") }} on home_id = club_id
+        inner join {{ ref("stg_football__venues") }} using(venue_id)
+    ),
+    final as (
+        select
+            venue,
+            week,
+            date_time,
+            home_team,
+            home_score,
+            club as away_team,
+            away_score,
+            home_points,
+            away_points
+        from points
+        join {{ ref("stg_football__clubs") }} on away_id = club_id
+    )
+select *
+from final

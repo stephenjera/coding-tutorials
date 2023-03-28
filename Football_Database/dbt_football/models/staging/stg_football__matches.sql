@@ -5,7 +5,7 @@ select
     venue_id,
     date_time,
     week,
-    friendly bool,
+    friendly,
     home_score,
     away_score
 from {{ source("football", "matches") }}

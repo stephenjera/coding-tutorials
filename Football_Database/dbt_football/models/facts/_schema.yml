@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: fct_football__cards
+    columns:
+    - name: card_id 
+    - name: player_id 
+    - name: match_id 
+    - name: colour 
+    - name: time_given
+  - name: fct_football__cards
+    columns:
+    - name: goal_id 
+    - name: player_id 
+    - name: match_id 
+    - name: time_scored
