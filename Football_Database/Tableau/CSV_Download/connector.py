@@ -27,13 +27,19 @@ def connect():
             host=hostname, port=port, dbname=database, user=username, password=password
         )
 
+        # Laod script 
+        with open('cards.sql', 'r', encoding='utf-8') as f:
+            sql_script = f.read()
+
         # Retrieve data from a table
         cur = conn.cursor()
-        cur.execute("select first_name, last_name from public.players")
+        cur.execute(sql_script)
         rows = cur.fetchall()
+        # Get the column headers
+        headers = [description[0] for description in cur.description]
 
         # Format the data as a CSV string
-        csv_data = ""
+        csv_data = ",".join(headers) + "\n"
         for row in rows:
             csv_data += ",".join(map(str, row)) + "\n"
 
