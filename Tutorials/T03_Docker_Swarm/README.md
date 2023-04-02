@@ -12,11 +12,6 @@ Follow the instruction that appear
 docker swarm join-token manager
 ```
 
-Keep the token in a safe location
-```shell
-docker swarm join --token SWMTKN-1-3nci03phc17zne4z7mqzdqd8vnr8bimfujhx7yy65g3s5oeoco-183e01l8okn8yg5za090s11nu 192.168.65.3:2377
-```
-
 List the nodes
 ```shell
 docker node ls
