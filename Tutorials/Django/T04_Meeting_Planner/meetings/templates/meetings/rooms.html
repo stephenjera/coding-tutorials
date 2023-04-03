@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meeting {{ meeting.title }}</title>
+    <title>Rooms</title>
   </head>
   <body>
-    <h1>{{ meeting.title }}</h1>
-    <p>This meeting was scheduled on {{meeting.date}}, at
-        {{meeting.start_time}} in <b>{{meeting.room}}</b>.
-    </p>
+    <h1>Rooms</h1>
+    <ul>
+      {% for room in rooms %}
+      <li>
+        {{ room.name }}
+      </li>
+      {% endfor %}
+    </ul>
   </body>
 </html>
