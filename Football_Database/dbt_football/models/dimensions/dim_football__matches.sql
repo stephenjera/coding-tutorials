@@ -29,7 +29,7 @@ with
             end as away_points
         from {{ ref("stg_football__matches") }}
         inner join {{ ref("stg_football__clubs") }} on home_id = club_id
-        inner join {{ ref("stg_football__venues") }} using(venue_id)
+        inner join {{ ref("stg_football__venues") }} using (venue_id)
     ),
     final as (
         select
