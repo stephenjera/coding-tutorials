@@ -1,0 +1,13 @@
+"card_id","player_id","match_id","colour","time_given","first_name","last_name","club","group_name","venue","week","date_time","home_team","home_score","away_team","away_score","home_points","away_points"
+1,12,1,"yellow","2022-10-01 16:00:00","Isabelle","Campos","BI Gods ","Bench"," Wimbledon 1",1,"2022-10-01 16:00:00","Data Masters ",2,"BI Gods ",0,3,0
+2,30,2,"yellow","2022-10-01 16:00:00","Tanner","Jenkins","Vis Wizards ","Consultants","Wimbledon 2",1,"2022-10-01 16:00:00","Vis Wizards ",1,"Data Cleaners ",1,1,1
+3,1,3,"yellow","2022-10-08 16:00:00","Aedan","Petty","Data Masters ","Cohort 4","Wimbledon 2",2,"2022-10-08 16:00:00","Data Masters ",2,"Vis Wizards ",1,3,0
+4,9,3,"yellow","2022-10-08 16:00:00","Jordin","Christensen","Data Masters ","HR","Wimbledon 2",2,"2022-10-08 16:00:00","Data Masters ",2,"Vis Wizards ",1,3,0
+5,10,5,"yellow","2022-11-05 16:00:00","Saul","Blevins","Data Masters ","HR","Wimbledon 3",3,"2022-10-22 16:00:00","Data Masters ",0,"Data Cleaners ",0,1,1
+6,38,5,"yellow","2022-11-05 16:00:00","Cornelius","Dodson","Data Cleaners ","Cohort 5","Wimbledon 3",3,"2022-10-22 16:00:00","Data Masters ",0,"Data Cleaners ",0,1,1
+7,3,7,"yellow","2022-10-22 16:00:00","Kaylynn","Vaughan","Data Masters ","Training Team"," Wimbledon 1",4,"2022-10-29 16:00:00","BI Gods ",2,"Data Masters ",2,1,1
+8,35,8,"yellow","2022-10-29 16:00:00","Dominik","Cochran","Data Cleaners ","Cohort 7","Wimbledon 3",4,"2022-10-29 16:00:00","Data Cleaners ",1,"Vis Wizards ",2,0,3
+9,23,9,"yellow","2022-10-29 16:00:00","Zion","Kent","Vis Wizards ","Cohort 5","Wimbledon 3",5,"2022-11-05 16:00:00","Vis Wizards ",3,"Data Masters ",2,3,0
+10,32,10,"red","2022-11-05 16:00:00","Paola","Wilkerson","Data Cleaners ","Cohort 6"," Wimbledon 1",5,"2022-11-05 16:00:00","Data Cleaners ",0,"BI Gods ",1,0,3
+11,1,11,"red","2022-11-05 16:00:00","Aedan","Petty","Data Masters ","Cohort 4","Wimbledon 2",6,"2022-11-12 16:00:00","Data Cleaners ",2,"Data Masters ",0,3,0
+12,17,12,"yellow","2022-11-12 16:00:00","Tomas","Powell","BI Gods ","Training Team","Wimbledon 3",6,"2022-12-12 16:00:00","Vis Wizards ",2,"BI Gods ",2,1,1
