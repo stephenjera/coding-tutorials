@@ -8,7 +8,7 @@ DATABASE=superstore
 TABLE=superstore
 
 
-# Create supersotre database
+# Create superstore database
 docker exec -it $CONTAINER_NAME createdb -U $DB_USER $DATABASE
 
 # Copy csv to container 
