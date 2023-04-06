@@ -12,7 +12,7 @@ TABLE=returns
 # Create superstore global database
 docker exec -it $CONTAINER_NAME createdb -U $DB_USER $DATABASE
 
-# Copy csvs to container 
+# Copy csv to container 
 docker cp ../datasets/$CSV_FOLDER/$CSV_FILE postgres:/var/lib/postgresql/data
 
 # Connect to the "superstore" database
@@ -32,7 +32,7 @@ docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "TRUNCATE TABLE
 
 
 # Check that the data has been loaded into the table
-docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "SELECT * FROM $TABLE;"
+# docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "SELECT * FROM $TABLE;"
 
 #Remove CSV from container
 docker exec -it postgres rm /var/lib/postgresql/data/$CSV_FILE

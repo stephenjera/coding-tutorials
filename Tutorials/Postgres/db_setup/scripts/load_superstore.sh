@@ -52,7 +52,7 @@ docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "TRUNCATE TABLE
 
 
 # Check that the data has been loaded into the table
-docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "SELECT * FROM $TABLE;"
+# docker exec -it $CONTAINER_NAME psql -U $DB_USER -d $DATABASE -c "SELECT * FROM $TABLE;"
 
 #Remove CSV from container
 docker exec -it postgres rm /var/lib/postgresql/data/superstore.csv

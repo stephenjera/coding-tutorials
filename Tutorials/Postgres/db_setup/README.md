@@ -1,6 +1,8 @@
-# Setting up tutorials
+# Setting up Postgres Database
 
-This directory contains files to set up a docker postgres database and pg with persistent memory using volumes.
+This directory contains files to set up a postgres database and pg admin with docker.
+
+## Setup database
 
 In this directory run:
 
@@ -8,7 +10,9 @@ In this directory run:
 docker compose up -d
 ```
 
-Then navigate to **localhost:5050**
+## Setup PG Admin
+
+Navigate to **localhost:5050**
 
 email = test@mail.com
 
@@ -32,6 +36,14 @@ login to PG admin and create a new server
         "SSLCert": "",
         "Comments": ""
 ```
+## Load datasets
+In the scripts folder run the following for windows systems 
+```shell
+ wsl bash load_databases.sh
+ ```
+or the command below for linux systems
+```shell
+bash load_databases.sh
+ ```
 
-finally run the relevant script in the scripts folder to populate the database
 
