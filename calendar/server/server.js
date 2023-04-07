@@ -11,11 +11,12 @@ const app = express()
 
 /* middleware */
 app.use(express.json())
-app.use(cors)
+app.use(cors())
 
 /* Routes */
 // Get all events
 app.get('/allEvents', async (req, res) => {
+  console.log('trying to get')
   try {
     console.log('running get all events')
     const allEvents = await pool.query('select * from events ')
