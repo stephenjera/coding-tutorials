@@ -3,10 +3,10 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 
 function EditEvent (props) {
-  
+  const { onSubmitForm, ...otherProps } = props;
   return (
     <Modal
-      {...props}
+      {...otherProps}
       size='lg'
       aria-labelledby='contained-modal-title-vcenter'
       centered
@@ -16,7 +16,7 @@ function EditEvent (props) {
       </Modal.Header>
       <Modal.Body>
         <h4>Centered Modal</h4>
-        <Form onSubmit={props.onSubmitForm}>
+        <Form onSubmit={onSubmitForm}>
           <Form.Group className='mb-3' controlId='formBasicEmail'>
             <Form.Label>Email address</Form.Label>
             <Form.Control type='email' placeholder='Enter email' />

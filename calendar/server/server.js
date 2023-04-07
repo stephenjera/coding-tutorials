@@ -2,6 +2,7 @@ import express from 'express'
 import createTable from './database.js'
 import { credentials } from './database.js'
 import pg from 'pg'
+import cors from 'cors'
 
 const PORT = process.env.PORT || 3001
 const { Pool } = pg
@@ -10,11 +11,13 @@ const app = express()
 
 /* middleware */
 app.use(express.json())
+app.use(cors)
 
 /* Routes */
 // Get all events
 app.get('/allEvents', async (req, res) => {
   try {
+    console.log('running get all events')
     const allEvents = await pool.query('select * from events ')
     res.json(allEvents.rows)
   } catch (err) {
@@ -79,6 +82,7 @@ app.delete('/events/:id', async (req, res) => {
     console.error(err.message)
   }
 })
+
 createTable()
 
 app.listen(PORT, () => {

@@ -26,7 +26,8 @@ function Calendar () {
         end,
         title: 'Enter Title',
         id: uuid()
-      }])
+      }
+    ])
     //const eventNamePrompt = prompt('Enter, event name')
     // if (eventNamePrompt) {
     //   setEvents([
@@ -41,6 +42,7 @@ function Calendar () {
     // }
   }
   const onSubmitForm = async e => {
+    console.log('onSubmitForm called')
     e.preventDefault()
     try {
       setEvents(previousState => {
@@ -49,12 +51,13 @@ function Calendar () {
       })
 
       const body = events
-      const response = fetch('http://localhost:3001/addEvent', {
+      const response = await fetch('http://localhost:3001/addEvent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: stringify(body)
       })
-      console.log(response)
+      const responseData = await response.json()
+      console.log(responseData)
     } catch (err) {
       console.error(err.message)
     }
