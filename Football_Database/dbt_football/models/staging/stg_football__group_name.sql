@@ -1,17 +1,7 @@
-with source as (
+with
+    source as (select * from {{ source("football", "group_name") }}),
 
-    select * from {{ source('football', 'group_name') }}
+    renamed as (select group_id, group_name from source)
 
-),
-
-renamed as (
-
-    select
-        group_id,
-        group_name
-
-    from source
-
-)
-
-select * from renamed
+select *
+from renamed

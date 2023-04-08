@@ -1,17 +1,7 @@
-with source as (
+with
+    source as (select * from {{ source("football", "colours") }}),
 
-    select * from {{ source('football', 'colours') }}
+    renamed as (select colour_id, colour from source)
 
-),
-
-renamed as (
-
-    select
-        colour_id,
-        colour
-
-    from source
-
-)
-
-select * from renamed
+select *
+from renamed

@@ -6,7 +6,7 @@ with
     matches as (select * from {{ ref("stg_football__matches") }}),
     clubs as (select * from {{ ref("stg_football__clubs") }}),
     colours as (select * from {{ ref("stg_football__colours") }}),
-    
+
     -- logic CTEs
     final as (
         select card_id, player_id, match_id, colour, time_given
