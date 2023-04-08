@@ -1,4 +1,18 @@
 with
+    -- import CTEs
+    clubs as (
+        select * from {{ ref("stg_football__clubs") }}
+    ),
+
+    venues as (
+        select * from {{ ref("stg_football__venues") }}
+    ),
+
+    matches as (
+        select * from {{ ref("stg_football__matches") }}
+    ),
+
+    -- logic CTEs
     points as (
         select
             match_id,
@@ -27,10 +41,11 @@ with
                 then 0
                 else null
             end as away_points
-        from {{ ref("stg_football__matches") }}
-        inner join {{ ref("stg_football__clubs") }} on home_id = club_id
-        inner join {{ ref("stg_football__venues") }} using (venue_id)
+        from matches
+        inner join clubs on home_id = club_id
+        inner join venues using (venue_id)
     ),
+
     final as (
         select
             match_id,
@@ -46,5 +61,6 @@ with
         from points
         join {{ ref("stg_football__clubs") }} on away_id = club_id
     )
+    
 select *
 from final
