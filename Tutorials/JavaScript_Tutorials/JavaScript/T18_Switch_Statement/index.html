@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switch Statement</title>
+  </head>
+  <body>
+    <button onclick="handleClick()">Click me</button>
+    <br />
+    <br />
+    <input id="colourInput" type="text" placeholder="Enter a colour" />
+    <button id="colourButton">submit colour</button>
+    <script>
+      function handleClick() {
+        let id = 2
+
+        switch (id) {
+          case 1: 
+            console.log('id 1')
+            break
+          case 2:
+            console.log('product 2')
+            break
+          default:
+            console.log('default')
+            break
+        }
+      }
+
+      document
+        .getElementById('colourButton')
+        .addEventListener('click', function () {
+          let inputValue = document.getElementById('colourInput').value
+          switch (inputValue) {
+            case 'Red':
+            case 'Pink':
+              console.log(`The colour is ${inputValue}`)
+              break
+            case 'blue':
+            case 'light blue':
+              console.log(`The colour is ${inputValue}`)
+              break
+            default:
+              console.log('default')
+              break
+          }
+        })
+    </script>
+  </body>
+</html>
