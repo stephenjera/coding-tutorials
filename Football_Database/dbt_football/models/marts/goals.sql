@@ -1,5 +1,5 @@
 select
-    g.*
+    g.*,
     {{ dbt_utils.star(from=ref("dim_football__players"), except=["player_id"]) }},
     {{ dbt_utils.star(from=ref("dim_football__matches"), except=["match_id"]) }}
 from {{ ref("fct_football__goals") }} as g
