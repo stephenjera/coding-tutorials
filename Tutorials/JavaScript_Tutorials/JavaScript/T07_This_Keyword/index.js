@@ -1,9 +1,9 @@
 const func = function () {
-  // "this" is th caller of x
+  // "this" is the caller of x
 }
 
 const arrow = () => {
-  // "this" here i not the caller of arrow
+  // "this" here is not the caller of arrow
   // it is the same "this" in arrow's scope
 }
 
