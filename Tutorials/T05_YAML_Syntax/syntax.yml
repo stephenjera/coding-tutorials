@@ -1,0 +1,35 @@
+# This is a comment
+string: "This is a string"
+integer: 42
+float: 3.14
+boolean: true
+null: null
+
+# Lists can be written in two ways
+list:
+  - item1
+  - item2
+  - item3
+
+# Or like this
+list: [item1, item2, item3]
+
+# Dictionaries (or mappings) use key-value pairs
+dictionary:
+  key1: value1
+  key2: value2
+
+# You can also use anchors and aliases to reuse values
+base: &base
+  username: john
+  email: john@example.com
+
+admin:
+  <<: *base
+  role: admin
+
+# You can use multiple documents in a single file, separated by '---'
+---
+document1: value1
+---
+document2: value2
