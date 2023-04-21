@@ -31,9 +31,6 @@ services:
     depends_on:
       - db
     volumes:
-      - ./pg_admin:/var/lib/pgadmin
-      - ./pgadmin_servers.json:/pgadmin4/servers.json
-    # command: >
-    #   sh -c "pip install flask && python /pgadmin4/setup.py --load-servers /pgadmin4/servers.json"
-
+      - ./servers.json:/pgadmin4/servers.json
+    
 

@@ -18,24 +18,7 @@ email = test@mail.com
 
 password = docker
 
-login to PG admin and create a new server 
-
-```json
-"Name": "docker",
-        "Group": "Servers",
-        "Host": "postgres",
-        "Port": 5432,
-        "MaintenanceDB": "postgres",
-        "Username": "docker",
-        "Password": "docker",
-        "SSLMode": "prefer",
-        "SSLCompression": 0,
-        "SavePassword": true,
-        "SSLRootCert": "",
-        "SSLKey": "",
-        "SSLCert": "",
-        "Comments": ""
-```
+login to PG admin 
 ## Load datasets
 In the scripts folder run the following for windows systems 
 ```shell
