@@ -1,0 +1,43 @@
+query GetPeople{
+  people{
+    id
+    firstName
+    lastName
+    age
+  }
+}
+
+query GetPerson($id: Int!) {
+  person(id: $id) {
+    id
+    firstName
+    lastName
+    age
+  }
+}
+
+mutation add{
+  addPerson(
+    firstName: "Bonny",
+    lastName: "Dempster",
+    age: 34
+  ){
+    firstName
+    lastName
+    age
+  }
+}
+
+mutation UpdatePersonAge($id: Int!, $age: Int) {
+  updatePerson(id: $id, age: $age) {
+    id
+    firstName
+    lastName
+    age
+  }
+}
+
+
+mutation DeletePerson($delId: Int!) {
+  deletePerson(id: $delId)
+}
