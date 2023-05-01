@@ -64,10 +64,10 @@ type GoalsType{
 }
     
 type Query{
-    Clubs: ClubsType
-    Groups: GoalsType
-    Players: PlayersType
-    Matches: MatchesType
-    Cards: CardsType
-    Goals: GoalsType
+    Clubs: [ClubsType]!
+    Groups: [GoalsType]!
+    Players: [PlayersType]!
+    Matches: [MatchesType]!
+    Cards: [CardsType]!
+    Goals: [GoalsType]!
 }

@@ -1,4 +1,9 @@
 version: "3.7"
+
+networks:
+  frontend:
+  backend:
+
 services:
   postgres:
     container_name: postgres
@@ -20,6 +25,8 @@ services:
       - ./SQL:/var/lib/postgresql/data
       - ./SQL/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ./SQL/insert.sql:/docker-entrypoint-initdb.d/insert.sql
+    networks:
+      - backend
 
   pgadmin:
     container_name: pgadmin
@@ -32,6 +39,10 @@ services:
     depends_on:
       - "postgres"
     restart: always
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    networks:
+      - backend
 
   api:
     build:
@@ -41,3 +52,5 @@ services:
       - "3000:3000"
     depends_on:
       - "postgres"
+    networks:
+      - backend

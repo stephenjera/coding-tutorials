@@ -1,4 +1,6 @@
 #from __future__ import annotations
+import time
+from sqlalchemy.exc import OperationalError
 from models import Clubs, Cards, Colours, GroupName, Venues, Players, Matches, Goals
 from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel import Session, select
@@ -13,7 +15,14 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 
 def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        try:
+            SQLModel.metadata.create_all(engine)
+            break
+        except OperationalError:
+            if attempt < max_attempts - 1: # don't sleep on the last attempt
+                time.sleep(5) # wait for 5 seconds before retrying
 
 
 # def get_session():
