@@ -47,10 +47,21 @@ services:
   api:
     build:
       context: API
-      dockerfile: Dockerfile
+      dockerfile: api.Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3000"
     depends_on:
       - "postgres"
     networks:
       - backend
+      - frontend
+  
+  client:
+    build:
+      context: client
+      dockerfile: client.Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
+      
