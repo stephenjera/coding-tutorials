@@ -20,6 +20,7 @@ services:
       - ./SQL:/var/lib/postgresql/data
       - ./SQL/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ./SQL/insert.sql:/docker-entrypoint-initdb.d/insert.sql
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
@@ -31,6 +32,12 @@ services:
     depends_on:
       - "postgres"
     restart: always
-    
 
-    
+  api:
+    build:
+      context: API
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "postgres"

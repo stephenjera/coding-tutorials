@@ -1,0 +1,73 @@
+type GroupNameType{
+    group_id: int
+    group_name: str
+}
+   
+type ClubsType{
+    club_id: int
+    club: str
+}
+    
+type PlayersType{
+    player_id: int
+    group_id: int
+    club_id: int
+    first_name: str
+    last_name: str
+    group: GroupNameType
+    club: club
+}
+
+type VenuesType{
+    venue_id: int
+    venue: str
+}
+
+type MatchesType{
+    match_id: int
+    home_id: int
+    away_id: int
+    venue_id: int
+    date_time: datetime
+    week: int
+    friendly: bool
+    home_score: int
+    away_score: int
+    home_team: ClubsType
+    away_team: ClubsType
+    venue: VenuesType
+}
+    
+type ColoursType{
+    colour_id: int
+    colour: str
+}
+
+ type CardsType{
+    card_id: int
+    player_id: int
+    match_id: int
+    colour_id: int
+    time_given: datetime
+    player: player
+    match: match
+    colour: ColoursType
+ }
+
+type GoalsType{
+    goal_id: int
+    player_id: int
+    match_id: int
+    time_scored: datetime
+    player: player
+    match: match
+}
+    
+type Query{
+    Clubs: ClubsType
+    Groups: GoalsType
+    Players: PlayersType
+    Matches: MatchesType
+    Cards: CardsType
+    Goals: GoalsType
+}
