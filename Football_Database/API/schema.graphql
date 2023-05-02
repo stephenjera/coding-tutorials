@@ -1,73 +1,73 @@
-type GroupNameType{
-    group_id: int
-    group_name: str
-}
-   
-type ClubsType{
-    club_id: int
-    club: str
-}
-    
-type PlayersType{
-    player_id: int
-    group_id: int
-    club_id: int
-    first_name: str
-    last_name: str
-    group: GroupNameType
-    club: club
+type GroupNameType {
+    groupId: Int!
+    groupName: String!
 }
 
-type VenuesType{
-    venue_id: int
-    venue: str
+type ClubsType {
+    clubId: Int!
+    club: String!
 }
 
-type MatchesType{
-    match_id: int
-    home_id: int
-    away_id: int
-    venue_id: int
-    date_time: datetime
-    week: int
-    friendly: bool
-    home_score: int
-    away_score: int
-    home_team: ClubsType
-    away_team: ClubsType
-    venue: VenuesType
-}
-    
-type ColoursType{
-    colour_id: int
-    colour: str
+type PlayersType {
+    playerId: Int!
+    groupId: Int
+    clubId: Int
+    firstName: String!
+    lastName: String!
+    groupName: GroupNameType
+    club: ClubsType
 }
 
- type CardsType{
-    card_id: int
-    player_id: int
-    match_id: int
-    colour_id: int
-    time_given: datetime
-    player: player
-    match: match
-    colour: ColoursType
- }
-
-type GoalsType{
-    goal_id: int
-    player_id: int
-    match_id: int
-    time_scored: datetime
-    player: player
-    match: match
+type VenuesType {
+    venueId: Int!
+    venue: String!
 }
-    
-type Query{
-    Clubs: [ClubsType]!
-    Groups: [GoalsType]!
-    Players: [PlayersType]!
-    Matches: [MatchesType]!
-    Cards: [CardsType]!
-    Goals: [GoalsType]!
+
+type MatchesType {
+    matchId: Int!
+    homeId: Int!
+    awayId: Int!
+    venueId: Int!
+    dateTime: DateTime!
+    week: Int
+    friendly: Boolean!
+    homeScore: Int
+    awayScore: Int
+    homeTeam: ClubsType!
+    awayTeam: ClubsType!
+    venue: VenuesType!
+}
+
+type ColoursType {
+    colourId: Int!
+    colour: String!
+}
+
+type CardsType {
+    cardId: Int!
+    playerId: Int!
+    matchId: Int!
+    colourId: Int!
+    timeGiven: DateTime!
+    player: PlayersType!
+    match: MatchesType!
+    colour: ColoursType!
+}
+
+type GoalsType {
+    goalId: Int!
+    playerId: Int!
+    matchId: Int!
+    timeScored: DateTime!
+    player: PlayersType!
+    match: MatchesType!
+}
+
+type Query {
+  clubs:[ClubsType]!
+  groups:[GroupNameType]!
+  players:[PlayersType]!
+  matches:[MatchesType]!
+  cards:[CardsType]!
+  goals:[GoalsType]!
 }

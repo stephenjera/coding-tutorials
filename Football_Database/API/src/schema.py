@@ -22,11 +22,11 @@ class PlayersType:
     club_id: int
     first_name: str
     last_name: str
-    group: GroupNameType
+    group_name: GroupNameType
     club: ClubsType
 
     @strawberry.field
-    def group(self, info) -> GroupNameType:
+    def group_name(self, info) -> GroupNameType:
         group = db.get_group(self.group_id)
         return GroupNameType(group_id=group.group_id, group_name=group.group_name)
 
@@ -171,7 +171,7 @@ class Query:
         return [ClubsType(club_id=club.club_id, club=club.club) for club in clubs]
 
     @strawberry.field
-    def groups(self) -> list[GroupNameType]:
+    def group_names(self) -> list[GroupNameType]:
         return db.get_all_groups()
 
     @strawberry.field
