@@ -8,6 +8,7 @@ dbt-core = "*"
 dbt-postgres = "*"
 flask = "*"
 strawberry-graphql = {extras = ["fastapi"], version = "*"}
+azure-functions = "*"
 
 [dev-packages]
 shandy-sqlfmt = {extras = ["jinjafmt"], version = "*"}
