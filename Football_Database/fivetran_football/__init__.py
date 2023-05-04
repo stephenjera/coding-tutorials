@@ -9,54 +9,26 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # Define the GraphQL query and variables
     query = """
-    query {
-        cards {
-            cardId
-            colourId
-            matchId
-            playerId
-            timeGiven
+    query MyQuery {
+        continents {
+            code
+            name
+            countries {
+            awsRegion
+            capital
+            code
+            currencies
+            currency
+            }
         }
-        clubs {
-            club
-            clubId
         }
-        goals {
-            goalId
-            matchId
-            playerId
-            timeScored
-        }
-        groupNames {
-            groupId
-            groupName
-        }
-        matches {
-            awayId
-            awayScore
-            dateTime
-            friendly
-            homeId
-            homeScore
-            matchId
-            venueId
-            week
-        }
-        players {
-            clubId
-            firstName
-            groupId
-            lastName
-            playerId
-        }
-    }
     """
     variables = {}
 
     try:
         # Send the GraphQL query to the API
         response = requests.post(
-            "http://localhost:3001/graphql",
+            "https://countries.trevorblades.com/graphql",  
             json={"query": query, "variables": variables},
         )
         data = response.json()
@@ -68,3 +40,73 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # Return the data in the response
     return func.HttpResponse(json.dumps(data))
+
+
+####################################
+# Can't call api without public ip #
+####################################
+
+# def main(req: func.HttpRequest) -> func.HttpResponse:
+#     logging.info("**Python HTTP trigger function processed a request.**")
+
+#     # Define the GraphQL query and variables
+#     query = """
+#     query {
+#         cards {
+#             cardId
+#             colourId
+#             matchId
+#             playerId
+#             timeGiven
+#         }
+#         clubs {
+#             club
+#             clubId
+#         }
+#         goals {
+#             goalId
+#             matchId
+#             playerId
+#             timeScored
+#         }
+#         groupNames {
+#             groupId
+#             groupName
+#         }
+#         matches {
+#             awayId
+#             awayScore
+#             dateTime
+#             friendly
+#             homeId
+#             homeScore
+#             matchId
+#             venueId
+#             week
+#         }
+#         players {
+#             clubId
+#             firstName
+#             groupId
+#             lastName
+#             playerId
+#         }
+#     }
+#     """
+#     variables = {}
+
+#     try:
+#         # Send the GraphQL query to the API
+#         response = requests.post(
+#             "http://localhost:3001/graphql", # localhost won't work in prod
+#             json={"query": query, "variables": variables},
+#         )
+#         data = response.json()
+#     except Exception as e:
+#         logging.error(f"An error occurred while fetching data from the API: {e}")
+#         return func.HttpResponse(
+#             "An error occurred while fetching data from the API.", status_code=500
+#         )
+
+#     # Return the data in the response
+#     return func.HttpResponse(json.dumps(data))

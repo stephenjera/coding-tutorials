@@ -9,7 +9,8 @@ app = FastAPI()
 app.include_router(GraphQLRouter(schema=schema, path="/graphql"))
 
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://fivetran-football.azurewebsites.net/"
 ]
 
 app.add_middleware(
