@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" id="fileInput" />
+
+    <script>
+      const fileInput = document.querySelector('#fileInput')
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0]
+        const formData = new FormData()
+        formData.append('file', file)
+
+        // Check if the file was correctly appended to the formData object
+        for (let [key, value] of formData.entries()) {
+          console.log(key, value)
+        }
+        ;(async () => {
+          try {
+            const response = await fetch('http://localhost:3000/file', {
+              method: 'POST',
+              body: formData
+            })
+            if (!response.ok) {
+              const error = await response.json()
+              alert(`Error: ${error.detail}`)
+            } else {
+              const data = await response.json()
+              console.log(data.filename)
+            }
+          } catch (error) {
+            console.error(error)
+          }
+        })()
+      })
+    </script>
+  </body>
+</html>
