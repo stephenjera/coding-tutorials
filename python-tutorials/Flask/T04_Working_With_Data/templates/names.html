@@ -1,0 +1,24 @@
+{% extends "base.html" %} 
+
+{% block title %} Names {% endblock %}
+
+{% block content %}
+    <h1>Names</h1>
+    <pre>
+        First Name: {{ name.first_name }} 
+        Last Name: {{ name.last_name }}
+    </pre>
+    <p>
+      <button><a href="{{ url_for('index') }}">Home</a></button>
+      {%if index < max_index %}
+      <button>
+        <a href="{{ url_for('names', index=index + 1) }}">Next</a>
+      </button>
+      {% else %}
+      <button>
+        <a href="{{ url_for('names', index=0) }}">Start Over</a>
+      </button>
+      {% endif %}
+    </p>
+    <a href="{{ url_for('delete_name', index=index) }}"> Remove this name</a>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %} 
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+  <h1>The power of names</h1>
+
+  <h2>Names</h2>
+  <ul>
+    {% for name in names %}
+    <li>
+      <a href="{{ url_for('names', index=loop.index0) }}">
+        {{ name.first_name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

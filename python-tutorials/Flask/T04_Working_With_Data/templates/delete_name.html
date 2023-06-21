@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+
+{% block title %} Delete Name {% endblock %}
+
+{% block content %}
+    <h1>Delete Name</h1>
+    <pre>
+        First Name: {{ name.first_name }} 
+        Last Name: {{ name.last_name }}
+    </pre>
+
+    <h2>Are you sure?</h2>
+    <form method="post">
+      <button type="submit">yes</button>
+      <a href="{{ url_for('index') }}">No</a>
+    </form>
+{% endblock %}

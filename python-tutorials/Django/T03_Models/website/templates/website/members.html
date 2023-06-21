@@ -1,0 +1,15 @@
+{% extends "website/base.html" %} {% block title %} Members {% endblock %} 
+
+{% block content %}
+
+<h1>Members</h1>
+
+<ul>
+  {% for x in my_members %}
+  <li>
+    <a href="members/details/{{ x.id }}">{{ x.firstname }} {{ x.lastname }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
