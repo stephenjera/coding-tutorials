@@ -1,0 +1,21 @@
+body {
+  background-color: lightblue;
+  background-image: url('https://www.freecodecamp.org/news/content/images/size/w1000/2021/06/w-qjCHPZbeXCQ-unsplash.jpg');
+  background-repeat: repeat-x;
+  background-attachment: fixed;
+}
+
+h1 {
+  background-color: green;
+  background: rgba(0, 128, 0, 0.3); /*Only makes background transparent*/
+}
+
+div {
+  background-color: lightblue;
+}
+
+p {
+  background-color: pink;
+  opacity: 0.7; /* makes entire element transparent*/
+  background-image: url('https://img.freepik.com/free-photo/beautiful-milky-way-night-sky_53876-139825.jpg?w=996&t=st=1678021752~exp=1678022352~hmac=da08620d0b59672058e35946fd97d88f1ae218b60d6270380a8d12f1f7ce1aa7');
+}

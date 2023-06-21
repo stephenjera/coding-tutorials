@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Links</title>
+  </head>
+
+  <body>
+    <a style="color:blue" href="./index.html" target="_blank">link text back to home</a>
+    <br />
+    <a style="color:blue" href="mailto:someone@example.com">Send email</a>
+    <br />
+    <button onclick="document.location='./index.html'">
+      Link button back to home
+    </button>
+
+    <h2 id="bookmark">Jump to me</h2>
+    <h3 name="namedAnchor">I am a named anchor jump to me too</h3>
+    <br />
+    <button>
+      <!--Implicit anchor, jump to content in document-->
+      <a style="color:blue" href="#bookmark" style="text-decoration: none">Jump to bookmark</a>
+    </button>
+    <button  ><a style="color:blue" href="#namedAnchor">to the named</a></button>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>This Keyword</title>
+  </head>
+  <body>
+    <button onclick="functionScope();">Function scope</button>
+    <button onclick="this.style.background='Red'">In event handler</button>
+    <button onclick="eventHandler(this)">
+      Pass to function from event handler
+    </button>
+    <script>
+      // 'use strict';
+
+      // Global scope - 'this' is mapped to global/window object
+      console.log('Begin: global scope sample')
+      console.log(this.toString())
+      console.log('this === window = ' + (this === window).toString())
+      console.log('End: global scope sample')
+
+      // Function scope - 'this' is mapped to global/window object
+      //                  Uncomment 'use strict' above to show how it affects this function
+      function functionScope() {
+        console.log(this.toString())
+        console.log('this === window = ' + (this === window).toString())
+      }
+
+      // Pass 'this' to function from event handler
+      function eventHandler(ctl) {
+        console.log(ctl.toString())
+      }
+
+      const func = function () {
+        // "this" is the caller of x
+      }
+      
+      const arrow = () => {
+        // "this" here is not the caller of arrow
+        // it is the same "this" in arrow's scope
+      }
+      
+      testerObj.func1() // "this" is the caller of x: testerObj
+      testerObj.func2() // "this" is the this in scope : 'exports'
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+body {
+  background-color: burlywood;
+}
+
+#main {
+  display: flex;
+  align-items: center;
+  background-color: azure;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=main.css.map */

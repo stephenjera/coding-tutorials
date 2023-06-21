@@ -1,0 +1,35 @@
+// Many methods of centering an element 
+
+body {
+    background-color: burlywood;
+}
+
+#main {
+    display: flex;
+    align-items: center;
+    background-color: azure;
+    flex-direction: column;
+}
+
+// #main {
+//     margin: 0 auto;
+//     width: 70%;
+// }
+
+// h1 {
+//     margin:  0 auto;
+//     width: 400;
+//     display: block;
+// }
+
+// img {
+//     margin:  0 auto;
+//     width: 400;
+//     display: block;
+// }
+
+
+// div {
+//     margin: 0 auto;
+//     width: 90%;
+// }
