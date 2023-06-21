@@ -1,0 +1,29 @@
+version: "3.8"
+# Using docker swam makes this a stack 
+services:
+  web-fe:
+    # stack do not support building images on the fly 
+    # image must be hosted in registy so all hosts can access 
+    image: nigelpoulton/gsd:swarm-stack
+    command: python app.py
+    deploy:
+      replicas: 10
+    ports:
+      - target: 8080
+        published: 5000
+    networks:
+      - counter-net
+    volumes:
+      - type: volume
+        source: counter-vol
+        target: /code
+  redis:
+    image: "redis:alpine"
+    networks:
+      counter-net:
+
+networks:
+  counter-net:
+
+volumes:
+  counter-vol:

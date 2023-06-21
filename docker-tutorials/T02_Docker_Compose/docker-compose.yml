@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  # Python flask app 
+  web-fe:
+    build: . # call docker file to bulid image 
+    command: python app.py # run app when contianer starts 
+    ports:
+      - target: 5000 # container port
+        published: 5000 # host port
+    networks:
+      - counter-net
+    volumes:
+      - type: volume
+        source: counter-vol
+        target: /code
+  # Redis app
+  redis:
+    image: "redis:alpine"
+    networks:
+      counter-net:
+
+# create a network
+networks:
+  counter-net:
+
+# create a volume 
+volumes:
+  counter-vol:
