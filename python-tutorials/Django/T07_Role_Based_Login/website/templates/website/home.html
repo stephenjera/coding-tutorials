@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Welcome to My Site
+{% endblock %}
+
+{% block content %}
+  <h1>Welcome to My Site</h1>
+  <p>Please log in to enter and edit your details.</p>
+
+  {% if user.is_authenticated %}
+    {% if user.is_superuser %}
+      <a href="{% url 'admin_users' %}">Admin Panel</a>
+    {% endif %}
+    <a href="{% url 'profile' %}">View Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+  {% endif %}
+{% endblock %}

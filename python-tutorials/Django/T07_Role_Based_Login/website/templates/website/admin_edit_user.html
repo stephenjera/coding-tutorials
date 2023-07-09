@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit User - {{ user.username }}
+{% endblock %}
+
+{% block content %}
+  <h1>Edit User - {{ user.username }}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <button type="button" onclick="window.location.href='{% url 'admin_users' %}'">Back</button>
+  </form>
+{% endblock %}

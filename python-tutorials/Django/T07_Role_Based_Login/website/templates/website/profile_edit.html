@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block content %}
+  <h1>Edit Profile</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <button type="button" onclick="window.location.href='{% url 'profile' %}'">Back</button>
+  </form>
+{% endblock %}

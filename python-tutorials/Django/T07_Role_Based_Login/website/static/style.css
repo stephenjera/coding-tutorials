@@ -1,0 +1,130 @@
+/* Base colors */
+:root {
+    --primary-color: #1e1e1e;
+    --secondary-color: #292929;
+    --accent-color: #3d5afe;
+    --text-color: #ffffff;
+  }
+  
+  /* Body styles */
+  body {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }
+  
+  /* Heading styles */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--accent-color);
+  }
+  
+  /* Link styles */
+  a {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Button styles */
+  button {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  /* Form styles */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 8px 10px;
+    border-radius: 4px;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--accent-color);
+  }
+  
+  /* Container styles */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+ /* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+tr:nth-child(even) {
+  background-color: var(--primary-color);
+}
+
+tr:hover {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+}
+
+/* Button styles */
+.edit-button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  opacity: 0.8;
+}
+  
+form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+button[type="submit"],
+button[type="button"] {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  opacity: 0.8;
+}
