@@ -1,0 +1,23 @@
+-- CREATE DATABASE analytics;
+
+-- CREATE TABLE analytics.superstore 
+-- (
+--     ShipMode String,
+--     Segment String,
+--     Country String, 
+--     City String,
+--     State String,
+--     PostalCode UInt32,
+--     Region String,
+--     Category String,
+--     SubCategory String, 
+--     Sales Decimal(10,2),
+--     Quantity UInt32, 
+--     Discount Decimal(10,2),
+--     Profit Decimal(10,2)
+-- )
+-- ENGINE = MergeTree()
+-- ORDER BY Country;
+
+-- INSERT INTO analytics.superstore FORMAT CSV 
+-- FROM FILE '/var/lib/clickhouse/csv_data/superstore.csv';
