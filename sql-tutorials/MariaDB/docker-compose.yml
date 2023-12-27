@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=password
+      # - MARIADB_DATABASE=mydb
+    # volumes:
+    #   - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  adminer:
+    image: adminer
+    depends_on:
+      - mariadb
+    ports:
+      - "5050:8080"
+

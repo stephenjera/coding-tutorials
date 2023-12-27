@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    container_name: dynamodb
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - ./dynamodb_data:/home/dynamodblocal
