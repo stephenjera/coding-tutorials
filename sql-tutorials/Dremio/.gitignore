@@ -1,0 +1,4 @@
+mongo_data
+dremio_data
+minio_data
+docker-volume

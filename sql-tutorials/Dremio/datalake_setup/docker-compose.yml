@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./minio_data:/data
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password
+      MINIO_REGION: us-east-1
+    command: server /data --console-address ":9001"
+
+  dremio:
+    image: dremio/dremio-oss:latest
+    container_name: dremio
+    ports:
+      - "9047:9047"
+      - "31010:31010" # ODBC/JDBC
+      - "32010:32010" # DBeaver
+      - "45678:45678"
+    volumes:
+      - ./dremio_data:/opt/dremio/data
+
+  nessie:
+    image: projectnessie/nessie
+    container_name: nessie
+    ports:
+      - "19120:19120"
+    environment:
+      - NESSIE_VERSION_STORE_TYPE=MONGODB
+      - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://root:password@mongodb:27017/nessie?authSource=admin
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:4.2
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./mongo_data:/data/db
+    #   - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongodb:27017/
+    depends_on:
+      - mongodb
+
+networks:
+  default:
+    name: iceberg_env
+    driver: bridge
