@@ -30,3 +30,12 @@ select
 from orders
 group by sub_category
 order by average_discount_percentage desc;
+
+-- Total Profits per Customer
+select 
+	customer_id,
+	customer_name,
+	round(sum(profit)::numeric, 2) as total_proft
+from orders
+group by customer_id, customer_name
+order by 3 desc;
