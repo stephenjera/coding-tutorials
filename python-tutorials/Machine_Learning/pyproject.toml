@@ -13,6 +13,7 @@ ipykernel = "^6.29.4"
 openpyxl = "^3.1.2"
 scikit-learn = "^1.5.0"
 seaborn = "^0.13.2"
+folium = "^0.16.0"
 
 
 [build-system]
