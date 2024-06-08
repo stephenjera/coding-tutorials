@@ -16,6 +16,8 @@ seaborn = "^0.13.2"
 folium = "^0.16.0"
 xgboost = "^2.0.3"
 graphviz = "^0.20.3"
+keras = "^3.3.3"
+tensorflow = "^2.16.1"
 
 
 [build-system]
