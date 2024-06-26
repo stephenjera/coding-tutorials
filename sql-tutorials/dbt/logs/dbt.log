@@ -1,0 +1,62 @@
+[0m07:39:33.188487 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1361812f80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f135fd69660>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f135fd69600>]}
+
+
+============================== 07:39:33.205751 | 649fccf7-a047-49ff-87ab-38085042ef61 ==============================
+[0m07:39:33.205751 [info ] [MainThread]: Running with dbt=1.8.1
+[0m07:39:33.206790 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'fail_fast': 'False', 'log_path': 'logs', 'profiles_dir': '/home/ubuntu/.dbt', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'log_format': 'default', 'invocation_command': 'dbt init dbt_tutorial', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m07:39:33.246785 [debug] [MainThread]: Starter project path: /home/ubuntu/.cache/pypoetry/virtualenvs/dbt-4_ff7FUo-py3.10/lib/python3.10/site-packages/dbt/include/starter_project
+[0m07:39:33.250829 [info ] [MainThread]: 
+Your new dbt project "dbt_tutorial" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m07:39:33.251615 [info ] [MainThread]: Setting up your profile.
+[0m07:39:33.257708 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No adapters available. Learn how to install an adapter by going to https://docs.getdbt.com/docs/connect-adapters#install-using-the-cli
+[0m07:39:33.260031 [debug] [MainThread]: Resource report: {"command_name": "init", "command_wall_clock_time": 0.13514853, "process_user_time": 2.553272, "process_kernel_time": 0.211097, "process_mem_max_rss": "93004", "process_in_blocks": "184", "process_out_blocks": "23040", "command_success": false}
+[0m07:39:33.260933 [debug] [MainThread]: Command `dbt init` failed at 07:39:33.260791 after 0.14 seconds
+[0m07:39:33.261382 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1361812f80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1360656050>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1360654670>]}
+[0m07:39:33.261979 [debug] [MainThread]: Flushing usage events
+[0m07:40:01.283259 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6f099e98d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6f081168c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6f08116860>]}
+
+
+============================== 07:40:01.289615 | 716b48ce-ee8c-4ab0-b8a9-277eda2f2773 ==============================
+[0m07:40:01.289615 [info ] [MainThread]: Running with dbt=1.8.1
+[0m07:40:01.290728 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'profiles_dir': '/home/ubuntu/.dbt', 'log_path': 'logs', 'fail_fast': 'False', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'introspect': 'True', 'log_format': 'default', 'target_path': 'None', 'invocation_command': 'dbt init dbt_tutorials', 'send_anonymous_usage_stats': 'True'}
+[0m07:40:01.298882 [debug] [MainThread]: Starter project path: /home/ubuntu/.cache/pypoetry/virtualenvs/dbt-4_ff7FUo-py3.10/lib/python3.10/site-packages/dbt/include/starter_project
+[0m07:40:01.303045 [info ] [MainThread]: 
+Your new dbt project "dbt_tutorials" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m07:40:01.303657 [info ] [MainThread]: Setting up your profile.
+[0m07:40:01.308607 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No adapters available. Learn how to install an adapter by going to https://docs.getdbt.com/docs/connect-adapters#install-using-the-cli
+[0m07:40:01.309886 [debug] [MainThread]: Resource report: {"command_name": "init", "command_wall_clock_time": 0.084827706, "process_user_time": 1.32693, "process_kernel_time": 0.100525, "process_mem_max_rss": "85972", "process_out_blocks": "64", "command_success": false, "process_in_blocks": "0"}
+[0m07:40:01.310767 [debug] [MainThread]: Command `dbt init` failed at 07:40:01.310601 after 0.09 seconds
+[0m07:40:01.311289 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6f099e98d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6f08727ac0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6f08116bf0>]}
+[0m07:40:01.311849 [debug] [MainThread]: Flushing usage events

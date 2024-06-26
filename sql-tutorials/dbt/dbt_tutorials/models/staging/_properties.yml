@@ -1,0 +1,11 @@
+# version: 2
+
+# models:
+#   - name: stg_superstore__orders
+#     columns:
+#       - name: order_id
+#         tests:
+#           - not_null
+
+#   - name: stg_superstore__people
+#   - name: stg_superstore__returns

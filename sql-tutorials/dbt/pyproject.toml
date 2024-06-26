@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dbt"
+version = "0.1.0"
+description = ""
+authors = ["stephenjera"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dbt-postgres = "^1.8.1"
+dbt-core = "^1.8.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

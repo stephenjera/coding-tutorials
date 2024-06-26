@@ -1,0 +1,167 @@
+version: 2
+
+sources:
+  - name: chinook
+    database: chinook
+    schema: public
+    tables:
+      - name: Album
+        columns:
+          - name: albumid
+            data_type: integer
+          - name: title
+            data_type: character varying
+          - name: artistid
+            data_type: integer
+
+      - name: Artist
+        columns:
+          - name: artistid
+            data_type: integer
+          - name: name
+            data_type: character varying
+
+      - name: Customer
+        columns:
+          - name: customerid
+            data_type: integer
+          - name: firstname
+            data_type: character varying
+          - name: lastname
+            data_type: character varying
+          - name: company
+            data_type: character varying
+          - name: address
+            data_type: character varying
+          - name: city
+            data_type: character varying
+          - name: state
+            data_type: character varying
+          - name: country
+            data_type: character varying
+          - name: postalcode
+            data_type: character varying
+          - name: phone
+            data_type: character varying
+          - name: fax
+            data_type: character varying
+          - name: email
+            data_type: character varying
+          - name: supportrepid
+            data_type: integer
+
+      - name: Employee
+        columns:
+          - name: employeeid
+            data_type: integer
+          - name: lastname
+            data_type: character varying
+          - name: firstname
+            data_type: character varying
+          - name: title
+            data_type: character varying
+          - name: reportsto
+            data_type: integer
+          - name: birthdate
+            data_type: timestamp without time zone
+          - name: hiredate
+            data_type: timestamp without time zone
+          - name: address
+            data_type: character varying
+          - name: city
+            data_type: character varying
+          - name: state
+            data_type: character varying
+          - name: country
+            data_type: character varying
+          - name: postalcode
+            data_type: character varying
+          - name: phone
+            data_type: character varying
+          - name: fax
+            data_type: character varying
+          - name: email
+            data_type: character varying
+
+      - name: Genre
+        columns:
+          - name: genreid
+            data_type: integer
+          - name: name
+            data_type: character varying
+
+      - name: Invoice
+        columns:
+          - name: invoiceid
+            data_type: integer
+          - name: customerid
+            data_type: integer
+          - name: invoicedate
+            data_type: timestamp without time zone
+          - name: billingaddress
+            data_type: character varying
+          - name: billingcity
+            data_type: character varying
+          - name: billingstate
+            data_type: character varying
+          - name: billingcountry
+            data_type: character varying
+          - name: billingpostalcode
+            data_type: character varying
+          - name: total
+            data_type: numeric
+
+      - name: InvoiceLine
+        columns:
+          - name: invoicelineid
+            data_type: integer
+          - name: invoiceid
+            data_type: integer
+          - name: trackid
+            data_type: integer
+          - name: unitprice
+            data_type: numeric
+          - name: quantity
+            data_type: integer
+
+      - name: MediaType
+        columns:
+          - name: mediatypeid
+            data_type: integer
+          - name: name
+            data_type: character varying
+
+      - name: Playlist
+        columns:
+          - name: playlistid
+            data_type: integer
+          - name: name
+            data_type: character varying
+
+      - name: PlaylistTrack
+        columns:
+          - name: playlistid
+            data_type: integer
+          - name: trackid
+            data_type: integer
+
+      - name: Track
+        columns:
+          - name: trackid
+            data_type: integer
+          - name: name
+            data_type: character varying
+          - name: albumid
+            data_type: integer
+          - name: mediatypeid
+            data_type: integer
+          - name: genreid
+            data_type: integer
+          - name: composer
+            data_type: character varying
+          - name: milliseconds
+            data_type: integer
+          - name: bytes
+            data_type: integer
+          - name: unitprice
+            data_type: numeric

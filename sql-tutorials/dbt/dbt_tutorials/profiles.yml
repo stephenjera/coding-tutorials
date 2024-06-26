@@ -1,0 +1,12 @@
+dbt_tutorials:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: docker
+      password: docker
+      port: 5432
+      dbname: chinook
+      schema: dbt
+      threads: 4
