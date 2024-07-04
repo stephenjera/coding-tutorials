@@ -6,7 +6,7 @@ authors = ["stephenjera"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10 <3.11"
 pandas = "^2.2.1"
 matplotlib = "^3.8.4"
 ipykernel = "^6.29.4"
@@ -16,8 +16,17 @@ seaborn = "^0.13.2"
 folium = "^0.16.0"
 xgboost = "^2.0.3"
 graphviz = "^0.20.3"
-keras = "^3.3.3"
-tensorflow = "^2.16.1"
+tensorflow = { extras = ["and-cuda"], version = "^2.16.2", source = "PyPi" }
+torch = { version = "^2.3.1+cu118", source = "pytorch-cuda" }
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu118"
+priority = "explicit"
 
 
 [build-system]
