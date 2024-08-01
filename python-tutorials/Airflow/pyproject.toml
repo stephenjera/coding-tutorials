@@ -11,6 +11,7 @@ apache-airflow = "2.9.2"
 apache-airflow-providers-postgres = "^5.11.2"
 scikit-learn = "^1.5.1"
 pandas = "^2.2.2"
+mlflow = "^2.15.0"
 
 
 [build-system]
