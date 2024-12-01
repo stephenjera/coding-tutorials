@@ -1,0 +1,10 @@
+select * from (
+	select *, false as deleted_flag from ddl.t01_insert
+	union all
+	select *, false as deleted_flag from ddl.t02_update
+	union all 
+	select * from ddl.t03_delete
+	union all
+	select *, false as deleted_flag from ddl.t04_merge
+) t1
+where invoice_id in (1002,1003);

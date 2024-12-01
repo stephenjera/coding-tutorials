@@ -38,4 +38,8 @@ models:
     dimensions:
       +materialized: table
       +schema: dimensions
+    ddl_migration:
+      +materialized: table
+      +schema: ddl
+
 
